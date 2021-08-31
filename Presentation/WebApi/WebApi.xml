@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:WebApi.Controllers.v1.ProductsController.Create(Application.Features.ProductFeatures.Commands.Create.Command)">
+            <summary>
+            Create new product
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.ProductsController.GetAll">
+            <summary>
+            Gets all Products.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.ProductsController.GetPaginatedList(System.Int32,System.Int32)">
+            <summary>
+            Get paginated product list
+            </summary>
+            <param name="page_number"></param>
+            <param name="page_size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.ProductsController.GetById(System.Int32)">
+            <summary>
+            Gets Product Entity by Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.ProductsController.Delete(System.Int32)">
+            <summary>
+            Deletes Product Entity based on Id.
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.ProductsController.Update(System.Int32,Application.Features.ProductFeatures.Commands.Update.Command)">
+            <summary>
+            Update product data
+            </summary>
+            <param name="id"></param>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.UserDevicesController.AddUpdateDevice(Application.Features.UserAccount.Commands.AddUpdateUserDevice.Command)">
+            <summary>
+            Add / update user device
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.UserDevicesController.GetUserDevices(System.Int32,System.Int32)">
+            <summary>
+            Get paginated list of user devices
+            </summary>
+            <param name="page_number"></param>
+            <param name="page_size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.Register(Application.Features.UserAccount.Commands.Register.Command)">
+            <summary>
+            Register new user account
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.VerifyAccount(Application.Features.UserAccount.Commands.VerifyAccount.Command)">
+            <summary>
+            Verify user account after registeration
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.Login(Application.Features.UserAccount.Commands.Login.Command)">
+            <summary>
+            Login request
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.ForgetPassword(Application.Features.UserAccount.Commands.ForgetPassword.Command)">
+            <summary>
+            Forget password request
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.ResetPassword(Application.Features.UserAccount.Commands.ResetPassword.Command)">
+            <summary>
+            Reset password request
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+            
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.UpdateProfile(Application.Features.UserAccount.Commands.UpdateProfile.Command)">
+            <summary>
+            Update user profile
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.GetUsersList(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Int32,System.Int32)">
+            <summary>
+            Get paginated list of users 
+            </summary>
+            <param name="name"></param>
+            <param name="sort"></param>
+            <param name="page_number"></param>
+            <param name="page_size"></param>
+            <returns></returns>
+            
+        </member>
+    </members>
+</doc>
