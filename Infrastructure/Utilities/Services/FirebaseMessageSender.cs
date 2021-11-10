@@ -35,38 +35,9 @@ namespace Utilities
             }
         }
 
-        public async Task<string> LoginAsync()
-        {
-            // manage oauth login to Google / Facebook etc.
-            // call FirebaseAuthentication.net library to get the Firebase Token
-            // return the token
-            
-
-        }
-
-        private async Task<string> GetAccessToken()
-        {
-            var jsonFormat = JsonSerializer.Serialize(config.GetFirebaseSettings());
-            var credential = GoogleCredential.FromJson(jsonFormat).CreateScoped(new string[] {
-            "https://www.googleapis.com/auth/firebase.database",
-            "https://www.googleapis.com/auth/userinfo.email",
-            });
-
-            ITokenAccess c = credential as ITokenAccess;
-            return await c.GetAccessTokenForRequestAsync();
-        }
-
-
         public async Task<FirebaseSendMessageResultDTO> SendToTopic(string title, string body,
             string topicName, Dictionary<string, string> data = null, bool isTest = false)
         {
-            var firebaseClient = new FirebaseClient(
-              "<URL>",
-              new FirebaseOptions
-              {
-                  AuthTokenAsyncFactory = () => GetAccessToken()
-              });
-
             var fcm = FirebaseMessaging.GetMessaging(app);
 
             Message message = new Message()
