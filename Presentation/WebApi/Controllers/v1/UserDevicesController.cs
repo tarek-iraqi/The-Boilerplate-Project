@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Controllers.v1
 {
-    [AllowAnonymous]
+    
     public class UserDevicesController : BaseApiController
     {
         private const string baseRoute = "fcm-tokens";

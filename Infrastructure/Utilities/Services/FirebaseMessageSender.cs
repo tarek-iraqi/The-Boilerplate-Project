@@ -22,7 +22,11 @@ namespace Utilities
         {
             try
             {
-                var jsonFormat = JsonSerializer.Serialize(config.GetFirebaseSettings());
+                var firebaseConfiguration = config.GetFirebaseSettings();
+                var privateKeyValue = firebaseConfiguration.private_key.Replace("\\n", "\n");
+                firebaseConfiguration.private_key = privateKeyValue;
+
+                var jsonFormat = JsonSerializer.Serialize(firebaseConfiguration);
 
                 app = FirebaseApp.Create(new AppOptions()
                 {

@@ -17,7 +17,6 @@ namespace Helpers.Constants
         public const string AccessToken = "access_token";
         public const string SignalREndPoint = "/broadcast";
         public const string SecretHashKey = "System:JWTSettings:SecretHashKey";
-        public const string Role = "Role";
         public const string IP = "ip";
         public const string TokenType = "Bearer";
         public const string GeneralError = "error";

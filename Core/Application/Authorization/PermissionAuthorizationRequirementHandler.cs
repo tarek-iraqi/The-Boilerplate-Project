@@ -48,10 +48,15 @@ namespace Application.Authorization
                 {
                     foreach (var claim in claims)
                     {
-                        int claimValue = (int)((Permissions)Enum.Parse(typeof(Permissions), claim));
+                        Enum.TryParse(typeof(Permissions), claim, out object permisssion);
 
-                        isAuthorized = context.User.Claims.Any(a =>
-                            a.Type == PermissionConstants.ActionPermission && int.Parse(a.Value) == claimValue);
+                        if (permisssion is not null)
+                        {
+                            int claimValue = (int)((Permissions)permisssion);
+
+                            isAuthorized = context.User.Claims.Any(a =>
+                                a.Type == PermissionConstants.ActionPermission && int.Parse(a.Value) == claimValue);
+                        }
 
                         if (!isAuthorized) break;
                     }

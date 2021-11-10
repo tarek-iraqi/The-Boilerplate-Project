@@ -155,7 +155,7 @@ namespace Persistence.Identity
             foreach (var role in roles)
             {
                 var roleValue = await _roleManager.FindByNameAsync(role);
-                userClaims.Add(new Claim(KeyValueConstants.Role, roleValue.Name));
+                userClaims.Add(new Claim(ClaimTypes.Role, roleValue.Name));
             }
 
             var token = new JwtSecurityToken
