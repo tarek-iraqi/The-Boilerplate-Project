@@ -16,26 +16,31 @@ namespace WebApi.Middlewares
     {
         private readonly RequestDelegate _next;
         private const string APIKEYNAME = "x-api-key";
-        public ApiKeyMiddleware(RequestDelegate next)
+        private readonly IApplicationConfiguration _configuration;
+        public ApiKeyMiddleware(RequestDelegate next, IApplicationConfiguration configuration)
         {
             _next = next;
+            _configuration = configuration;
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
+            if (!_configuration.GetAppSettings().UrlsSkipApiKey.Contains(context.Request.Path.Value.ToLower()))
             {
-                throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
-                    new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.MissingApiKey) });
-            }
+                if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
+                {
+                    throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
+                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.MissingApiKey) });
+                }
 
-            var appConfig = context.RequestServices.GetRequiredService<IApplicationConfiguration>();
+                var appConfig = context.RequestServices.GetRequiredService<IApplicationConfiguration>();
 
-            var apiClients = appConfig.GetApiClients();
+                var apiClients = appConfig.GetApiClients();
 
-            if (!apiClients.Any(a => a.ApiKey.Equals(extractedApiKey)))
-            {
-                throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
-                    new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.InvalidApiKey) });
+                if (!apiClients.Any(a => a.ApiKey.Equals(extractedApiKey)))
+                {
+                    throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
+                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.InvalidApiKey) });
+                }
             }
 
             await _next(context);
