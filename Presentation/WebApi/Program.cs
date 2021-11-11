@@ -68,28 +68,20 @@ namespace WebApi
             else if (hostBuilder.HostingEnvironment.IsStaging() ||
                     hostBuilder.HostingEnvironment.IsEnvironment("Demo"))
             {
-                var stageLogsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
-                    KeyValueConstants.StageLogsPath);
+                var logsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
+                    KeyValueConstants.LogsPath,
+                    hostBuilder.HostingEnvironment.EnvironmentName.ToLower());
 
-                var demoLogsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
-                    KeyValueConstants.DemoLogsPath);
-
-                if (!Directory.Exists(stageLogsFolder))
+                if (!Directory.Exists(logsFolder))
                 {
-                    Directory.CreateDirectory(stageLogsFolder);
-                }
-
-                if (!Directory.Exists(demoLogsFolder))
-                {
-                    Directory.CreateDirectory(demoLogsFolder);
+                    Directory.CreateDirectory(logsFolder);
                 }
 
                 config.MinimumLevel.Error();
-                config.MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
+                config.MinimumLevel.Override("Microsoft", LogEventLevel.Error);
                 config.Enrich.FromLogContext();
                 config.Enrich.WithExceptionDetails();
-                config.WriteTo.File(Path.Combine(
-                 hostBuilder.HostingEnvironment.IsStaging() ? stageLogsFolder : demoLogsFolder,
+                config.WriteTo.File(Path.Combine(logsFolder,
                  $"{DateTime.Now.ToString("dd-MM-yyyy")}_logs.txt"));
             }
         }

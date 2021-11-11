@@ -23,8 +23,7 @@ namespace Helpers.Constants
         public const string FirebaseApp = "FIREBASE_APP";
         public const string DbConnection = "DbConnection";
         public const string UsernameClaimType = "username";
-        public const string StageLogsPath = "wwwroot/logs/staging";
-        public const string DemoLogsPath = "wwwroot/logs/demo";
+        public const string LogsPath = "wwwroot/logs";
 
         #region Email Templates
         public const string AccountVerificationEmailTemplate = "AccountVerification.cshtml";

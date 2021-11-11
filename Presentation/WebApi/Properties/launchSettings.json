@@ -23,7 +23,7 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "GOOGLE_APPLICATION_CREDENTIALS": "C:\\firebase-config.json",
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       },
       "dotnetRunMessages": "true",
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
