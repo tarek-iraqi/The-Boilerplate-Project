@@ -65,8 +65,7 @@ namespace WebApi
                 config.Enrich.WithExceptionDetails();
                 config.WriteTo.Console();
             }
-            else if (hostBuilder.HostingEnvironment.IsStaging() ||
-                    hostBuilder.HostingEnvironment.IsEnvironment("Demo"))
+            else
             {
                 var logsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
                     KeyValueConstants.LogsPath,

@@ -24,7 +24,7 @@ namespace Utilities
                 .AddSmtpSender(emailSettings.Host, emailSettings.Port, emailSettings.FromEmail, emailSettings.Password);
 
             services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IApplicationConfiguration, ApplicationConfiguration>();
+            services.AddSingleton<IApplicationConfiguration, ApplicationConfiguration>();
             services.AddScoped<IPhoneValidator, PhoneValidator>();
             services.AddScoped<IApplicationLocalization, ApplicationLocalization>();
             services.AddScoped<IFirebaseMessageSender, FirebaseMessageSender>();
