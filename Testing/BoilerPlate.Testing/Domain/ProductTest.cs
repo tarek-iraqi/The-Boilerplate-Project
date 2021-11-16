@@ -1,10 +1,7 @@
 ﻿using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using Shouldly;
 using Helpers.Exceptions;
+using Shouldly;
+using Xunit;
 
 namespace BoilerPlate.Testing.Domain
 {
@@ -29,7 +26,7 @@ namespace BoilerPlate.Testing.Domain
         public void ProductRateNotValidTest(decimal rate)
         {
             var product = new Product();
-            
+
             Assert.Throws<AppCustomException>(() => product.Create("product1", "description", "123456", rate));
         }
 

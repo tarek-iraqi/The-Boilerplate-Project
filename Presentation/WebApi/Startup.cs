@@ -1,4 +1,5 @@
-using Application;
+using Domain.Entities;
+using Helpers.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,12 +8,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using Persistence.Context;
 using System;
+using Utilities;
+using Utilities.Services;
 using WebApi.Extensions;
 using WebApi.Middlewares;
-using Utilities;
-using Helpers.Constants;
-using Utilities.Services;
-using Domain.Entities;
 
 namespace WebApi
 {
@@ -71,7 +70,8 @@ namespace WebApi
             app.UseStaticFiles();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => {
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi");
                 c.DefaultModelsExpandDepth(-1);
             });

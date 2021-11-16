@@ -2,14 +2,12 @@
 using Helpers.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Net.Mail;
 
 namespace Utilities
 {
     public static class ServiceCollectionExtensions
     {
-        public static void  AddUtilitiesServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddUtilitiesServices(this IServiceCollection services, IConfiguration configuration)
         {
             var emailSettings = configuration.GetSection("System:EmailSettings").Get<EmailSettings>();
 

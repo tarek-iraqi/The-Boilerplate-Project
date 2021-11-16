@@ -1,10 +1,10 @@
 ﻿using Application.Interfaces;
-using Helpers.Interfaces;
 using Application.Specifications.Devices;
 using Domain.Entities;
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Exceptions;
+using Helpers.Interfaces;
 using Helpers.Resources;
 using MediatR;
 using System;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.UserAccount.Commands
 {
-    public class AddUpdateUserDevice 
+    public class AddUpdateUserDevice
     {
         public class Command : IRequest
         {
@@ -41,12 +41,17 @@ namespace Application.Features.UserAccount.Commands
             private readonly IUnitOfWork _uow;
             private readonly IIdentityService _identityService;
             private readonly IAuthenticatedUserService _authenticatedUserService;
+            private readonly IApplicationLocalization _localizer;
 
-            public Handler(IUnitOfWork uow, IIdentityService identityService, IAuthenticatedUserService authenticatedUserService)
+            public Handler(IUnitOfWork uow,
+                IIdentityService identityService,
+                IAuthenticatedUserService authenticatedUserService,
+                IApplicationLocalization localizer)
             {
                 _uow = uow;
                 _identityService = identityService;
                 _authenticatedUserService = authenticatedUserService;
+                _localizer = localizer;
             }
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -61,19 +66,22 @@ namespace Application.Features.UserAccount.Commands
                     .GetBySpecAsync(new UserDeviceFilteredByModelOrTokenSpec(Guid.Parse(_authenticatedUserService.UserId),
                         request.model, request.token));
 
-                if(device == null)
+                if (device == null)
                 {
                     _uow.Repository<Device>().Add(new Device
                     {
                         UserId = Guid.Parse(_authenticatedUserService.UserId),
                         Model = request.model,
-                        Token = request.token
+                        Token = request.token,
+                        DeviceLanguage = _localizer.CurrentLangWithCountry
                     });
-                } 
+                }
                 else
                 {
                     device.Model = request.model;
                     device.Token = request.token;
+                    device.DeviceLanguage = _localizer.CurrentLangWithCountry;
+                    _uow.Repository<Device>().Update(device);
                 }
 
                 await _uow.CompleteAsync();

@@ -1,15 +1,12 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Firebase.Database;
 using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Google.Apis.Auth.OAuth2;
 using Helpers.Constants;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -30,7 +27,7 @@ namespace Utilities
 
                 app = FirebaseApp.Create(new AppOptions()
                 {
-                    Credential = GoogleCredential.FromJson(jsonFormat)                 
+                    Credential = GoogleCredential.FromJson(jsonFormat)
                 }, KeyValueConstants.FirebaseApp);
             }
             catch
@@ -100,14 +97,15 @@ namespace Utilities
                     is_success = !string.IsNullOrWhiteSpace(result),
                     message_id = result
                 };
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new FirebaseSendMessageResultDTO
                 {
                     is_success = false,
                     error = ex.Message
                 };
-            }         
+            }
         }
 
         public async Task<FirebaseMultiDevicesSendMessageResultDTO> SendToDevices(string title, string body,
@@ -126,7 +124,7 @@ namespace Utilities
                 Tokens = devicesTokens
             };
 
-            var result =  await fcm.SendMulticastAsync(message, isTest);
+            var result = await fcm.SendMulticastAsync(message, isTest);
 
             return new FirebaseMultiDevicesSendMessageResultDTO
             {
@@ -140,5 +138,5 @@ namespace Utilities
                 })
             };
         }
-    } 
+    }
 }

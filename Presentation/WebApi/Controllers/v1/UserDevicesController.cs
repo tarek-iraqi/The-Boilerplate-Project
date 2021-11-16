@@ -1,12 +1,11 @@
 ﻿using Application.Features.UserAccount.Commands;
 using Application.Features.UserAccount.Queries;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers.v1
 {
-    
+
     public class UserDevicesController : BaseApiController
     {
         private const string baseRoute = "fcm-tokens";
@@ -30,7 +29,7 @@ namespace WebApi.Controllers.v1
         /// <param name="page_size"></param>
         /// <returns></returns>
         [HttpGet(baseRoute)]
-        public async Task<IActionResult> GetUserDevices([FromQuery]int page_number, [FromQuery]int page_size)
+        public async Task<IActionResult> GetUserDevices([FromQuery] int page_number, [FromQuery] int page_size)
         {
             return Ok(await Mediator.Send(new GetUserDevices.Query(page_size, page_number)));
         }

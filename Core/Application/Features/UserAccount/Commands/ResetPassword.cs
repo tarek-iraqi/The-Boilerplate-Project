@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +66,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.email), 
+                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.email),
                                     ResourceKeys.UserNotFound) });
 
                 var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));

@@ -78,7 +78,7 @@ namespace WebApi.Controllers
             });
         }
 
-        [HttpGet("local")]   
+        [HttpGet("local")]
         public IActionResult Local()
         {
             return Ok(new

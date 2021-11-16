@@ -1,9 +1,10 @@
 ﻿using Application.Interfaces;
 using Domain.Common;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence.AuditTrail;
 using System;
 using System.Data;
@@ -11,26 +12,25 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Persistence.Context
 {
-    public class ApplicationDbContext : AuditableIdentityContext
+    public class ApplicationDbContext : AuditableIdentityContext, IDataProtectionKeyContext
     {
         private readonly IAuthenticatedUserService _authenticatedUser;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
             IAuthenticatedUserService authenticatedUser)
         : base(options)
         {
             _authenticatedUser = authenticatedUser;
         }
-        public DbSet<Product> Products { get; set; }
         public DbSet<Device> Devices { get; set; }
 
         public IDbConnection Connection => Database.GetDbConnection();
 
         public bool HasChanges => ChangeTracker.HasChanges();
+
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -101,18 +101,16 @@ namespace Persistence.Context
         {
             base.OnModelCreating(builder);
 
-            builder.HasCharSet(CharSet.Utf8Mb4, DelegationModes.ApplyToAll);
-
             foreach (var property in builder.Model.GetEntityTypes()
             .SelectMany(t => t.GetProperties())
             .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
             {
-                property.SetColumnType("decimal(18,2)");
+                property.SetColumnType("decimal(10,2)");
             }
 
             foreach (var fk in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
-                fk.DeleteBehavior = DeleteBehavior.Cascade;
+                fk.DeleteBehavior = DeleteBehavior.NoAction;
             }
 
             #region Global Query Filters

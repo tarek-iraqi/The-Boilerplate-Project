@@ -1,11 +1,7 @@
 ﻿using Domain.Entities;
+using Helpers.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.EntitiesConfiguration
 {
@@ -15,6 +11,8 @@ namespace Persistence.EntitiesConfiguration
         {
             builder.Property(p => p.Model).HasMaxLength(500);
             builder.Property(p => p.Token).HasMaxLength(2000);
+            builder.Property(p => p.UserId).HasConversion<string>().HasMaxLength(85);
+            builder.Property(p => p.DeviceLanguage).HasMaxLength(10).HasDefaultValue(KeyValueConstants.EnglishLanguage);
 
             builder.HasOne(p => p.User)
                 .WithMany(p => p.Devices)

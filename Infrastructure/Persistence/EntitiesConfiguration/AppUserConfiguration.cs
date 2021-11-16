@@ -1,11 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Persistence.EntitiesConfiguration
 {
@@ -15,7 +11,7 @@ namespace Persistence.EntitiesConfiguration
         {
             builder.ToTable(name: "Users");
 
-            builder.Property(m => m.Id).HasMaxLength(85);
+            builder.Property(m => m.Id).HasConversion<string>().HasMaxLength(85);
             builder.Property(m => m.NormalizedEmail).HasMaxLength(85);
             builder.Property(m => m.NormalizedUserName).HasMaxLength(85);
             builder.Property(m => m.PhoneNumber).HasMaxLength(85);

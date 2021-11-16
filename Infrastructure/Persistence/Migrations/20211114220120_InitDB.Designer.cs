@@ -6,32 +6,34 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Context;
 
+#nullable disable
+
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210119204252_AddDevicesTable")]
-    partial class AddDevicesTable
+    [Migration("20211114220120_InitDB")]
+    partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Domain.Entities.AppRole", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
@@ -40,18 +42,18 @@ namespace Persistence.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("Id");
 
@@ -59,7 +61,7 @@ namespace Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppRoleClaim", b =>
@@ -70,52 +72,49 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims");
+                    b.ToTable("RoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -124,14 +123,10 @@ namespace Persistence.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -141,34 +136,34 @@ namespace Persistence.Migrations
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ProfilePicture")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("Id");
 
@@ -179,7 +174,7 @@ namespace Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUserClaim", b =>
@@ -190,82 +185,84 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims");
+                    b.ToTable("UserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("ProviderKey")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserLogins");
+                    b.ToTable("UserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUserRole", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(85)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(85)");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<string>("RoleId")
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUserToken", b =>
                 {
-                    b.Property<Guid>("UserId")
+                    b.Property<string>("UserId")
                         .HasMaxLength(85)
-                        .HasColumnType("char(85)");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(85)
-                        .HasColumnType("varchar(85) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(85)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("UserTokens");
+                    b.ToTable("UserTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Device", b =>
@@ -275,30 +272,38 @@ namespace Persistence.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DeviceLanguage")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasDefaultValue("en-US");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Model")
                         .HasMaxLength(500)
-                        .HasColumnType("varchar(500) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(500)");
 
                     b.Property<string>("Token")
                         .HasMaxLength(2000)
-                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(2000)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(85)");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(85)
+                        .HasColumnType("varchar(85)");
 
                     b.HasKey("Id");
 
@@ -307,42 +312,21 @@ namespace Persistence.Migrations
                     b.ToTable("Devices");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Product", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Barcode")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<string>("FriendlyName")
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Xml")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("DataProtectionKeys");
                 });
 
             modelBuilder.Entity("Persistence.AuditTrail.Audit", b =>
@@ -352,28 +336,28 @@ namespace Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("AffectedColumns")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NewValues")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("OldValues")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PrimaryKey")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("TableName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Type")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -385,9 +369,37 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppRole", "Role")
                         .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AppUser", b =>
+                {
+                    b.OwnsOne("Domain.ValueObjects.Name", "Name", b1 =>
+                        {
+                            b1.Property<string>("AppUserId")
+                                .HasColumnType("varchar(85)");
+
+                            b1.Property<string>("First")
+                                .HasMaxLength(85)
+                                .HasColumnType("varchar(85)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("Last")
+                                .HasMaxLength(85)
+                                .HasColumnType("varchar(85)")
+                                .HasColumnName("LastName");
+
+                            b1.HasKey("AppUserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AppUserId");
+                        });
+
+                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("Domain.Entities.AppUserClaim", b =>
@@ -395,7 +407,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });
@@ -405,7 +417,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });
@@ -415,12 +427,12 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Role");
 
@@ -432,7 +444,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("Tokens")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("User");
                 });
@@ -442,7 +454,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("Devices")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");

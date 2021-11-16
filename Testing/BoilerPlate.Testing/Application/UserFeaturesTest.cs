@@ -1,10 +1,10 @@
-﻿using Xunit;
+﻿using Application.Features.UserAccount.Commands;
+using Application.Interfaces;
+using BoilerPlate.Testing._shared;
+using FluentValidation.TestHelper;
 using Moq;
 using Shouldly;
-using Application.Features.UserAccount.Commands;
-using Application.Interfaces;
-using FluentValidation.TestHelper;
-using BoilerPlate.Testing._shared;
+using Xunit;
 
 namespace BoilerPlate.Testing.Application
 {
@@ -23,7 +23,7 @@ namespace BoilerPlate.Testing.Application
         {
             Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
 
-            Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer, 
+            Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
                 phoneValidator.Object);
 
             Register.Command command = new Register.Command

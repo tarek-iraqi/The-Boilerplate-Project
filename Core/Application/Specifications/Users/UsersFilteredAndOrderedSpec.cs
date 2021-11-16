@@ -2,12 +2,7 @@
 using Domain.Entities;
 using Helpers.Classes;
 using Helpers.Constants;
-using Helpers.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Specifications.Users
 {

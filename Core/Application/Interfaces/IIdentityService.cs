@@ -1,9 +1,6 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.Interfaces
@@ -23,6 +20,6 @@ namespace Application.Interfaces
         Task<IdentityResponseDTO> ResetPassword(AppUser user, string token, string password);
         Task<string> GenerateAccessToken(AppUser user, string ipAddress);
         string GenerateRefreshToken();
-       
+
     }
 }

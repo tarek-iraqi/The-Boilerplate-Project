@@ -1,13 +1,9 @@
 ﻿using Application.Interfaces;
 using FluentEmail.Core;
-using Google.Apis.Logging;
 using Helpers.Constants;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Utilities
@@ -39,8 +35,8 @@ namespace Utilities
             try
             {
                 var res = await email.SendAsync();
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
             }
@@ -53,7 +49,7 @@ namespace Utilities
                 $"/{KeyValueConstants.EmailTemplatesPath}" +
                 $"/{_localization.CurrentLang}" +
                 $"/{templateFileName}";
-            
+
             var email = _email.To(to).Subject(subject)
                 .UsingTemplateFromFile(templateFile, model);
 
@@ -123,6 +119,6 @@ namespace Utilities
             }
 
             return Task.CompletedTask;
-        }       
+        }
     }
 }

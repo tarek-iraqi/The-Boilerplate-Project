@@ -50,7 +50,7 @@ namespace Persistence.Identity
             {
                 success = identityResult.Succeeded,
                 errors = identityResult.Succeeded ? null : identityResult.Errors
-                        .Select(a => new Tuple<string, string> (a.Code, a.Description)).ToList(),
+                        .Select(a => new Tuple<string, string>(a.Code, a.Description)).ToList(),
                 verification_token = verificationToken
             };
         }
@@ -80,13 +80,13 @@ namespace Persistence.Identity
         public async Task<AppUser> FindByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
-        }   
+        }
 
         public async Task<bool> CheckPassword(AppUser user, string password)
         {
             return await _userManager.CheckPasswordAsync(user, password);
         }
-        
+
         public async Task<IdentitySignInResponseDTO> Login(AppUser user, string password)
         {
             var result = await _signInManager.PasswordSignInAsync(user, password, false, true);
@@ -97,7 +97,7 @@ namespace Persistence.Identity
                 isLockedOut = result.IsLockedOut
             };
         }
-        
+
         public async Task<IdentityResponseDTO> VerifyUserAccount(AppUser user, string token)
         {
             var result = await _userManager.ConfirmEmailAsync(user, token);
@@ -149,7 +149,7 @@ namespace Persistence.Identity
 
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             userClaims.Add(new Claim(KeyValueConstants.UsernameClaimType, user.UserName));
-            if(!string.IsNullOrWhiteSpace(ipAddress))
+            if (!string.IsNullOrWhiteSpace(ipAddress))
                 userClaims.Add(new Claim(KeyValueConstants.IP, ipAddress));
 
             foreach (var role in roles)

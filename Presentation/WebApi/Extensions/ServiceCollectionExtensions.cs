@@ -1,30 +1,30 @@
 ﻿using Application;
+using Application.Authorization;
+using Application.Common;
 using Application.Interfaces;
 using FluentValidation.AspNetCore;
+using Helpers.Constants;
+using Helpers.Models;
+using Helpers.Resources;
+using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Helpers.Constants;
-using Helpers.Models;
-using WebApi.Services;
-using Helpers.Resources;
-using MediatR;
+using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using Application.Common;
-using Microsoft.AspNetCore.Authorization;
-using Application.Authorization;
 using WebApi.Extensions.Swagger;
+using WebApi.Services;
 
 namespace WebApi.Extensions
 {
@@ -146,7 +146,7 @@ namespace WebApi.Extensions
 
         public static void AddControllersService(this IServiceCollection services)
         {
-            services.AddControllers()            
+            services.AddControllers()
             .AddDataAnnotationsLocalization(o => o.DataAnnotationLocalizerProvider = (type, factory) =>
             {
                 return factory.Create(typeof(SharedResource));

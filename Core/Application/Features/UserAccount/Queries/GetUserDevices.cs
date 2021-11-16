@@ -4,15 +4,12 @@ using Application.Specifications.Devices;
 using Domain.Entities;
 using Helpers.Constants;
 using Helpers.Exceptions;
-using Helpers.Extensions;
 using Helpers.Interfaces;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,7 +51,7 @@ namespace Application.Features.UserAccount.Queries
 
                 return _uow.Repository<Device>()
                     .PaginatedList(new DevicesFilteredByUserSpec(Guid.Parse(_authenticatedUserService.UserId)),
-                        request.page_number, request.page_size);     
+                        request.page_number, request.page_size);
             }
         }
     }

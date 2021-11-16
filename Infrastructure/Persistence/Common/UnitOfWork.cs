@@ -41,14 +41,14 @@ namespace Persistence.Common
             return await _dbContext.SaveChangesAsync();
         }
         public void Dispose()
-        { 
+        {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool isDisposed) 
+        protected virtual void Dispose(bool isDisposed)
         {
-            
+
         }
     }
 }

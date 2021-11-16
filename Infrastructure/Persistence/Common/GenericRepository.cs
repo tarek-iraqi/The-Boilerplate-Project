@@ -65,7 +65,7 @@ namespace Persistence.Common
         public async Task<IEnumerable<T>> ListAsync()
         {
             return await _dbContext.Set<T>().ToListAsync();
-        }           
+        }
 
         public async Task<IEnumerable<T>> ListAsync(Specification<T> specification)
         {

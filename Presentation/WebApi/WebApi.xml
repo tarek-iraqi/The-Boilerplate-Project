@@ -4,49 +4,6 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.v1.ProductsController.Create(Application.Features.ProductFeatures.Commands.Create.Command)">
-            <summary>
-            Create new product
-            </summary>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductsController.GetAll">
-            <summary>
-            Gets all Products.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductsController.GetPaginatedList(System.Int32,System.Int32)">
-            <summary>
-            Get paginated product list
-            </summary>
-            <param name="page_number"></param>
-            <param name="page_size"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductsController.GetById(System.Int32)">
-            <summary>
-            Gets Product Entity by Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductsController.Delete(System.Int32)">
-            <summary>
-            Deletes Product Entity based on Id.
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
-        <member name="M:WebApi.Controllers.v1.ProductsController.Update(System.Int32,Application.Features.ProductFeatures.Commands.Update.Command)">
-            <summary>
-            Update product data
-            </summary>
-            <param name="id"></param>
-            <param name="command"></param>
-            <returns></returns>
-        </member>
         <member name="M:WebApi.Controllers.v1.UserDevicesController.AddUpdateDevice(Application.Features.UserAccount.Commands.AddUpdateUserDevice.Command)">
             <summary>
             Add / update user device

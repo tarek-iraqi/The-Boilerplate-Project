@@ -1,11 +1,9 @@
 ﻿using Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using Helpers.Constants;
 using Helpers.Exceptions;
 using Helpers.Resources;
+using System;
+using System.Collections.Generic;
 
 namespace Domain.Entities
 {

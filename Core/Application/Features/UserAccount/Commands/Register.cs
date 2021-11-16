@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +29,7 @@ namespace Application.Features.UserAccount.Commands
             public string password_confirmation { get; set; }
         }
 
-        public class CommandValidator: AbstractValidator<Command>
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator(IApplicationLocalization localizer,
                 IPhoneValidator phoneValidator)
@@ -97,9 +96,9 @@ namespace Application.Features.UserAccount.Commands
             {
                 var user = await _identityService.FindByName(request.email);
 
-                if(user != null)
+                if (user != null)
                     throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> {  new Tuple<string, string>(nameof(request.email), ResourceKeys.DuplicateEmail) });
+                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.email), ResourceKeys.DuplicateEmail) });
 
                 var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
                     : _phoneValidator.GetInternationalPhoneNumberFormat(request.mobile_number, request.country_code);

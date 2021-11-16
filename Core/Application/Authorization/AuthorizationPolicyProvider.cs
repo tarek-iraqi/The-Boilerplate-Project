@@ -19,7 +19,7 @@ namespace Application.Authorization
         {
             var policy = await base.GetPolicyAsync(policyName);
 
-            if(policy != null) return policy;
+            if (policy != null) return policy;
 
             _policies.TryGetValue(policyName, out policy);
 

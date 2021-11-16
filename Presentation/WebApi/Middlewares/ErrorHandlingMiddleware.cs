@@ -1,4 +1,6 @@
-﻿using Domain.Common;
+﻿using Helpers.Exceptions;
+using Helpers.Models;
+using Helpers.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -8,9 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Helpers.Exceptions;
-using Helpers.Models;
-using Helpers.Resources;
 
 namespace WebApi.Middlewares
 {

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Shouldly;
-using Moq;
-using Application.Interfaces;
+﻿using Shouldly;
 using Utilities;
+using Xunit;
 
 namespace BoilerPlate.Testing.Utilities
 {

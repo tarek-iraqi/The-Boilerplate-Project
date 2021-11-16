@@ -56,7 +56,7 @@ namespace Application.Features.UserAccount.Commands
                 if (user == null)
                     throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
                         new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(request.username), ResourceKeys.InvalidCredentials)});              
+                        new Tuple<string, string>(nameof(request.username), ResourceKeys.InvalidCredentials)});
 
                 if (!user.EmailConfirmed)
                     throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,

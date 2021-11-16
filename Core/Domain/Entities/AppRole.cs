@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -13,7 +10,7 @@ namespace Domain.Entities
         public AppRole()
         {
             UserRoles = new HashSet<AppUserRole>();
-            RoleClaims = new HashSet<AppRoleClaim>(); 
+            RoleClaims = new HashSet<AppRoleClaim>();
         }
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }

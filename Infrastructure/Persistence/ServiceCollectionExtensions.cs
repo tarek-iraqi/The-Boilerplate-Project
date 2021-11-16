@@ -1,14 +1,13 @@
 ﻿using Application.Interfaces;
-using Helpers.Interfaces;
-using AutoMapper;
 using Helpers.Constants;
+using Helpers.Interfaces;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Common;
 using Persistence.Context;
 using Persistence.Identity;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using System.Reflection;
 
 namespace Persistence
@@ -25,6 +24,7 @@ namespace Persistence
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddDataProtection().PersistKeysToDbContext<ApplicationDbContext>();
         }
     }
 }

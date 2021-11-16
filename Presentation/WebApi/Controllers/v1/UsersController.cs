@@ -110,7 +110,7 @@ namespace WebApi.Controllers.v1
         [HttpGet(baseRoute)]
         public async Task<IActionResult> GetUsersList([FromQuery] string name,
             [FromQuery] Dictionary<string, string> sort,
-            [FromQuery]int page_number, [FromQuery]int page_size)
+            [FromQuery] int page_number, [FromQuery] int page_size)
         {
             var result = await Mediator.Send(new UsersList.Query(name, sort.GetValueOrDefault(SortKey.by),
                 sort.GetValueOrDefault(SortKey.order), page_number, page_size));

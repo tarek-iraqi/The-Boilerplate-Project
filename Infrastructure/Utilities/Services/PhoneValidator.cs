@@ -1,13 +1,5 @@
 ﻿using Application.Interfaces;
-using Helpers.Constants;
-using Helpers.Exceptions;
-using Helpers.Resources;
 using PhoneNumbers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities
 {
@@ -20,7 +12,7 @@ namespace Utilities
 
             try
             {
-                parsedPhoneNumber = phoneNumberUtil.Parse(phone, countryCode);     
+                parsedPhoneNumber = phoneNumberUtil.Parse(phone, countryCode);
             }
             catch
             {

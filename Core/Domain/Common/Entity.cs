@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Common
 {
@@ -24,7 +22,7 @@ namespace Domain.Common
             if (GetRealType() != other.GetRealType())
                 return false;
 
-            if (Id.Equals( default(T)) || other.Id.Equals(default(T)))
+            if (Id.Equals(default(T)) || other.Id.Equals(default(T)))
                 return false;
 
             return Id.Equals(other.Id);
