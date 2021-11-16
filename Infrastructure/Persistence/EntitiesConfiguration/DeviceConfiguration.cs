@@ -12,7 +12,7 @@ namespace Persistence.EntitiesConfiguration
             builder.Property(p => p.Model).HasMaxLength(500);
             builder.Property(p => p.Token).HasMaxLength(2000);
             builder.Property(p => p.UserId).HasConversion<string>().HasMaxLength(85);
-            builder.Property(p => p.DeviceLanguage).HasMaxLength(10).HasDefaultValue(KeyValueConstants.EnglishLanguage);
+            builder.Property(p => p.DeviceLanguage).HasMaxLength(10).HasDefaultValue(KeyValueConstants.EnglishLanguageWithCulture);
 
             builder.HasOne(p => p.User)
                 .WithMany(p => p.Devices)

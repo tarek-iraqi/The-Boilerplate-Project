@@ -1,12 +1,12 @@
 ﻿using Application.Interfaces;
 using Domain.Common;
 using Domain.Entities;
+using Helpers.Extensions;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence.AuditTrail;
-using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +41,7 @@ namespace Persistence.Context
 
         private void MetaDataHandler()
         {
-            var now = DateTime.UtcNow;
+            var now = DateTimeExtensions.SystemDateTimeNow;
 
             foreach (var changedEntity in ChangeTracker.Entries())
             {

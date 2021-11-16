@@ -2,8 +2,10 @@
 {
     public static class KeyValueConstants
     {
-        public const string ArabicLanguage = "ar-SA";
-        public const string EnglishLanguage = "en-US";
+        public const string ArabicLanguageWithCulture = "ar-SA";
+        public const string EnglishLanguageWithCulture = "en-US";
+        public const string ArabicLanguage = "ar";
+        public const string EnglishLanguage = "en";
         public const string EmailTemplatesPath = "wwwroot/emailTemplates";
         public const string AllowedCrosOrigins = "AllowedCrosOrigins";
         public const string Issuer = "WebApi";

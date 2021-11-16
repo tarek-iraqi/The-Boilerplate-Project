@@ -27,7 +27,8 @@ namespace Helpers.Models
                 Next = pageNumber < totalNumberOfPages,
                 Previous = pageNumber > 1,
                 TotalPages = (int)totalNumberOfPages,
-                TotalRecords = count
+                TotalRecords = count,
+                PageIndex = pageNumber
             };
         }
     }
@@ -45,6 +46,9 @@ namespace Helpers.Models
 
         [JsonPropertyName("total")]
         public long TotalRecords { get; set; }
+
+        [JsonPropertyName("pageIndex")]
+        public int PageIndex { get; set; }
     }
 
     public class Error

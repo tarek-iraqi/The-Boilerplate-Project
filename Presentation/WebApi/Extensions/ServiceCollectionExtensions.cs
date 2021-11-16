@@ -134,12 +134,14 @@ namespace WebApi.Extensions
 
             CultureInfo[] supportedCultures = new[]
             {
+                new CultureInfo(KeyValueConstants.ArabicLanguageWithCulture),
+                new CultureInfo(KeyValueConstants.EnglishLanguageWithCulture),
                 new CultureInfo(KeyValueConstants.ArabicLanguage),
                 new CultureInfo(KeyValueConstants.EnglishLanguage)
             };
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                options.DefaultRequestCulture = new RequestCulture(KeyValueConstants.EnglishLanguage);
+                options.DefaultRequestCulture = new RequestCulture(KeyValueConstants.EnglishLanguageWithCulture);
                 options.SupportedUICultures = supportedCultures;
             });
         }
