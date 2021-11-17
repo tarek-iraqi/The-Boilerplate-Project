@@ -270,4 +270,13 @@
   <data name="DEVICE_TOKEN" xml:space="preserve">
     <value>Device token</value>
   </data>
+  <data name="NOT_VALID_FILE_SIZE" xml:space="preserve">
+    <value>File size is not valid</value>
+  </data>
+  <data name="NOT_VALID_FILE_TYPE" xml:space="preserve">
+    <value>File type is not valid</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>File</value>
+  </data>
 </root>

@@ -9,11 +9,15 @@ namespace Utilities
     {
         private readonly AppSettings _appSettings;
         private readonly Firebase_Settings _fbOptions;
+        private readonly IOptions<AmazonSettings> _amazonOptions;
+
         public ApplicationConfiguration(IOptions<AppSettings> options,
-            IOptions<Firebase_Settings> fbOptions)
+            IOptions<Firebase_Settings> fbOptions,
+            IOptions<AmazonSettings> amazonOptions)
         {
             _appSettings = options.Value;
             _fbOptions = fbOptions.Value;
+            _amazonOptions = amazonOptions;
         }
         public AppSettings GetAppSettings()
         {
@@ -33,6 +37,11 @@ namespace Utilities
         public Firebase_Settings GetFirebaseSettings()
         {
             return _fbOptions;
+        }
+
+        public AmazonSettings GetAmazonSettings()
+        {
+            return _amazonOptions.Value;
         }
     }
 }

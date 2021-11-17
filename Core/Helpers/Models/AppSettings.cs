@@ -44,4 +44,13 @@ namespace Helpers.Models
         public string auth_provider_x509_cert_url { get; set; }
         public string client_x509_cert_url { get; set; }
     }
+
+    public class AmazonSettings
+    {
+        public string AWS_REGION { get; set; }
+        public string AWS_SECRET_ACCESS_KEY { get; set; }
+        public string AWS_ACCESS_KEY_ID { get; set; }
+        public string AWS_BUCKET { get; set; }
+        public string AWS_FILE_PATH { get; set; }
+    }
 }

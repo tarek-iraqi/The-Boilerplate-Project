@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace WebApi.Controllers.v1
 {
-    [AllowAnonymous]
     public class UsersController : BaseApiController
     {
         private const string baseRoute = "users";
@@ -95,6 +94,18 @@ namespace WebApi.Controllers.v1
         {
             await Mediator.Send(command);
             return Ok();
+        }
+
+        /// <summary>
+        /// Update user profile picture
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [HttpPost(baseRoute + "/profile_picture")]
+        public async Task<IActionResult> UpdateProfilePicture([FromForm] IFormFile file)
+        {
+            var result = await Mediator.Send(new UploadProfileImage.Command(file));
+            return Ok(result);
         }
 
         /// <summary>

@@ -20,6 +20,7 @@
         public const string DbConnection = "DbConnection";
         public const string UsernameClaimType = "username";
         public const string LogsPath = "wwwroot/logs";
+        public const string UploadFolder = "Uploads";
 
         #region Email Templates
         public const string AccountVerificationEmailTemplate = "AccountVerification.cshtml";

@@ -4,10 +4,35 @@ using System.Text.Json.Serialization;
 
 namespace Helpers.Models
 {
+    public class Result
+    {
+        [JsonPropertyName("is_success")]
+        public bool IsSuccess { get; private set; }
+
+        [JsonPropertyName("message")]
+        public string Message { get; private set; }
+
+        public Result(bool isSuccess, string message = null)
+        {
+            IsSuccess = isSuccess;
+            Message = message;
+        }
+
+        public static Result Success(string message) => new Result(true, message);
+        public static Result Success() => new Result(true);
+        public static Result Fail(string message) => new Result(false, message);
+    }
     public class Result<T>
     {
         [JsonPropertyName("data")]
-        public T Data { get; set; }
+        public T Data { get; }
+
+        public Result(T data)
+        {
+            Data = data;
+        }
+
+        public static Result<T> ValueOf(T data) => new Result<T>(data);
     }
 
     public class PaginatedResult<T>

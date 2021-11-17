@@ -36,6 +36,11 @@ namespace Domain.Entities
             ProfilePicture = string.IsNullOrWhiteSpace(profilePicture) ? ProfilePicture : profilePicture;
         }
 
+        public void ChangeProfilePicture(string picture)
+        {
+            ProfilePicture = string.IsNullOrEmpty(picture) ? ProfilePicture : picture;
+        }
+
         public Name Name { get; private set; }
         public string ProfilePicture { get; private set; }
         public bool IsActive { get; private set; }

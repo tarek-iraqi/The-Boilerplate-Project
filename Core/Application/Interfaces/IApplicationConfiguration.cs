@@ -9,5 +9,6 @@ namespace Application.Interfaces
         IEnumerable<ApiClient> GetApiClients();
         JWTSettings GetJwtSettings();
         Firebase_Settings GetFirebaseSettings();
+        AmazonSettings GetAmazonSettings();
     }
 }

@@ -73,23 +73,20 @@ namespace Application.Features.UserAccount.Commands
                 var accessToken = await _identityService.GenerateAccessToken(user, request.ip_address);
                 var refreshToken = _identityService.GenerateRefreshToken();
 
-                return new Result<LoginResponseDTO>
+                return Result<LoginResponseDTO>.ValueOf(new LoginResponseDTO
                 {
-                    Data = new LoginResponseDTO
+                    user = new LoginUserDataResponseDTO
                     {
-                        user = new LoginUserDataResponseDTO
-                        {
-                            id = user.Id.ToString(),
-                            name = $"{user.Name.First} {user.Name.Last}",
-                            email = user.Email,
-                            mobile = user.PhoneNumber
-                        },
-                        access_token = accessToken,
-                        refresh_token = refreshToken,
-                        token_type = KeyValueConstants.TokenType,
-                        expires_in = _configuration.GetJwtSettings().DurationInMillisecond
-                    }
-                };
+                        id = user.Id.ToString(),
+                        name = $"{user.Name.First} {user.Name.Last}",
+                        email = user.Email,
+                        mobile = user.PhoneNumber
+                    },
+                    access_token = accessToken,
+                    refresh_token = refreshToken,
+                    token_type = KeyValueConstants.TokenType,
+                    expires_in = _configuration.GetJwtSettings().DurationInMillisecond
+                });
             }
         }
     }

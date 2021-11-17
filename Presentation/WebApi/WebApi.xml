@@ -66,6 +66,13 @@
             <param name="command"></param>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.UpdateProfilePicture(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Update user profile picture
+            </summary>
+            <param name="file"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.v1.UsersController.GetUsersList(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Int32,System.Int32)">
             <summary>
             Get paginated list of users 

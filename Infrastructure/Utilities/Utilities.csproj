@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.Core" Version="3.7.4.4" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.4.6" />
+    <PackageReference Include="FileSignatures" Version="4.2.0" />
     <PackageReference Include="FirebaseAdmin" Version="2.2.0" />
     <PackageReference Include="FirebaseDatabase.net" Version="4.0.6" />
     <PackageReference Include="FluentEmail.Core" Version="3.0.0" />

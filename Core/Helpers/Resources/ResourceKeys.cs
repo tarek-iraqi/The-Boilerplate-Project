@@ -51,5 +51,8 @@
         public const string EmailRequired = "EMAIL_REQUIRED";
         public const string DeviceModel = "DEVICE_MODEL";
         public const string DeviceToken = "DEVICE_TOKEN";
+        public const string NotValidFileSize = "NOT_VALID_FILE_SIZE";
+        public const string NotValidFileType = "NOT_VALID_FILE_TYPE";
+        public const string File = "FILE";
     }
 }
