@@ -279,4 +279,7 @@
   <data name="FILE" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="OPERATION_DONE_SUCCESSFULLY" xml:space="preserve">
+    <value>Operation done successfully</value>
+  </data>
 </root>

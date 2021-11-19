@@ -54,5 +54,6 @@
         public const string NotValidFileSize = "NOT_VALID_FILE_SIZE";
         public const string NotValidFileType = "NOT_VALID_FILE_TYPE";
         public const string File = "FILE";
+        public const string OperationDoneSuccessfully = "OPERATION_DONE_SUCCESSFULLY";
     }
 }

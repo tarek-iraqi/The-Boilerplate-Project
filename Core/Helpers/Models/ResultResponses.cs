@@ -1,9 +1,55 @@
-﻿using System;
+﻿using Helpers.Constants;
+using Helpers.Resources;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text.Json.Serialization;
 
 namespace Helpers.Models
 {
+    public class OperationResult
+    {
+        public bool IsSuccess { get; private set; }
+        public string Message { get; private set; }
+        public dynamic Data { get; private set; }
+        public OperationError[] Errors { get; private set; }
+        public HttpStatusCode HttpStatusCode { get; private set; }
+        public OperationResult(bool isSuccess, string message = ResourceKeys.OperationDoneSuccessfully)
+        {
+            IsSuccess = isSuccess;
+            Message = message;
+            HttpStatusCode = HttpStatusCode.OK;
+        }
+
+        public OperationResult(bool isSuccess, dynamic data)
+        {
+            IsSuccess = isSuccess;
+            Data = data;
+            HttpStatusCode = HttpStatusCode.OK;
+        }
+
+        public OperationResult(bool isSuccess, OperationError[] errors, HttpStatusCode httpStatusCode)
+        {
+            IsSuccess = isSuccess;
+            Errors = errors;
+            HttpStatusCode = httpStatusCode;
+        }
+
+        public static OperationResult Success(string message) => new OperationResult(true, message);
+        public static OperationResult Success() => new OperationResult(true);
+        public static OperationResult Success<T>(T data) => new OperationResult(true, data);
+        public static OperationResult Fail(OperationError[] errors,
+            HttpStatusCode httpStatusCode) => new OperationResult(false, errors, httpStatusCode);
+    }
+
+    public class OperationError
+    {
+        public string Type { get; set; }
+        public string Error { get; set; }
+        public string[] ErrorPlaceholders { get; set; }
+    }
+
+
     public class Result
     {
         [JsonPropertyName("is_success")]

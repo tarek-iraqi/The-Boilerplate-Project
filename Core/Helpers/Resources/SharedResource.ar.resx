@@ -279,4 +279,7 @@
   <data name="FILE" xml:space="preserve">
     <value>الملف</value>
   </data>
+  <data name="OPERATION_DONE_SUCCESSFULLY" xml:space="preserve">
+    <value>العملية تمت بنجاح</value>
+  </data>
 </root>
