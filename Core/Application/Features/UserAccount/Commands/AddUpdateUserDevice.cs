@@ -5,6 +5,7 @@ using FluentValidation;
 using Helpers.Constants;
 using Helpers.Exceptions;
 using Helpers.Interfaces;
+using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using System;
@@ -16,7 +17,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class AddUpdateUserDevice
     {
-        public class Command : IRequest
+        public class Command : IRequest<OperationResult>
         {
             public string model { get; set; }
             public string token { get; set; }
@@ -36,7 +37,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        private class Handler : IRequestHandler<Command>
+        private class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IUnitOfWork _uow;
             private readonly IIdentityService _identityService;
@@ -53,14 +54,13 @@ namespace Application.Features.UserAccount.Commands
                 _authenticatedUserService = authenticatedUserService;
                 _localizer = localizer;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindById(_authenticatedUserService.UserId);
 
                 if (user == null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(KeyValueConstants.GeneralError,
-                                    ResourceKeys.UserNotFound) });
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
 
                 var device = await _uow.Repository<Device>()
                     .GetBySpecAsync(new UserDeviceFilteredByModelOrTokenSpec(Guid.Parse(_authenticatedUserService.UserId),
@@ -85,7 +85,8 @@ namespace Application.Features.UserAccount.Commands
                 }
 
                 await _uow.CompleteAsync();
-                return Unit.Value;
+
+                return OperationResult.Success();
             }
         }
     }

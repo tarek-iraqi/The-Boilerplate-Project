@@ -18,7 +18,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class UploadProfileImage
     {
-        public class Command: IRequest<Result<string>>
+        public class Command: IRequest<OperationResult>
         {
             public IFormFile file { get; }
             public Command(IFormFile file)
@@ -35,7 +35,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        public class Handler : IRequestHandler<Command, Result<string>>
+        public class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IUnitOfWork _uow;
             private readonly IAuthenticatedUserService _authenticatedUserService;
@@ -50,7 +50,7 @@ namespace Application.Features.UserAccount.Commands
                 _fileValidator = fileValidator;
                 _upload = upload;
             }
-            public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _uow.Repository<AppUser>()
                     .GetByIdAsync(Guid.Parse(_authenticatedUserService.UserId));
@@ -59,16 +59,15 @@ namespace Application.Features.UserAccount.Commands
                     new[] { FileExtensions.jpeg, FileExtensions.png, FileExtensions.jpg });
 
                 if (!validationResult.IsSuccess)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.file),
-                                    validationResult.Message) });
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(nameof(request.file), validationResult.Message));
 
                 var fileName = await _upload.UploadFile(request.file, _authenticatedUserService.UserId);
 
                 user.ChangeProfilePicture(fileName);
                 await _uow.CompleteAsync();
 
-                return Result<string>.ValueOf($"{_upload.BaseUrl}/{fileName}");
+                return OperationResult.Success<string>($"{_upload.BaseUrl}/{fileName}");
             }
         }
     }

@@ -24,8 +24,7 @@ namespace WebApi.Controllers.v1
         [HttpPost(baseRoute)]
         public async Task<IActionResult> Register(Register.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -38,8 +37,7 @@ namespace WebApi.Controllers.v1
         [HttpPost(baseRoute + "/verify")]
         public async Task<IActionResult> VerifyAccount(VerifyAccount.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace WebApi.Controllers.v1
         public async Task<IActionResult> Login(Login.Command command)
         {
             command.ip_address = GenerateIPAddress();
-            return Ok(await Mediator.Send(command));
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -66,8 +64,7 @@ namespace WebApi.Controllers.v1
         [HttpPost(baseRoute + "/password/forget")]
         public async Task<IActionResult> ForgetPassword(ForgetPassword.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -80,8 +77,7 @@ namespace WebApi.Controllers.v1
         [HttpPost(baseRoute + "/password/reset")]
         public async Task<IActionResult> ResetPassword(ResetPassword.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -92,8 +88,7 @@ namespace WebApi.Controllers.v1
         [HttpPut(baseRoute)]
         public async Task<IActionResult> UpdateProfile(UpdateProfile.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -104,8 +99,7 @@ namespace WebApi.Controllers.v1
         [HttpPost(baseRoute + "/profile_picture")]
         public async Task<IActionResult> UpdateProfilePicture([FromForm] IFormFile file)
         {
-            var result = await Mediator.Send(new UploadProfileImage.Command(file));
-            return Ok(result);
+            return new JsonResult(await Mediator.Send(new UploadProfileImage.Command(file)));
         }
 
         /// <summary>
@@ -126,7 +120,7 @@ namespace WebApi.Controllers.v1
             var result = await Mediator.Send(new UsersList.Query(name, sort.GetValueOrDefault(SortKey.by),
                 sort.GetValueOrDefault(SortKey.order), page_number, page_size));
 
-            return Ok(result);
+            return new JsonResult(result);
         }
 
         private string GenerateIPAddress()

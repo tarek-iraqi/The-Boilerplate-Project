@@ -17,7 +17,7 @@ namespace Application.Features.UserAccount.Queries
 {
     public class GetUserDevices
     {
-        public class Query : IRequest<PaginatedResult<UserDeviceResponseDTO>>
+        public class Query : IRequest<OperationResult>
         {
             public int page_size { get; }
             public int page_number { get; set; }
@@ -28,7 +28,7 @@ namespace Application.Features.UserAccount.Queries
             }
         }
 
-        private class Handler : IRequestHandler<Query, PaginatedResult<UserDeviceResponseDTO>>
+        private class Handler : IRequestHandler<Query, OperationResult>
         {
             private readonly IUnitOfWork _uow;
             private readonly IIdentityService _identityService;
@@ -40,18 +40,19 @@ namespace Application.Features.UserAccount.Queries
                 _identityService = identityService;
                 _authenticatedUserService = authenticatedUserService;
             }
-            public async Task<PaginatedResult<UserDeviceResponseDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindById(_authenticatedUserService.UserId);
 
                 if (user == null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(KeyValueConstants.GeneralError,
-                                    ResourceKeys.UserNotFound) });
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
 
-                return _uow.Repository<Device>()
+                var result =  _uow.Repository<Device>()
                     .PaginatedList(new DevicesFilteredByUserSpec(Guid.Parse(_authenticatedUserService.UserId)),
                         request.page_number, request.page_size);
+
+                return OperationResult.Success(result);
             }
         }
     }

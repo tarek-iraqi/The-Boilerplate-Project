@@ -24,6 +24,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi.Extensions.Swagger;
+using WebApi.Filters;
 using WebApi.Services;
 
 namespace WebApi.Extensions
@@ -37,6 +38,7 @@ namespace WebApi.Extensions
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PipelineValidationBehavior<,>));
             services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationRequirementHandler>();
+            services.AddScoped<ApiResultFilterAttribute>();
         }
 
         public static void AddSwaggerService(this IServiceCollection services, IConfiguration configuration)

@@ -11,7 +11,7 @@ namespace Application.Features.UserAccount.Queries
 {
     public class UsersList
     {
-        public class Query : IRequest<PaginatedResult<UsersListResponseDTO>>
+        public class Query : IRequest<OperationResult>
         {
             public string name { get; }
             public string sort_by { get; }
@@ -29,7 +29,7 @@ namespace Application.Features.UserAccount.Queries
             }
         }
 
-        private class Handler : IRequestHandler<Query, PaginatedResult<UsersListResponseDTO>>
+        private class Handler : IRequestHandler<Query, OperationResult>
         {
             private readonly IUnitOfWork _uow;
 
@@ -37,13 +37,13 @@ namespace Application.Features.UserAccount.Queries
             {
                 _uow = uow;
             }
-            public Task<PaginatedResult<UsersListResponseDTO>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<OperationResult> Handle(Query request, CancellationToken cancellationToken)
             {
                 var result = _uow.Repository<AppUser>()
                     .PaginatedList(new UsersFilteredAndOrderedSpec(request.name, request.sort_by, request.sort_order),
                             request.page_number, request.page_size);
 
-                return Task.FromResult(result);
+                return Task.FromResult(OperationResult.Success(result));
             }
         }
     }

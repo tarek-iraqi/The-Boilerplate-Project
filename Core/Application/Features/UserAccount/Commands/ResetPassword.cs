@@ -2,11 +2,13 @@
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Exceptions;
+using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +17,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class ResetPassword
     {
-        public class Command : IRequest
+        public class Command : IRequest<OperationResult>
         {
             public string email { get; set; }
             public string token { get; set; }
@@ -52,7 +54,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        private class Handler : IRequestHandler<Command>
+        private class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IIdentityService _identityService;
 
@@ -60,23 +62,22 @@ namespace Application.Features.UserAccount.Commands
             {
                 _identityService = identityService;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindByEmail(request.email);
 
                 if (user == null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.email),
-                                    ResourceKeys.UserNotFound) });
-
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(nameof(request.email), ResourceKeys.UserNotFound));
+                   
                 var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));
 
                 var result = await _identityService.ResetPassword(user, code, request.password);
 
-                if (!result.success)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute, result.errors);
-
-                return Unit.Value;
+                return result.success
+                   ? OperationResult.Success()
+                   : OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                       result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
             }
         }
     }

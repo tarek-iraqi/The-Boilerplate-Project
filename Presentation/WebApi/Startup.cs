@@ -82,7 +82,10 @@ namespace WebApi
 
             app.UseAuthorization();
 
-            app.UseMiddleware<ApiKeyMiddleware>();
+            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+            {
+                appBuilder.UseMiddleware<ApiKeyMiddleware>();
+            });
 
             app.UseEndpoints(endpoints =>
             {

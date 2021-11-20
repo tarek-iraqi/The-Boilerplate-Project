@@ -16,7 +16,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class Login
     {
-        public class Command : IRequest<Result<LoginResponseDTO>>
+        public class Command : IRequest<OperationResult>
         {
             public string username { get; set; }
             public string password { get; set; }
@@ -39,7 +39,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        public class Handler : IRequestHandler<Command, Result<LoginResponseDTO>>
+        public class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IIdentityService _identityService;
             private readonly IApplicationConfiguration _configuration;
@@ -49,31 +49,28 @@ namespace Application.Features.UserAccount.Commands
                 _identityService = identityService;
                 _configuration = configuration;
             }
-            public async Task<Result<LoginResponseDTO>> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindByName(request.username);
 
                 if (user == null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(request.username), ResourceKeys.InvalidCredentials)});
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                            OperationError.Add(nameof(request.username), ResourceKeys.InvalidCredentials));
 
                 if (!user.EmailConfirmed)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(request.username), ResourceKeys.EmailNotConfirmed)});
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                            OperationError.Add(nameof(request.username), ResourceKeys.EmailNotConfirmed));
 
                 var result = await _identityService.CheckPassword(user, request.password);
 
                 if (!result)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(request.username), ResourceKeys.InvalidCredentials)});
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                            OperationError.Add(nameof(request.username), ResourceKeys.InvalidCredentials));
 
                 var accessToken = await _identityService.GenerateAccessToken(user, request.ip_address);
                 var refreshToken = _identityService.GenerateRefreshToken();
 
-                return Result<LoginResponseDTO>.ValueOf(new LoginResponseDTO
+                var resultData = new LoginResponseDTO
                 {
                     user = new LoginUserDataResponseDTO
                     {
@@ -86,7 +83,9 @@ namespace Application.Features.UserAccount.Commands
                     refresh_token = refreshToken,
                     token_type = KeyValueConstants.TokenType,
                     expires_in = _configuration.GetJwtSettings().DurationInMillisecond
-                });
+                };
+
+                return OperationResult.Success(resultData);
             }
         }
     }

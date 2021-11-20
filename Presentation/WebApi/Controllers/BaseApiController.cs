@@ -10,7 +10,7 @@ namespace WebApi.Controllers
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/v{version:apiVersion}")]
-    [ErrorResultHandle]
+    [ServiceFilter(typeof(ApiResultFilterAttribute))]
     public abstract class BaseApiController : ControllerBase
     {
         private IMediator _mediator;

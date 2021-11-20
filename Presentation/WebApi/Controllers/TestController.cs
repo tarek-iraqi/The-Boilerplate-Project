@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace WebApi.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
+    [Route("test")]
     [AllowAnonymous]
     public class TestController : BaseApiController
     {
@@ -105,7 +106,7 @@ namespace WebApi.Controllers
             return new JsonResult(result);
         }
 
-        [HttpGet("test/settings")]
+        [HttpGet("settings")]
         [AllowAnonymous]
         public ActionResult TestSettings()
         {

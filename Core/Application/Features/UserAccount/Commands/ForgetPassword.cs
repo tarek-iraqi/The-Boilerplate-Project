@@ -2,6 +2,7 @@
 using Application.Interfaces;
 using FluentValidation;
 using Helpers.Constants;
+using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
@@ -13,7 +14,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class ForgetPassword
     {
-        public class Command : IRequest
+        public class Command : IRequest<OperationResult>
         {
             public string email { get; set; }
         }
@@ -28,7 +29,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        private class Handler : IRequestHandler<Command>
+        private class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IIdentityService _identityService;
             private readonly IEmailSender _emailSender;
@@ -40,27 +41,27 @@ namespace Application.Features.UserAccount.Commands
                 _emailSender = emailSender;
                 _localizer = localizer;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindByEmail(request.email);
 
-                if (user == null)
-                    return Unit.Value;
-
-                var token = await _identityService.GenerateForgetPasswordToken(user);
-
-                var emailModel = new ResetPasswordEmailDTO
+                if (user != null)
                 {
-                    name = $"{user.Name.First} {user.Name.Last}",
-                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token))
-                };
+                    var token = await _identityService.GenerateForgetPasswordToken(user);
 
-                await _emailSender.SendSingleEmail(user.Email,
-                    _localizer.Get(ResourceKeys.ResetPassword),
-                    KeyValueConstants.ResetPasswordEmailTemplate,
-                    emailModel);
+                    var emailModel = new ResetPasswordEmailDTO
+                    {
+                        name = $"{user.Name.First} {user.Name.Last}",
+                        token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token))
+                    };
 
-                return Unit.Value;
+                    await _emailSender.SendSingleEmail(user.Email,
+                        _localizer.Get(ResourceKeys.ResetPassword),
+                        KeyValueConstants.ResetPasswordEmailTemplate,
+                        emailModel);
+                }
+
+                return OperationResult.Success();
             }
         }
     }

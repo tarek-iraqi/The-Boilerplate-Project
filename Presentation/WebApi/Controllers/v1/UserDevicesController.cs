@@ -18,8 +18,7 @@ namespace WebApi.Controllers.v1
         [HttpPut(baseRoute)]
         public async Task<IActionResult> AddUpdateDevice(AddUpdateUserDevice.Command command)
         {
-            await Mediator.Send(command);
-            return Ok();
+            return new JsonResult(await Mediator.Send(command));
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace WebApi.Controllers.v1
         [HttpGet(baseRoute)]
         public async Task<IActionResult> GetUserDevices([FromQuery] int page_number, [FromQuery] int page_size)
         {
-            return Ok(await Mediator.Send(new GetUserDevices.Query(page_size, page_number)));
+            return new JsonResult(await Mediator.Send(new GetUserDevices.Query(page_size, page_number)));
         }
     }
 }

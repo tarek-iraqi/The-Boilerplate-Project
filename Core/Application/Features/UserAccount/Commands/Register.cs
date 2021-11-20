@@ -5,10 +5,11 @@ using Domain.ValueObjects;
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Exceptions;
+using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class Register
     {
-        public class Command : IRequest
+        public class Command : IRequest<OperationResult>
         {
             public string first_name { get; set; }
             public string last_name { get; set; }
@@ -77,7 +78,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IIdentityService _identityService;
             private readonly IEmailSender _emailSender;
@@ -92,13 +93,13 @@ namespace Application.Features.UserAccount.Commands
                 _localizer = localizer;
                 _phoneValidator = phoneValidator;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindByName(request.email);
 
                 if (user != null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(nameof(request.email), ResourceKeys.DuplicateEmail) });
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(nameof(request.email), ResourceKeys.DuplicateEmail));
 
                 var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
                     : _phoneValidator.GetInternationalPhoneNumberFormat(request.mobile_number, request.country_code);
@@ -113,7 +114,8 @@ namespace Application.Features.UserAccount.Commands
                 ), request.password);
 
                 if (!result.success)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute, result.errors);
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute, 
+                        result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
 
                 var emailModel = new AccountVerificationEmailDTO
                 {
@@ -126,7 +128,7 @@ namespace Application.Features.UserAccount.Commands
                     KeyValueConstants.AccountVerificationEmailTemplate,
                     emailModel);
 
-                return Unit.Value;
+                return OperationResult.Success();
             }
         }
     }

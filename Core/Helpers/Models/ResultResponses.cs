@@ -11,7 +11,7 @@ namespace Helpers.Models
     {
         public bool IsSuccess { get; private set; }
         public string Message { get; private set; }
-        public dynamic Data { get; private set; }
+        public object Data { get; private set; }
         public OperationError[] Errors { get; private set; }
         public HttpStatusCode HttpStatusCode { get; private set; }
         public OperationResult(bool isSuccess, string message = ResourceKeys.OperationDoneSuccessfully)
@@ -21,14 +21,14 @@ namespace Helpers.Models
             HttpStatusCode = HttpStatusCode.OK;
         }
 
-        public OperationResult(bool isSuccess, dynamic data)
+        public OperationResult(bool isSuccess, object data)
         {
             IsSuccess = isSuccess;
             Data = data;
             HttpStatusCode = HttpStatusCode.OK;
         }
 
-        public OperationResult(bool isSuccess, OperationError[] errors, HttpStatusCode httpStatusCode)
+        public OperationResult(bool isSuccess, HttpStatusCode httpStatusCode, params OperationError[] errors)
         {
             IsSuccess = isSuccess;
             Errors = errors;
@@ -38,15 +38,24 @@ namespace Helpers.Models
         public static OperationResult Success(string message) => new OperationResult(true, message);
         public static OperationResult Success() => new OperationResult(true);
         public static OperationResult Success<T>(T data) => new OperationResult(true, data);
-        public static OperationResult Fail(OperationError[] errors,
-            HttpStatusCode httpStatusCode) => new OperationResult(false, errors, httpStatusCode);
+        public static OperationResult Fail(HttpStatusCode httpStatusCode,
+            params OperationError[] errors) => new OperationResult(false, httpStatusCode, errors);
     }
 
     public class OperationError
     {
-        public string Type { get; set; }
-        public string Error { get; set; }
-        public string[] ErrorPlaceholders { get; set; }
+        public string Type { get; private set; }
+        public string Error { get; private set; }
+        public string[] ErrorPlaceholders { get; private set; }
+
+        private OperationError(string type, string error, string[] errorPlaceholders = null)
+        {
+            Type = type;
+            Error = error;
+            ErrorPlaceholders = errorPlaceholders;
+        }
+        public static OperationError Add(string type, string error, string[] errorPlaceholders = null) =>
+            new OperationError(type, error, errorPlaceholders);
     }
 
 
@@ -68,6 +77,19 @@ namespace Helpers.Models
         public static Result Success() => new Result(true);
         public static Result Fail(string message) => new Result(false, message);
     }
+
+    public class ResultWithData
+    {
+        [JsonPropertyName("data")]
+        public object Data { get; private set; }
+
+        public ResultWithData(object data)
+        {
+            Data = data;
+        }
+        public static ResultWithData Success(object data) => new ResultWithData(data);
+    }
+
     public class Result<T>
     {
         [JsonPropertyName("data")]

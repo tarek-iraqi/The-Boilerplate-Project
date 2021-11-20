@@ -25,7 +25,9 @@ namespace Utilities
             return _localizer.GetAllStrings().ToDictionary(x => x.Name, x => x.Value);
         }
 
-        public string CurrentLang => Thread.CurrentThread.CurrentUICulture.Parent.Name;
+        public string CurrentLang => string.IsNullOrWhiteSpace(Thread.CurrentThread.CurrentUICulture.Parent.Name) ?
+           Thread.CurrentThread.CurrentUICulture.Name : Thread.CurrentThread.CurrentUICulture.Parent.Name;
+
 
         public string CurrentLangWithCountry => Thread.CurrentThread.CurrentUICulture.Name;
     }

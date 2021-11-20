@@ -3,10 +3,12 @@ using Domain.ValueObjects;
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Exceptions;
+using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class UpdateProfile
     {
-        public class Command : IRequest
+        public class Command : IRequest<OperationResult>
         {
             public string first_name { get; set; }
             public string last_name { get; set; }
@@ -56,7 +58,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        private class Handler : IRequestHandler<Command>
+        private class Handler : IRequestHandler<Command, OperationResult>
         {
             private readonly IIdentityService _identityService;
             private readonly IAuthenticatedUserService _authenticatedUserService;
@@ -69,14 +71,13 @@ namespace Application.Features.UserAccount.Commands
                 _authenticatedUserService = authenticatedUserService;
                 _phoneValidator = phoneValidator;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
                 var user = await _identityService.FindById(_authenticatedUserService.UserId);
 
                 if (user == null)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(KeyValueConstants.GeneralError,
-                                    ResourceKeys.UserNotFound) });
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
 
                 var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
                     : _phoneValidator.GetInternationalPhoneNumberFormat(request.mobile_number, request.country_code);
@@ -87,10 +88,10 @@ namespace Application.Features.UserAccount.Commands
 
                 var result = await _identityService.Update(user);
 
-                if (!result.success)
-                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute, result.errors);
-
-                return Unit.Value;
+                return result.success
+                   ? OperationResult.Success()
+                   : OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                       result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
             }
         }
     }
