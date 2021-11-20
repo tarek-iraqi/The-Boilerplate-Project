@@ -37,13 +37,13 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.first_name).NotEmpty()
                     .MaximumLength(100)
-                    .WithName(x => localizer.Get(ResourceKeys.FirstName));
+                    .WithName(x => localizer.Get(LocalizationKeys.FirstName));
 
                 RuleFor(p => p.last_name).NotEmpty()
-                    .MaximumLength(100).WithName(localizer.Get(ResourceKeys.LastName));
+                    .MaximumLength(100).WithName(localizer.Get(LocalizationKeys.LastName));
 
                 RuleFor(p => p.email).NotEmpty()
-                    .EmailAddress().WithName(localizer.Get(ResourceKeys.Email));
+                    .EmailAddress().WithName(localizer.Get(LocalizationKeys.Email));
 
                 RuleFor(x => x).Custom((x, context) =>
                 {
@@ -52,27 +52,27 @@ namespace Application.Features.UserAccount.Commands
                         !phoneValidator.IsValidPhoneNumber(x.mobile_number, x.country_code))
                     {
                         context.AddFailure(nameof(x.mobile_number),
-                            localizer.Get(ResourceKeys.InvalidMobileNumber));
+                            localizer.Get(LocalizationKeys.InvalidMobileNumber));
                     }
                 });
 
                 RuleFor(p => p.country_code)
                     .NotEmpty()
                     .When(p => !string.IsNullOrWhiteSpace(p.mobile_number))
-                    .WithName(localizer.Get(ResourceKeys.CountryCode));
+                    .WithName(localizer.Get(LocalizationKeys.CountryCode));
 
                 RuleFor(p => p.password).NotEmpty()
-                    .MinimumLength(8).WithName(localizer.Get(ResourceKeys.Password));
+                    .MinimumLength(8).WithName(localizer.Get(LocalizationKeys.Password));
 
                 RuleFor(p => p.password_confirmation).NotEmpty()
-                    .WithName(localizer.Get(ResourceKeys.ConfirmPassword));
+                    .WithName(localizer.Get(LocalizationKeys.ConfirmPassword));
 
                 RuleFor(x => x).Custom((x, context) =>
                 {
                     if (x.password != x.password_confirmation)
                     {
                         context.AddFailure(nameof(x.password_confirmation),
-                            localizer.Get(ResourceKeys.PasswordsNotMatch));
+                            localizer.Get(LocalizationKeys.PasswordsNotMatch));
                     }
                 });
             }
@@ -99,7 +99,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user != null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                        OperationError.Add(nameof(request.email), ResourceKeys.DuplicateEmail));
+                        OperationError.Add(nameof(request.email), LocalizationKeys.DuplicateEmail));
 
                 var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
                     : _phoneValidator.GetInternationalPhoneNumberFormat(request.mobile_number, request.country_code);
@@ -124,7 +124,7 @@ namespace Application.Features.UserAccount.Commands
                 };
 
                 await _emailSender.SendSingleEmail(request.email,
-                    _localizer.Get(ResourceKeys.AccountConfirmation),
+                    _localizer.Get(LocalizationKeys.AccountConfirmation),
                     KeyValueConstants.AccountVerificationEmailTemplate,
                     emailModel);
 

@@ -31,7 +31,7 @@ namespace Application.Features.UserAccount.Commands
         {
             public CommandValidator(IApplicationLocalization localizer)
             {
-                RuleFor(p => p.file).NotEmpty().WithName(localizer.Get(ResourceKeys.File));
+                RuleFor(p => p.file).NotEmpty().WithName(localizer.Get(LocalizationKeys.File));
             }
         }
 

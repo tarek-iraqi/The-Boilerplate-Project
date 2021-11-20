@@ -1,12 +1,14 @@
 ﻿using Helpers.Classes;
 using Helpers.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Helpers.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
+        IQueryable<T> Entity();
         void Add(T entity);
         void AddRange(IEnumerable<T> entities);
         void Update(T entity);

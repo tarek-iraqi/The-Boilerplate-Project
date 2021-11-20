@@ -14,7 +14,7 @@ namespace Helpers.Models
         public object Data { get; private set; }
         public OperationError[] Errors { get; private set; }
         public HttpStatusCode HttpStatusCode { get; private set; }
-        public OperationResult(bool isSuccess, string message = ResourceKeys.OperationDoneSuccessfully)
+        public OperationResult(bool isSuccess, string message = LocalizationKeys.OperationDoneSuccessfully)
         {
             IsSuccess = isSuccess;
             Message = message;

@@ -10,7 +10,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(email),
-                Description = ResourceKeys.DuplicateEmail
+                Description = LocalizationKeys.DuplicateEmail
             };
         }
 
@@ -19,7 +19,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(userName),
-                Description = ResourceKeys.DuplicateUserName
+                Description = LocalizationKeys.DuplicateUserName
             };
         }
 
@@ -28,7 +28,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(email),
-                Description = ResourceKeys.InvalidEmail
+                Description = LocalizationKeys.InvalidEmail
             };
         }
 
@@ -37,7 +37,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(role),
-                Description = ResourceKeys.DuplicateRoleName
+                Description = LocalizationKeys.DuplicateRoleName
             };
         }
 
@@ -46,7 +46,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(role),
-                Description = ResourceKeys.InvalidRoleName
+                Description = LocalizationKeys.InvalidRoleName
             };
         }
 
@@ -55,7 +55,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "token",
-                Description = ResourceKeys.InvalidToken
+                Description = LocalizationKeys.InvalidToken
             };
         }
 
@@ -64,7 +64,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(userName),
-                Description = ResourceKeys.InvalidUserName
+                Description = LocalizationKeys.InvalidUserName
             };
         }
 
@@ -73,7 +73,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "login",
-                Description = ResourceKeys.LoginAlreadyAssociated
+                Description = LocalizationKeys.LoginAlreadyAssociated
             };
         }
 
@@ -82,7 +82,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordMismatch
+                Description = LocalizationKeys.PasswordMismatch
             };
         }
 
@@ -91,7 +91,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordRequiresDigit
+                Description = LocalizationKeys.PasswordRequiresDigit
             };
         }
 
@@ -100,7 +100,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordRequiresLower
+                Description = LocalizationKeys.PasswordRequiresLower
             };
         }
 
@@ -109,7 +109,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordRequiresNonAlphanumeric
+                Description = LocalizationKeys.PasswordRequiresNonAlphanumeric
             };
         }
 
@@ -118,7 +118,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordRequiresUniqueChars
+                Description = LocalizationKeys.PasswordRequiresUniqueChars
             };
         }
 
@@ -127,7 +127,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordRequiresUpper
+                Description = LocalizationKeys.PasswordRequiresUpper
             };
         }
 
@@ -136,7 +136,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.PasswordTooShort
+                Description = LocalizationKeys.PasswordTooShort
             };
         }
 
@@ -145,7 +145,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "password",
-                Description = ResourceKeys.UserAlreadyHasPassword
+                Description = LocalizationKeys.UserAlreadyHasPassword
             };
         }
 
@@ -154,7 +154,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(role),
-                Description = ResourceKeys.UserAlreadyInRole
+                Description = LocalizationKeys.UserAlreadyInRole
             };
         }
 
@@ -163,7 +163,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = nameof(role),
-                Description = ResourceKeys.UserNotInRole
+                Description = LocalizationKeys.UserNotInRole
             };
         }
 
@@ -172,7 +172,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "user",
-                Description = ResourceKeys.UserLockoutNotEnabled
+                Description = LocalizationKeys.UserLockoutNotEnabled
             };
         }
 
@@ -181,7 +181,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "recovery_code",
-                Description = ResourceKeys.RecoveryCodeRedemptionFailed
+                Description = LocalizationKeys.RecoveryCodeRedemptionFailed
             };
         }
 
@@ -190,7 +190,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "concurrency",
-                Description = ResourceKeys.ConcurrencyFailure
+                Description = LocalizationKeys.ConcurrencyFailure
             };
         }
 
@@ -199,7 +199,7 @@ namespace Utilities.Services
             return new IdentityError
             {
                 Code = "error",
-                Description = ResourceKeys.DefaultIdentityError
+                Description = LocalizationKeys.DefaultIdentityError
             };
         }
     }

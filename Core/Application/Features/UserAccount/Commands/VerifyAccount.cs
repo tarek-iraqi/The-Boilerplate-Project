@@ -29,11 +29,11 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.email)
                     .NotEmpty().EmailAddress()
-                    .WithName(p => localizer.Get(ResourceKeys.Email));
+                    .WithName(p => localizer.Get(LocalizationKeys.Email));
 
                 RuleFor(p => p.token)
                    .NotEmpty()
-                   .WithName(p => localizer.Get(ResourceKeys.Token));
+                   .WithName(p => localizer.Get(LocalizationKeys.Token));
             }
         }
 
@@ -51,7 +51,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute, 
-                        OperationError.Add(nameof(request.email), ResourceKeys.UserNotFound));
+                        OperationError.Add(nameof(request.email), LocalizationKeys.UserNotFound));
 
                 var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));
 

@@ -132,6 +132,7 @@ namespace WebApi.Extensions
 
         public static void AddLocalizationService(this IServiceCollection services)
         {
+            // services.AddJsonLocalization();
             services.AddLocalization();
 
             CultureInfo[] supportedCultures = new[]

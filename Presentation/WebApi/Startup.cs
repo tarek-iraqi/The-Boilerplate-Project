@@ -29,6 +29,7 @@ namespace WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalizationService();
             services.AddControllersService();
             services.AddSwaggerService(_configuration);
             services.AddVersioningService();

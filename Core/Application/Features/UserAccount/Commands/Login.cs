@@ -31,11 +31,11 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.username)
                     .NotEmpty().EmailAddress()
-                    .WithName(p => localizer.Get(ResourceKeys.Username));
+                    .WithName(p => localizer.Get(LocalizationKeys.Username));
 
                 RuleFor(p => p.password)
                     .NotEmpty()
-                    .WithName(p => localizer.Get(ResourceKeys.Password));
+                    .WithName(p => localizer.Get(LocalizationKeys.Password));
             }
         }
 
@@ -55,17 +55,17 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                            OperationError.Add(nameof(request.username), ResourceKeys.InvalidCredentials));
+                            OperationError.Add(nameof(request.username), LocalizationKeys.InvalidCredentials));
 
                 if (!user.EmailConfirmed)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                            OperationError.Add(nameof(request.username), ResourceKeys.EmailNotConfirmed));
+                            OperationError.Add(nameof(request.username), LocalizationKeys.EmailNotConfirmed));
 
                 var result = await _identityService.CheckPassword(user, request.password);
 
                 if (!result)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                            OperationError.Add(nameof(request.username), ResourceKeys.InvalidCredentials));
+                            OperationError.Add(nameof(request.username), LocalizationKeys.InvalidCredentials));
 
                 var accessToken = await _identityService.GenerateAccessToken(user, request.ip_address);
                 var refreshToken = _identityService.GenerateRefreshToken();

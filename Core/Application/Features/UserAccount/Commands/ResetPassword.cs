@@ -31,24 +31,24 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.email)
                     .NotEmpty().EmailAddress()
-                    .WithName(p => localizer.Get(ResourceKeys.Email));
+                    .WithName(p => localizer.Get(LocalizationKeys.Email));
 
                 RuleFor(p => p.email)
                     .NotEmpty()
-                    .WithName(p => localizer.Get(ResourceKeys.Token));
+                    .WithName(p => localizer.Get(LocalizationKeys.Token));
 
                 RuleFor(p => p.password).NotEmpty()
-                    .MinimumLength(8).WithName(localizer.Get(ResourceKeys.Password));
+                    .MinimumLength(8).WithName(localizer.Get(LocalizationKeys.Password));
 
                 RuleFor(p => p.password_confirmation).NotEmpty()
-                    .WithName(localizer.Get(ResourceKeys.ConfirmPassword));
+                    .WithName(localizer.Get(LocalizationKeys.ConfirmPassword));
 
                 RuleFor(x => x).Custom((x, context) =>
                 {
                     if (x.password != x.password_confirmation)
                     {
                         context.AddFailure(nameof(x.password_confirmation),
-                            localizer.Get(ResourceKeys.PasswordsNotMatch));
+                            localizer.Get(LocalizationKeys.PasswordsNotMatch));
                     }
                 });
             }
@@ -68,7 +68,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                        OperationError.Add(nameof(request.email), ResourceKeys.UserNotFound));
+                        OperationError.Add(nameof(request.email), LocalizationKeys.UserNotFound));
                    
                 var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));
 

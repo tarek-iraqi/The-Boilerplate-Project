@@ -25,7 +25,7 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.email)
                     .NotEmpty().EmailAddress()
-                    .WithName(p => localizer.Get(ResourceKeys.Email));
+                    .WithName(p => localizer.Get(LocalizationKeys.Email));
             }
         }
 
@@ -56,7 +56,7 @@ namespace Application.Features.UserAccount.Commands
                     };
 
                     await _emailSender.SendSingleEmail(user.Email,
-                        _localizer.Get(ResourceKeys.ResetPassword),
+                        _localizer.Get(LocalizationKeys.ResetPassword),
                         KeyValueConstants.ResetPasswordEmailTemplate,
                         emailModel);
                 }

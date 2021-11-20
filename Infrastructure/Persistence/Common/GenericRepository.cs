@@ -22,6 +22,8 @@ namespace Persistence.Common
             specificationEvaluator = new SpecificationEvaluator<T>();
         }
 
+        public IQueryable<T> Entity() => _dbContext.Set<T>();
+
         public void Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);

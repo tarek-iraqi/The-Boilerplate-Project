@@ -46,7 +46,7 @@ namespace Application.Features.UserAccount.Queries
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
+                        OperationError.Add(KeyValueConstants.GeneralError, LocalizationKeys.UserNotFound));
 
                 var result =  _uow.Repository<Device>()
                     .PaginatedList(new DevicesFilteredByUserSpec(Guid.Parse(_authenticatedUserService.UserId)),

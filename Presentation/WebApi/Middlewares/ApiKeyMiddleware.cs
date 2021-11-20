@@ -28,7 +28,7 @@ namespace WebApi.Middlewares
                 if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
                 {
                     throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.MissingApiKey) });
+                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, LocalizationKeys.MissingApiKey) });
                 }
 
                 var appConfig = context.RequestServices.GetRequiredService<IApplicationConfiguration>();
@@ -38,7 +38,7 @@ namespace WebApi.Middlewares
                 if (!apiClients.Any(a => a.ApiKey.Equals(extractedApiKey)))
                 {
                     throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
-                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, ResourceKeys.InvalidApiKey) });
+                        new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, LocalizationKeys.InvalidApiKey) });
                 }
             }
 

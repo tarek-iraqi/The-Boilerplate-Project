@@ -26,12 +26,12 @@ namespace Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(firstname))
                 throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
                                        new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(firstname), ResourceKeys.FirstNameRequired)});
+                        new Tuple<string, string>(nameof(firstname), LocalizationKeys.FirstNameRequired)});
 
             if (string.IsNullOrWhiteSpace(lastname))
                 throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
                                        new List<Tuple<string, string>> {
-                        new Tuple<string, string>(nameof(firstname), ResourceKeys.FirstNameRequired)});
+                        new Tuple<string, string>(nameof(firstname), LocalizationKeys.FirstNameRequired)});
 
             firstname = firstname.Trim();
             lastname = lastname.Trim();

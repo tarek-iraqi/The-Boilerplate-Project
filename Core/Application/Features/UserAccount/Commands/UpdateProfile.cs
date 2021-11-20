@@ -32,13 +32,13 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.first_name).NotEmpty()
                     .MaximumLength(100)
-                    .WithName(x => localizer.Get(ResourceKeys.FirstName));
+                    .WithName(x => localizer.Get(LocalizationKeys.FirstName));
 
                 RuleFor(p => p.last_name).NotEmpty()
-                    .MaximumLength(100).WithName(localizer.Get(ResourceKeys.LastName));
+                    .MaximumLength(100).WithName(localizer.Get(LocalizationKeys.LastName));
 
                 RuleFor(p => p.email).NotEmpty()
-                    .EmailAddress().WithName(localizer.Get(ResourceKeys.Email));
+                    .EmailAddress().WithName(localizer.Get(LocalizationKeys.Email));
 
                 RuleFor(x => x).Custom((x, context) =>
                 {
@@ -47,14 +47,14 @@ namespace Application.Features.UserAccount.Commands
                         !phoneValidator.IsValidPhoneNumber(x.mobile_number, x.country_code))
                     {
                         context.AddFailure(nameof(x.mobile_number),
-                            localizer.Get(ResourceKeys.InvalidMobileNumber));
+                            localizer.Get(LocalizationKeys.InvalidMobileNumber));
                     }
                 });
 
                 RuleFor(p => p.country_code)
                     .NotEmpty()
                     .When(p => !string.IsNullOrWhiteSpace(p.mobile_number))
-                    .WithName(localizer.Get(ResourceKeys.CountryCode));
+                    .WithName(localizer.Get(LocalizationKeys.CountryCode));
             }
         }
 
@@ -77,7 +77,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
+                        OperationError.Add(KeyValueConstants.GeneralError, LocalizationKeys.UserNotFound));
 
                 var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
                     : _phoneValidator.GetInternationalPhoneNumberFormat(request.mobile_number, request.country_code);

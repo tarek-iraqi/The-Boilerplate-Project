@@ -1,4 +1,5 @@
-﻿namespace Helpers.Resources
+﻿
+namespace Helpers.Resources
 {
     public class SharedResource
     {

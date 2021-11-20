@@ -29,11 +29,11 @@ namespace Application.Features.UserAccount.Commands
             {
                 RuleFor(p => p.model)
                     .NotEmpty()
-                    .WithName(p => localizer.Get(ResourceKeys.DeviceModel));
+                    .WithName(p => localizer.Get(LocalizationKeys.DeviceModel));
 
                 RuleFor(p => p.token)
                     .NotEmpty()
-                    .WithName(p => localizer.Get(ResourceKeys.DeviceToken));
+                    .WithName(p => localizer.Get(LocalizationKeys.DeviceToken));
             }
         }
 
@@ -60,7 +60,7 @@ namespace Application.Features.UserAccount.Commands
 
                 if (user == null)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
-                        OperationError.Add(KeyValueConstants.GeneralError, ResourceKeys.UserNotFound));
+                        OperationError.Add(KeyValueConstants.GeneralError, LocalizationKeys.UserNotFound));
 
                 var device = await _uow.Repository<Device>()
                     .GetBySpecAsync(new UserDeviceFilteredByModelOrTokenSpec(Guid.Parse(_authenticatedUserService.UserId),

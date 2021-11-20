@@ -31,12 +31,12 @@ namespace Utilities.Services
         {
             var isValidFileLength = file.Length <= fileSizeInMega * 1024 * 1024;
 
-            if (!isValidFileLength) return Result.Fail(ResourceKeys.NotValidFileSize);
+            if (!isValidFileLength) return Result.Fail(LocalizationKeys.NotValidFileSize);
 
             var format = _fileFormatInspector.DetermineFileFormat(file);
             var isValidFileType = format != null && allowedExtensions.Any(ext => ext.ToString() == format.Extension.ToLower());
 
-            if (!isValidFileType) return Result.Fail(ResourceKeys.NotValidFileType);
+            if (!isValidFileType) return Result.Fail(LocalizationKeys.NotValidFileType);
 
             return Result.Success();
         }

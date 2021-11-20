@@ -34,7 +34,7 @@ namespace Utilities
 
             try
             {
-                var res = await email.SendAsync();
+                await email.SendAsync();
             }
             catch (Exception ex)
             {
