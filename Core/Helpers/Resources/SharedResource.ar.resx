@@ -267,4 +267,13 @@
   <data name="OperationDoneSuccessfully" xml:space="preserve">
     <value>العملية تمت بنجاح</value>
   </data>
+  <data name="DuplicateRole" xml:space="preserve">
+    <value>الدور الوظيفي موجود من قبل</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>الصلاحيات</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>اسم الدور الوظيفي</value>
+  </data>
 </root>

@@ -3,13 +3,11 @@ using Application.Specifications.Devices;
 using Domain.Entities;
 using FluentValidation;
 using Helpers.Constants;
-using Helpers.Exceptions;
 using Helpers.Interfaces;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -4,6 +4,21 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="M:WebApi.Controllers.v1.RolesController.GetRolesList(System.Int32,System.Int32)">
+            <summary>
+            get list of roles with their permissions if exist
+            </summary>
+            <param name="page_number"></param>
+            <param name="page_size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WebApi.Controllers.v1.RolesController.CreateRole(Application.Features.RoleManagement.Commands.CreateRole.Command)">
+            <summary>
+            create new role with optional permissions
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
         <member name="M:WebApi.Controllers.v1.UserDevicesController.AddUpdateDevice(Application.Features.UserAccount.Commands.AddUpdateUserDevice.Command)">
             <summary>
             Add / update user device

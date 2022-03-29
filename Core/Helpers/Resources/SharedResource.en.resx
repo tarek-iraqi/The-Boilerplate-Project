@@ -267,4 +267,13 @@
   <data name="OperationDoneSuccessfully" xml:space="preserve">
     <value>Operation done successfully</value>
   </data>
+  <data name="DuplicateRole" xml:space="preserve">
+    <value>Role already exist</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
 </root>

@@ -45,7 +45,7 @@ namespace Utilities
             services.AddSingleton<IFileFormatInspector>(inspector);
 
             var awsCredentials = new BasicAWSCredentials(amazonSettings.AWS_ACCESS_KEY_ID, amazonSettings.AWS_SECRET_ACCESS_KEY);
-                        
+
             AWSOptions options = new AWSOptions { Credentials = awsCredentials, Region = RegionEndpoint.EUCentral1 };
 
             services.AddAWSService<IAmazonS3>(options);

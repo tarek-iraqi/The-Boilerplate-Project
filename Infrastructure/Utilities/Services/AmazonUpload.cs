@@ -3,12 +3,8 @@ using Amazon.S3.Model;
 using Application.Interfaces;
 using FileSignatures;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Utilities.Services

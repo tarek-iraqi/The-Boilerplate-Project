@@ -1,4 +1,6 @@
+using Application.Features.SetupInitialData;
 using Helpers.Constants;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace WebApi
 {
@@ -17,7 +20,7 @@ namespace WebApi
     {
         protected Program() { }
 
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
@@ -25,6 +28,10 @@ namespace WebApi
             {
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                await mediator.Send(new AddSuperAdminUser.Command());
 
                 if (!env.IsEnvironment("Prelive") || !env.IsProduction())
                 {

@@ -4,12 +4,8 @@ using Helpers.Enums;
 using Helpers.Models;
 using Helpers.Resources;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities.Services
 {
@@ -23,7 +19,7 @@ namespace Utilities.Services
         }
         public Result IsValidFile(byte[] file, int fileSizeInMega, FileExtensions[] allowedExtensions)
         {
-            using(var stream = new MemoryStream(file))
+            using (var stream = new MemoryStream(file))
                 return IsValidFile(stream, fileSizeInMega, allowedExtensions);
         }
 

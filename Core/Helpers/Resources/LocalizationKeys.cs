@@ -52,5 +52,8 @@
         public const string NotValidFileType = nameof(NotValidFileType);
         public const string File = nameof(File);
         public const string OperationDoneSuccessfully = nameof(OperationDoneSuccessfully);
+        public const string RoleName = nameof(RoleName);
+        public const string Permissions = nameof(Permissions);
+        public const string DuplicateRole = nameof(DuplicateRole);
     }
 }

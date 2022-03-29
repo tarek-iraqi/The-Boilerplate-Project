@@ -3,14 +3,12 @@ using Domain.Entities;
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Enums;
-using Helpers.Exceptions;
 using Helpers.Interfaces;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +16,7 @@ namespace Application.Features.UserAccount.Commands
 {
     public class UploadProfileImage
     {
-        public class Command: IRequest<OperationResult>
+        public class Command : IRequest<OperationResult>
         {
             public IFormFile file { get; }
             public Command(IFormFile file)
@@ -27,7 +25,7 @@ namespace Application.Features.UserAccount.Commands
             }
         }
 
-        public class CommandValidator: AbstractValidator<Command>
+        public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator(IApplicationLocalization localizer)
             {

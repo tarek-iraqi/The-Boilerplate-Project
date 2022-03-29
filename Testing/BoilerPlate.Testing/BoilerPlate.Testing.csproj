@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Domain\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <None Remove="Domain\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
@@ -32,10 +38,6 @@
     <ProjectReference Include="..\..\Core\Domain\Domain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Persistence\Persistence.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Utilities\Utilities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Domain\" />
   </ItemGroup>
 
 </Project>

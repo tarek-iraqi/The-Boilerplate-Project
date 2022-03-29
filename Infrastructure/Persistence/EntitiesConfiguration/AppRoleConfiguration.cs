@@ -13,6 +13,7 @@ namespace Persistence.EntitiesConfiguration
             builder.Property(m => m.Id).HasConversion<string>().HasMaxLength(85);
             builder.Property(m => m.NormalizedName).HasMaxLength(85);
             builder.Property(m => m.Name).HasMaxLength(85);
+            builder.Property(m => m.Alias).HasMaxLength(85);
 
             builder.HasMany(e => e.UserRoles)
                 .WithOne(e => e.Role)
@@ -23,7 +24,6 @@ namespace Persistence.EntitiesConfiguration
                 .WithOne(e => e.Role)
                 .HasForeignKey(rc => rc.RoleId)
                 .IsRequired(false);
-
         }
     }
 }

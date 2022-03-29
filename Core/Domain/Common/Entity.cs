@@ -13,7 +13,7 @@ namespace Domain.Common
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Entity<T> other))
+            if (obj is not Entity<T> other)
                 return false;
 
             if (ReferenceEquals(this, other))
@@ -28,7 +28,8 @@ namespace Domain.Common
             return Id.Equals(other.Id);
         }
 
-        public static bool operator ==(Entity<T> a, Entity<T> b)
+        public static bool operator ==(Entity<T> a,
+                                       Entity<T> b)
         {
             if (a is null && b is null)
                 return true;

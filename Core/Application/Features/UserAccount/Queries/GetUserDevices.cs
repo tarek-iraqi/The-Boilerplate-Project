@@ -1,15 +1,12 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Application.Specifications.Devices;
 using Domain.Entities;
 using Helpers.Constants;
-using Helpers.Exceptions;
 using Helpers.Interfaces;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +17,7 @@ namespace Application.Features.UserAccount.Queries
         public class Query : IRequest<OperationResult>
         {
             public int page_size { get; }
-            public int page_number { get; set; }
+            public int page_number { get; }
             public Query(int pageSize, int pageNumber)
             {
                 page_size = pageSize;
@@ -48,7 +45,7 @@ namespace Application.Features.UserAccount.Queries
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
                         OperationError.Add(KeyValueConstants.GeneralError, LocalizationKeys.UserNotFound));
 
-                var result =  _uow.Repository<Device>()
+                var result = _uow.Repository<Device>()
                     .PaginatedList(new DevicesFilteredByUserSpec(Guid.Parse(_authenticatedUserService.UserId)),
                         request.page_number, request.page_size);
 

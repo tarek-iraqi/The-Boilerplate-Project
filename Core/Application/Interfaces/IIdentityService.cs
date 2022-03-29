@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,11 @@ namespace Application.Interfaces
         Task<IdentityResponseDTO> ResetPassword(AppUser user, string token, string password);
         Task<string> GenerateAccessToken(AppUser user, string ipAddress);
         string GenerateRefreshToken();
+        Task<bool> IsUserInRole(Guid userId, string roleName);
+        Task AddUserToRole(AppUser user, string roleName);
+        Task<AppRole> GetRole(Guid roleId);
+        Task<AppRole> GetRole(string roleNameOrAlias);
+        Task<IdentityResponseDTO> AddNewRole(AppRole role);
 
     }
 }

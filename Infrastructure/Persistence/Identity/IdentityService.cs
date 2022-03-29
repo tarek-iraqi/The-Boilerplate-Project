@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Domain.Entities;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
 using System;
@@ -155,7 +156,7 @@ namespace Persistence.Identity
             foreach (var role in roles)
             {
                 var roleValue = await _roleManager.FindByNameAsync(role);
-                userClaims.Add(new Claim(ClaimTypes.Role, roleValue.Name));
+                userClaims.Add(new Claim(ClaimTypes.Role, roleValue.Alias));
             }
 
             var token = new JwtSecurityToken
@@ -173,10 +174,45 @@ namespace Persistence.Identity
 
         public string GenerateRefreshToken()
         {
-            using var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
-            var randomBytes = new byte[40];
-            rngCryptoServiceProvider.GetBytes(randomBytes);
+            var randomBytes = RandomNumberGenerator.GetBytes(40);
             return BitConverter.ToString(randomBytes).Replace("-", "");
         }
+
+        public async Task<bool> IsUserInRole(Guid userId, string roleName)
+        {
+            return await _dbContext.UserRoles
+                .AnyAsync(userRole => userRole.UserId == userId && userRole.Role.Alias == roleName);
+        }
+
+        public async Task AddUserToRole(AppUser user, string roleName)
+        {
+            var role = await _dbContext.Roles.FirstOrDefaultAsync(role => role.Alias == roleName || role.Name == roleName);
+
+            await _userManager.AddToRoleAsync(user, role.Name);
+        }
+
+        public async Task<AppRole> GetRole(Guid roleId)
+        {
+            return await _roleManager.FindByIdAsync(roleId.ToString());
+        }
+
+        public async Task<AppRole> GetRole(string roleNameOrAlias)
+        {
+            return await _dbContext.Roles
+                .FirstOrDefaultAsync(role => role.Alias == roleNameOrAlias || role.Name == roleNameOrAlias);
+        }
+
+        public async Task<IdentityResponseDTO> AddNewRole(AppRole role)
+        {
+            var result = await _roleManager.CreateAsync(role);
+
+            return new IdentityResponseDTO
+            {
+                success = result.Succeeded,
+                errors = result.Succeeded ? null : result.Errors
+                        .Select(a => new Tuple<string, string>(a.Code, a.Description)).ToList(),
+            };
+        }
+
     }
 }

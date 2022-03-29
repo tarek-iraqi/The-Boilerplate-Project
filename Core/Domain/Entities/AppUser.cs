@@ -18,7 +18,7 @@ namespace Domain.Entities
         }
 
         public AppUser(Name name, string user_name, string email,
-            string phone_number = null, string profile_picture = null, bool is_active = true)
+            string phone_number = null, string profile_picture = null, bool is_active = true, bool isEmailConfirmed = false)
         {
             Name = name;
             UserName = user_name;
@@ -26,6 +26,7 @@ namespace Domain.Entities
             PhoneNumber = phone_number;
             ProfilePicture = profile_picture;
             IsActive = is_active;
+            EmailConfirmed = isEmailConfirmed;
         }
 
         public void EditData(Name name, string email, string phoneNumber, string profilePicture)

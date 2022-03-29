@@ -4,13 +4,11 @@ using Domain.Entities;
 using Domain.ValueObjects;
 using FluentValidation;
 using Helpers.Constants;
-using Helpers.Exceptions;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Linq;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -114,7 +112,7 @@ namespace Application.Features.UserAccount.Commands
                 ), request.password);
 
                 if (!result.success)
-                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute, 
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
                         result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
 
                 var emailModel = new AccountVerificationEmailDTO

@@ -1,13 +1,10 @@
 ﻿using Application.Interfaces;
 using FluentValidation;
 using Helpers.Constants;
-using Helpers.Exceptions;
 using Helpers.Models;
 using Helpers.Resources;
 using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -50,7 +47,7 @@ namespace Application.Features.UserAccount.Commands
                 var user = await _identityService.FindByEmail(request.email);
 
                 if (user == null)
-                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute, 
+                    return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
                         OperationError.Add(nameof(request.email), LocalizationKeys.UserNotFound));
 
                 var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));

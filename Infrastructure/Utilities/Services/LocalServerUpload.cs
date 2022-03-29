@@ -1,15 +1,9 @@
 ﻿using Application.Interfaces;
 using FileSignatures;
-using FileSignatures.Formats;
 using Helpers.Constants;
-using Helpers.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Utilities.Services

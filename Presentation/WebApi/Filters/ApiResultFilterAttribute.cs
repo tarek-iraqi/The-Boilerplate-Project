@@ -21,11 +21,11 @@ namespace WebApi.Filters
 
             if (result == null) return;
 
-            if(result.Value is OperationResult resultObject)
+            if (result.Value is OperationResult resultObject)
             {
                 if (resultObject.IsSuccess)
                     SuccessResponse(context, resultObject);
-                else 
+                else
                     ErrorResponse(context, resultObject);
             }
 
@@ -49,7 +49,7 @@ namespace WebApi.Filters
             }
             else if (!string.IsNullOrWhiteSpace(resultObject.Message))
             {
-                var successResult = Result.Success(_localizer.Get(resultObject.Message)); 
+                var successResult = Result.Success(_localizer.Get(resultObject.Message));
 
                 var newResult = new ContentResult()
                 {
@@ -75,7 +75,7 @@ namespace WebApi.Filters
 
         private void ErrorResponse(ActionExecutedContext context, OperationResult resultObject)
         {
-            if(resultObject.Errors != null && resultObject.Errors.Length > 0)
+            if (resultObject.Errors != null && resultObject.Errors.Length > 0)
             {
                 List<ErrorResult> localizedErrors = new List<ErrorResult>();
 
@@ -100,7 +100,7 @@ namespace WebApi.Filters
                 };
 
                 context.Result = newResult;
-            } 
+            }
             else
             {
                 var failResult = Result.Fail(_localizer.Get(resultObject.Message));

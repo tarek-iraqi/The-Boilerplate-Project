@@ -1,5 +1,4 @@
-﻿using Application.DTOs;
-using Application.Specifications.Users;
+﻿using Application.Specifications.Users;
 using Domain.Entities;
 using Helpers.Interfaces;
 using Helpers.Models;
