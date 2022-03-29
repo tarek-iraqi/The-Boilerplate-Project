@@ -38,7 +38,7 @@ This is the DotNet core template to use when create new Api project
 To use this template, open your cli window and run the following command
 
 ```
->> dotnet new --install Ibtkiar.DotNetCore.TheBoilerPlateTemplate::2.0.0
+>> dotnet new --install Ibtkiar.DotNetCore.TheBoilerPlateTemplate::2.0.1
 ```
 
 Then navigate to your project folder directory and run the following command
