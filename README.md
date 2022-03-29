@@ -249,7 +249,7 @@ This layer contains the Api project, it contains the controllers end points, ext
   ```
 
   ```
-  [HasPermission(new[] { Permissions.ViewUsers, Permissions.EditUsers }, PermissionCompareOperator.Or)]
+  [HasPermission(PermissionCompareOperator.Or, Permissions.ViewUsers, Permissions.EditUsers)]
   [HttpGet(baseRoute)]
   public async Task<IActionResult> GetUsersList([FromQuery] string name,
             [FromQuery] Dictionary<string, string> sort,
