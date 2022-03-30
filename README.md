@@ -128,30 +128,30 @@ This layer contains the Api project, it contains the controllers end points, ext
 
 # How things are working
 
-- All application configurations is defined in <span style="background-color: #ffd555; padding: 3px">**appsettings.json**</span>, it is your job to define configuration for each environment and also store sensetive configuration data in secure place like user secrets on local machine or environment variables on server.
+- All application configurations is defined in **appsettings.json**, it is your job to define configuration for each environment and also store sensetive configuration data in secure place like user secrets on local machine or environment variables on server.
   <br>
-- Every domain entity inherit from the base class <span style="background-color: #ffd555; padding: 3px">**Entity&lt;T&gt;**</span> where T is the type of the identity property, this class contains all the shared properties between domain entities.
+- Every domain entity inherit from the base class **Entity&lt;T&gt;** where T is the type of the identity property, this class contains all the shared properties between domain entities.
   <br>
-- You can create value objects simply by inheriting from <span style="background-color: #ffd555; padding: 3px">**ValueObject**</span> class.
+- You can create value objects simply by inheriting from **ValueObject** class.
   <br>
-- You can mark some classes as aggregate roots by make them implement an empty interface called <span style="background-color: #ffd555; padding: 3px">**IAggregateRoot**</span>.
+- You can mark some classes as aggregate roots by make them implement an empty interface called **IAggregateRoot**.
   <br>
 - Any method in application features considered an operation and returns an operation result, these operation results is divided into 4 types:
 
-  1.  <span style="background-color: #ffd555; padding: 3px">**OperationResult.Success()**</span>: used to return a success operation result.
-  2.  <span style="background-color: #ffd555; padding: 3px">**OperationResult.Success(message)**</span>: used to return a success operation result with string message/description.
-  3.  <span style="background-color: #ffd555; padding: 3px">**OperationResult.Success(data)**</span>: used to return a success operation result with data.
-  4.  <span style="background-color: #ffd555; padding: 3px">**OperationResult.Fail(httpStatusCode, error_1, error_2, ...)**</span>: used to return a fail operation result, you can specify which http status
-      code to return and a comma sperated array of <span style="background-color: #ffd555; padding: 3px">**OperationError**</span>, each operation error has its **_Type_** specify where the error
+  1.  **OperationResult.Success()**: used to return a success operation result.
+  2.  **OperationResult.Success(message)**: used to return a success operation result with string message/description.
+  3.  **OperationResult.Success(data)**: used to return a success operation result with data.
+  4.  **OperationResult.Fail(httpStatusCode, error_1, error_2, ...)**: used to return a fail operation result, you can specify which http status
+      code to return and a comma sperated array of **OperationError**, each operation error has its **_Type_** specify where the error
       is caused, **_Error_** which descripe the error and **_ErrorPlaceholders_** array to replace any values in the Error attribute.
       <br>
 
 - These operation results can be handeled automatically to transform to a proper Api response by simply decorate an action method or
-  a controller class by <span style="background-color: #ffd555; padding: 3px">**[ServiceFilter(typeof(ApiResultFilterAttribute))]**</span>, this is done by default in the **BaseApiController**. Or you can handle this operation result mannual in case you make MVC action methods with views.
+  a controller class by **[ServiceFilter(typeof(ApiResultFilterAttribute))]**, this is done by default in the **BaseApiController**. Or you can handle this operation result mannual in case you make MVC action methods with views.
   <br>
 - We have three types of results we can get from Api responses:
 
-1. <span style="background-color: #ffd555; padding: 3px">**Result&lt;T&gt;**</span> for single record
+1. **Result&lt;T&gt;** for single record
 
 ```
 {
@@ -165,7 +165,7 @@ This layer contains the Api project, it contains the controllers end points, ext
 }
 ```
 
-2. <span style="background-color: #ffd555; padding: 3px">**PaginatedResult&lt;T&gt;**</span> for lists contain paging data
+2. **PaginatedResult&lt;T&gt;** for lists contain paging data
 
 ```
 {
@@ -187,7 +187,7 @@ This layer contains the Api project, it contains the controllers end points, ext
 }
 ```
 
-3. <span style="background-color: #ffd555; padding: 3px">**Error**</span> for returing list of errors with error type and error message
+3. **Error** for returing list of errors with error type and error message
 
 ```
 {
@@ -204,7 +204,7 @@ This layer contains the Api project, it contains the controllers end points, ext
 }
 ```
 
-- For errors handling we use a middleware <span style="background-color: #ffd555; padding: 3px">**ErrorHandlingMiddleware**</span> to convert it to the error response format.
+- For errors handling we use a middleware **ErrorHandlingMiddleware** to convert it to the error response format.
   <br/>
 - We have 4 Http status codes used in the system by default:
   1. **_200_** for successfull response
@@ -213,23 +213,23 @@ This layer contains the Api project, it contains the controllers end points, ext
   4. **_400_** for invalid or missing request headers
   5. **_404_** for not found data
      <br>
-- You can extend and add more response codes to use in the application by editing the <span style="background-color: #ffd555; padding: 3px">**ErrorStatusCodes**</span> in the Helpers project in Constant folder.
+- You can extend and add more response codes to use in the application by editing the **ErrorStatusCodes** in the Helpers project in Constant folder.
   <br>
-- To request any Api end point you must provide <span style="background-color: #ffd555; padding: 3px">**x-api-key**</span> header in the request headers. All api keys for different clients are configured in the **_appsettings.json_** file.
+- To request any Api end point you must provide **x-api-key** header in the request headers. All api keys for different clients are configured in the **_appsettings.json_** file.
   <br>
-- The application is configured with 2 languages Arabic and English, the default language is English, to change it add the <span style="background-color: #ffd555; padding: 3px">**Accept-Language**</span> header when requesting the Api end points, ex: ar-SA or ar for Arabic.
+- The application is configured with 2 languages Arabic and English, the default language is English, to change it add the **Accept-Language** header when requesting the Api end points, ex: ar-SA or ar for Arabic.
   <br>
-- The Api controllers are inherit from the <span style="background-color: #ffd555; padding: 3px">**BaseApiController**</span> which contains shared dependencies and attributes between controllers.
+- The Api controllers are inherit from the **BaseApiController** which contains shared dependencies and attributes between controllers.
   <br>
-- The application contains by default all account registeration process end points in the <span style="background-color: #ffd555; padding: 3px">**UsersController**</span>.
+- The application contains by default all account registeration process end points in the **UsersController**.
   <br>
 - To use the authorization system:
 
-  1. you will use the two enum files included in the authorization folder in application layer, the first file is <span style="background-color: #ffd555; padding: 3px">**DefaultRoles.cs**</span> to define any default roles your business need, by default there is a single role which is **Super_Admin** which has all privileges in the system.
-  2. The second file is <span style="background-color: #ffd555; padding: 3px">**Permissions.cs**</span> this enum is used to add all your custom permissions of your application.
+  1. you will use the two enum files included in the authorization folder in application layer, the first file is **DefaultRoles.cs** to define any default roles your business need, by default there is a single role which is **Super_Admin** which has all privileges in the system.
+  2. The second file is **Permissions.cs** this enum is used to add all your custom permissions of your application.
   3. You can add custom roles according to your app needs through the **[Role]** entity of the .net identity.
-  4. The permissions you add can be granted to roles or to individual users, in both cases we use claims to add permissions to roles **[by using RoleClaims entity]** or by adding permissions to users **[by using UserClaims entity]**, you just need to add claim with type <span style="background-color: #ffd555; padding: 3px">**action_permission**</span> and its value will be the id of the permission.
-  5. Finally to add permission to an end point you just need to add attribute <span style="background-color: #ffd555; padding: 3px">**HasPermission**</span> to the action method, this attribute can take single permission or multiple permissions with definition of how to join this permissions either by **_AND_** [must have all permissions] or by **_OR_** [any permission the user have can access the end point].
+  4. The permissions you add can be granted to roles or to individual users, in both cases we use claims to add permissions to roles **[by using RoleClaims entity]** or by adding permissions to users **[by using UserClaims entity]**, you just need to add claim with type **action_permission** and its value will be the id of the permission.
+  5. Finally to add permission to an end point you just need to add attribute **HasPermission** to the action method, this attribute can take single permission or multiple permissions with definition of how to join this permissions either by **_AND_** [must have all permissions] or by **_OR_** [any permission the user have can access the end point].
      <br>
 
   ```
@@ -241,7 +241,7 @@ This layer contains the Api project, it contains the controllers end points, ext
   ```
 
   ```
-  [HasPermission(new[] { Permissions.ViewUsers, Permissions.EditUsers }, PermissionCompareOperator.And)]
+  [HasPermission(PermissionCompareOperator.And, Permissions.ViewUsers, Permissions.EditUsers)]
   [HttpGet(baseRoute)]
   public async Task<IActionResult> GetUsersList([FromQuery] string name,
             [FromQuery] Dictionary<string, string> sort,
