@@ -3,7 +3,7 @@ using Helpers.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace Application.Interfaces
+namespace Application.Contracts
 {
     public interface IFileValidator
     {

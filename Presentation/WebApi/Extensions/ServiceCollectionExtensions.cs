@@ -1,7 +1,7 @@
 ﻿using Application;
 using Application.Authorization;
 using Application.Common;
-using Application.Interfaces;
+using Application.Contracts;
 using FluentValidation.AspNetCore;
 using Helpers.Constants;
 using Helpers.Models;

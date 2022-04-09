@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using Domain.Common;
 using Domain.Entities;
 using Helpers.Extensions;

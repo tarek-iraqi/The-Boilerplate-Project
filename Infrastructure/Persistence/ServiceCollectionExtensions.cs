@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
+using Domain.Contracts;
 using Helpers.Constants;
 using Helpers.Interfaces;
 using Microsoft.AspNetCore.DataProtection;

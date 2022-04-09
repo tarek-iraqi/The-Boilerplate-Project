@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using Helpers.Resources;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;

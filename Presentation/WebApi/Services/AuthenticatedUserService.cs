@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;

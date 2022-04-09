@@ -1,7 +1,7 @@
 ﻿using Application.Authorization;
+using Domain.Contracts;
 using Domain.Entities;
 using Helpers.Extensions;
-using Helpers.Interfaces;
 using Helpers.Models;
 using MediatR;
 using System;

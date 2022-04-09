@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using PhoneNumbers;
 
 namespace Utilities

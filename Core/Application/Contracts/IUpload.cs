@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces
+namespace Application.Contracts
 {
     public interface IUpload
     {

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces
+namespace Application.Contracts
 {
     public interface IIdentityService
     {

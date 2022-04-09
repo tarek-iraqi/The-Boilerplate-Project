@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using FluentEmail.Core;
 using Helpers.Constants;
 using Microsoft.Extensions.Logging;

@@ -1,5 +1,5 @@
 ﻿using Application.Features.UserAccount.Commands;
-using Application.Interfaces;
+using Application.Contracts;
 using BoilerPlate.Testing._shared;
 using FluentValidation.TestHelper;
 using Moq;

@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.Interfaces;
+using Application.Contracts;
 using FluentValidation;
 using Helpers.Constants;
 using Helpers.Models;

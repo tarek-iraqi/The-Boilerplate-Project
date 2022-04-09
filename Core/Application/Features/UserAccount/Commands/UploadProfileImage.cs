@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
+using Domain.Contracts;
 using Domain.Entities;
 using FluentValidation;
 using Helpers.Constants;

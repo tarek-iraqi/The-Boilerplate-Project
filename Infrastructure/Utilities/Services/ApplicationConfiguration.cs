@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using Helpers.Models;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;

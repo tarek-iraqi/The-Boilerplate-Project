@@ -1,4 +1,5 @@
-﻿using Helpers.Classes;
+﻿using Domain.Contracts;
+using Helpers.Classes;
 using Helpers.Extensions;
 using Helpers.Interfaces;
 using Helpers.Models;

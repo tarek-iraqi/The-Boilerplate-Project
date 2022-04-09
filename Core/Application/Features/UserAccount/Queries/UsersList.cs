@@ -1,6 +1,6 @@
 ﻿using Application.Specifications.Users;
 using Domain.Entities;
-using Helpers.Interfaces;
+using Domain.Contracts;
 using Helpers.Models;
 using MediatR;
 using System.Threading;

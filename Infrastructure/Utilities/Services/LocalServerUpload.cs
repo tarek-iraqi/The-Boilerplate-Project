@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using FileSignatures;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Hosting;

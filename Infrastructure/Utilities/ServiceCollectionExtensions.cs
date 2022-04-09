@@ -2,7 +2,7 @@
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
-using Application.Interfaces;
+using Application.Contracts;
 using FileSignatures;
 using Helpers.Models;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +38,7 @@ namespace Utilities
             services.AddScoped<IFirebaseMessageSender, FirebaseMessageSender>();
             services.AddScoped<IFileValidator, FileValidator>();
             services.AddScoped<IUpload, LocalServerUpload>();
+            services.AddScoped<IExcelOperations, ExcelOperations>();
 
             var assembly = typeof(VideoFormatFile).GetTypeInfo().Assembly;
             var allFormats = FileFormatLocator.GetFormats(assembly, true);

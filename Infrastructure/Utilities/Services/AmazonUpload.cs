@@ -1,6 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using Application.Interfaces;
+using Application.Contracts;
 using FileSignatures;
 using Microsoft.AspNetCore.Http;
 using System.IO;

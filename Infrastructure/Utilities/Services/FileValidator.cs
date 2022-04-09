@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Contracts;
 using FileSignatures;
 using Helpers.Enums;
 using Helpers.Models;

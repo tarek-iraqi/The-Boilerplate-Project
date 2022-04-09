@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Helpers.Interfaces
+namespace Domain.Contracts
 {
     public interface IGenericRepository<T> where T : class
     {

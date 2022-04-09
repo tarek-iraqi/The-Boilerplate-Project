@@ -1,7 +1,7 @@
 ﻿using Helpers.Models;
 using System.Collections.Generic;
 
-namespace Application.Interfaces
+namespace Application.Contracts
 {
     public interface IApplicationConfiguration
     {
