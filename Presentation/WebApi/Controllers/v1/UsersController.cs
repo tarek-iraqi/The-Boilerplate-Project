@@ -1,4 +1,5 @@
 ﻿using Application.Authorization;
+using Application.Features.ExportSamplePDF;
 using Application.Features.UserAccount.Commands;
 using Application.Features.UserAccount.Queries;
 using Helpers.Constants;
@@ -121,6 +122,19 @@ namespace WebApi.Controllers.v1
                 sort.GetValueOrDefault(SortKey.order), page_number, page_size));
 
             return new JsonResult(result);
+        }
+
+        /// <summary>
+        /// export sample pdf file
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet(baseRoute + "/pdf")]
+        public async Task<IActionResult> ExportPdfFile()
+        {
+            var result = await Mediator.Send(new ExportSamplePDF.Command());
+
+            return File(result, "application/pdf", "sample.pdf");
         }
 
         private string GenerateIPAddress()

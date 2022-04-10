@@ -36,7 +36,7 @@ namespace WebApi
             services.AddLocalizationService();
             services.AddWebApiServices(_configuration);
             services.AddPersistenceServices(_configuration);
-            services.AddUtilitiesServices(_configuration);
+            services.AddUtilitiesServices(_configuration, _env);
             services.AddHttpContextAccessor();
             services.AddCorsOriginService(_configuration);
             services.AddAuthenticationService(_configuration);

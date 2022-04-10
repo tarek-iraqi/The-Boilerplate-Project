@@ -17,19 +17,18 @@ namespace WebApi.Filters
         }
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            JsonResult result = (JsonResult)context.Result;
-
-            if (result == null) return;
-
-            if (result.Value is OperationResult resultObject)
+            if (context.Result is JsonResult result)
             {
-                if (resultObject.IsSuccess)
-                    SuccessResponse(context, resultObject);
-                else
-                    ErrorResponse(context, resultObject);
-            }
+                if (result.Value is OperationResult resultObject)
+                {
+                    if (resultObject.IsSuccess)
+                        SuccessResponse(context, resultObject);
+                    else
+                        ErrorResponse(context, resultObject);
+                }
 
-            base.OnActionExecuted(context);
+                base.OnActionExecuted(context);
+            }
         }
 
         private void SuccessResponse(ActionExecutedContext context, OperationResult resultObject)
