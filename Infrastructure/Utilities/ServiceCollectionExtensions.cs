@@ -46,6 +46,7 @@ namespace Utilities
             services.AddScoped<IUpload, LocalServerUpload>();
             services.AddScoped<IExcelOperations, ExcelOperations>();
             services.AddScoped<IPDFOperations, PDFOperations>();
+            services.AddScoped<IImageOperations, ImageOperations>();
 
             var assembly = typeof(VideoFormatFile).GetTypeInfo().Assembly;
             var allFormats = FileFormatLocator.GetFormats(assembly, true);
@@ -59,7 +60,7 @@ namespace Utilities
             services.AddAWSService<IAmazonS3>(options);
 
             var architectureFolder = (IntPtr.Size == 8) ? "64 bit" : "32 bit";
-            var wkHtmlToPdfPath = Path.Combine(env.ContentRootPath, $"webkitengine\\v0.12.4\\{architectureFolder}\\libwkhtmltox");
+            var wkHtmlToPdfPath = Path.Combine(env.ContentRootPath, $"webkitengine/v0.12.4/{architectureFolder}/libwkhtmltox");
             CustomAssemblyLoadContext context = new CustomAssemblyLoadContext();
             context.LoadUnmanagedLibrary(wkHtmlToPdfPath);
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));

@@ -105,5 +105,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WebApi.Controllers.v1.UsersController.ExportImageFile">
+            <summary>
+            export sample image file
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>
