@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  mysql-boilerplate:
+    image: 'mysql:latest'
+    environment:
+      - MYSQL_ROOT_PASSWORD=P@55w0rd
+    ports:
+      - '3307:3306'
+  boilerplate-app:
+    build: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DbConnection=Data Source=mysql-boilerplate;Port=3307;Initial Catalog=boilerplate;User Id=root;Password=P@55w0rd
+      - System__Api_URL=http://localhost:8080
+      - System__JWTSettings__SecretHashKey=24b1748b-ccf7-4d28-8d44-944b61a730aa
+      - System__EmailSettings__Host=smtp.gmail.com
+      - System__EmailSettings__Port=587
+      - System__EmailSettings__FromEmail=boilerplate365@gmail.com
+      - System__EmailSettings__Password=b0!lerplate365
+    ports:
+      - '8080:80'
+    depends_on:
+      - 'mysql-boilerplate'
+    entrypoint: ["/app/wait-for-it.sh", "mysql-boilerplate:3307", "-t", "60", "--", "dotnet", "WebApi.dll"]
