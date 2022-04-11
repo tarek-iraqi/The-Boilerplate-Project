@@ -22,6 +22,10 @@ FROM build AS publish
 RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
+RUN apt-get update && apt-get install -y libgdiplus wget libfontenc1 x11-common xfonts-encodings fontconfig xfonts-75dpi xfonts-base xfonts-utils lsb-base 
+
 WORKDIR /app
+RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb && dpkg -i wkhtmltox_0.12.6-1.buster_amd64.deb
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebApi.dll"]
