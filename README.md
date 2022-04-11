@@ -19,6 +19,9 @@ This is the DotNet core template to use when create new Api project
 13. Moq
 14. Shoudly
 15. Amazon S3
+16. Excel Mapper
+17. Core Html To Image
+18. Dink To Pdf
 
 ## Included features
 
@@ -32,13 +35,16 @@ This is the DotNet core template to use when create new Api project
 8. File type & size validators
 9. Upload to local server or amazon S3
 10. Logging
+11. Export & read from excel file
+12. Export HTML to PDF
+13. Export HTML to image
 
 # Basic Usage
 
 To use this template, open your cli window and run the following command
 
 ```
->> dotnet new --install Ibtkiar.DotNetCore.TheBoilerPlateTemplate::2.0.1
+>> dotnet new --install Ibtkiar.DotNetCore.TheBoilerPlateTemplate::2.1.0
 ```
 
 Then navigate to your project folder directory and run the following command
@@ -257,3 +263,16 @@ This layer contains the Api project, it contains the controllers end points, ext
   ```
 
 - By default the logs is saved in simple text files in the application server and there is a **_LogsController_** with single end point to see all log files ordered by date and each file is a link to open the log file. You can extend this implementation to use the database or even better use external application server as ELK which is done very simply as we already use serilog in the template.
+
+- To use the PDF export you need to be aware of the following:
+   1. **For Windows deployment:** you need to download [libwkhtmltox.dll] file from the following url https://github.com/rdvojmoc/DinkToPdf/tree/master/v0.12.4/64%20bit and put this file in the root directory of the WebApi application and right-click on the dll file in Solution Explorer and choose properties.  For the Build Action we are going to choose Content and for the Copy to Output Directory, we are going to choose Copy always.
+   2. **For Linux deployment:** you need to install the WebKit engine files on the Linux machine, if you use docker you just need to add these two lines to be able to export pdf from Linux environment
+   ```
+   FROM base AS final
+   RUN apt-get update && apt-get install -y libgdiplus wget libfontenc1 x11-common xfonts-encodings fontconfig xfonts-75dpi xfonts-base xfonts-utils lsb-base 
+
+   WORKDIR /app
+   RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_amd64.deb && dpkg -i wkhtmltox_0.12.6-1.buster_amd64.deb
+   ```
+- You will find two sample Apis for exporting PDF and image files, they return byte[] which can be returned directly to the caller to download the files or to use them to save the files on local or cloud storage.
+- You will find also in the WebApi project a docker file to use it when deploy to Linux server.
