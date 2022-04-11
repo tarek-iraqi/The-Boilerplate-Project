@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Utilities.Extenstions;
 using Utilities.Services;
 
@@ -59,10 +60,16 @@ namespace Utilities
 
             services.AddAWSService<IAmazonS3>(options);
 
-            var architectureFolder = (IntPtr.Size == 8) ? "64 bit" : "32 bit";
-            var wkHtmlToPdfPath = Path.Combine(env.ContentRootPath, $"webkitengine/v0.12.4/{architectureFolder}/libwkhtmltox");
             CustomAssemblyLoadContext context = new CustomAssemblyLoadContext();
-            context.LoadUnmanagedLibrary(wkHtmlToPdfPath);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Console.WriteLine("Loading /usr/local/lib/libwkhtmltox.so");
+                context.LoadUnmanagedLibrary("/usr/local/lib/libwkhtmltox.so");
+            }
+            else
+            {
+                context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "libwkhtmltox.dll"));
+            }
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
         }
     }

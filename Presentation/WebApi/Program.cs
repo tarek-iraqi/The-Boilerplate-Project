@@ -29,16 +29,16 @@ namespace WebApi
                 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-                await mediator.Send(new AddSuperAdminUser.Command());
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();              
 
                 if (!env.IsEnvironment("Prelive") || !env.IsProduction())
                 {
                     try
                     {
                         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                        dbContext.Database.Migrate();
+                        await dbContext.Database.MigrateAsync();
+
+                        await mediator.Send(new AddSuperAdminUser.Command());
                     }
                     catch (Exception ex)
                     {

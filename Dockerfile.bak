@@ -25,6 +25,5 @@ FROM base AS final
 WORKDIR /app
 COPY ./wait-for-it.sh ./
 RUN chmod +x /app/wait-for-it.sh
-COPY ./Presentation/WebApi/webkitengine ./
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "WebApi.dll"]
