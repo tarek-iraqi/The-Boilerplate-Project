@@ -68,6 +68,8 @@ services.AddDbContext<ApplicationDbContext>(options =>
 
 3. you need add the secret key to hach and encrypt the JWT tokens, this can be done by add the following in user secrets or as an environment variable
    **_System:JWTSettings:SecretHashKey_**
+   
+4. For using export PDF and avoid any errors when running the application you need to download [libwkhtmltox.dll] file from the following url https://github.com/rdvojmoc/DinkToPdf/tree/master/v0.12.4/64%20bit and put this file in the root directory of the WebApi application and right-click on the dll file in Solution Explorer and choose properties.  For the Build Action we are going to choose Content and for the Copy to Output Directory, we are going to choose Copy always.
 
 # Template Structure
 
@@ -81,8 +83,7 @@ This template is following the clean architecture model, it is divided in to the
 
 This layer contains the core application domain entities and business logic, it is divided into 3 projects:
 
-**1. Helpers project:** contains all the base interfaces and classes that we need accros the application, for example: Generic Respository,
-Unit of work, application exception, constants and so on.It is divided into subfolders as following:
+**1. Helpers project:** contains all the base interfaces and classes:
 
 - **Interfaces:** all basic interfaces
 - **Classes:** all interfaces implementation
@@ -92,13 +93,13 @@ Unit of work, application exception, constants and so on.It is divided into subf
 - **Models:** basic models as settings
 - **Resources:** the language resource files
 
-**2. Domain project:** contains all the domain entities and domain business logic and validations
+**2. Domain project:** contains all the domain entities and domain business logic and validations and basic contracts for repository and unit of work
 
 **3. Application project:** contains all the use cases features and interfaces to interact with other services as database, send emails, send SMS and so on. It is divided into subfolders as following:
 
 - **Common:** contains any comman logic shared across application
 - **DTOs:** contains all data transfer object classes used in methods response
-- **Interfaces:** all contracts to use/integrate with other internal or external services implemented in the infrastructure
+- **Contracts:** all contracts to use/integrate with other internal or external services implemented in the infrastructure
 - **Features:** the main appplication use cases, it is using the Mediator pattern so that each feature is a request (command/query) with its handler
 - **Specifications:** contians all the queries logic we use to get data from the database, they are grouped by features
 - **Authorization:** contains all the logic for building dynamic policy based authorization system
@@ -127,6 +128,9 @@ divided into subfolders as following:
 - **File validator:** contains methods to check for file types and file size
 - **Local server upload:** contains implementation to upload files to application local server
 - **Amazon upload:** contains implementation to upload files to amazon S3 storage
+- **Excel operations:** contains implementation to export and read from excel files
+- **PDF operations:** contains implementation to export html to pdf files
+- **Image operations:** contains implementation to export html to image (jpg or png) files
 
 ## Presentation layer
 
