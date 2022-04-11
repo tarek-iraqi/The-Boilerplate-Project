@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Features.ExportSamplePDF
+namespace Application.Features.ExportSampleImage
 {
     public class ExportSampleImage
     {

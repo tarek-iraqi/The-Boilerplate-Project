@@ -1,4 +1,5 @@
 ﻿using Application.Authorization;
+using Application.Features.ExportSampleImage;
 using Application.Features.ExportSamplePDF;
 using Application.Features.UserAccount.Commands;
 using Application.Features.UserAccount.Queries;
@@ -132,7 +133,7 @@ namespace WebApi.Controllers.v1
         [HttpGet(baseRoute + "/pdf")]
         public async Task<IActionResult> ExportPdfFile()
         {
-            var result = await Mediator.Send(new ExportSampleImage.Command());
+            var result = await Mediator.Send(new ExportSamplePDF.Command());
 
             return File(result, "application/pdf", "sample.pdf");
         }
