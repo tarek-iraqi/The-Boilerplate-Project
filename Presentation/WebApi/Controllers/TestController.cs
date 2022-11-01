@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Utilities.Services;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace WebApi.Controllers
         private readonly IApplicationConfiguration _configuration;
         private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
+        //private readonly IFirebaseCloudFirestore _firebaseCloudFirestore;
 
         public TestController(IEmailSender emailSender,
             IPhoneValidator phoneValidator,
@@ -31,6 +33,7 @@ namespace WebApi.Controllers
             IApplicationConfiguration configuration,
             IConfiguration config,
             IWebHostEnvironment env)
+            //IFirebaseCloudFirestore firebaseCloudFirestore)
         {
             _emailSender = emailSender;
             _phoneValidator = phoneValidator;
@@ -40,6 +43,14 @@ namespace WebApi.Controllers
             _config = config;
             _env = env;
         }
+
+        //[HttpGet("firestore")]
+        //public async Task<IActionResult> firestore()
+        //{
+        //   var result = await  _firebaseCloudFirestore.Get<notification>("notifications", "08d9ed98-6b93-4c5c-80b1-3e90b96b48dd");
+
+        //    return Ok(new { user_id = result.user_id, has_unseen_notifications = result.has_unseen_notifications });
+        //}
 
         [HttpGet("send_text_email")]
         public async Task<IActionResult> SendTextEmail()
