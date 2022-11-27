@@ -1,5 +1,5 @@
 ﻿using Application.Contracts;
-using Helpers.Resources;
+using Helpers.Localization;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Linq;

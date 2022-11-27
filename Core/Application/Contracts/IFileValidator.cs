@@ -1,5 +1,5 @@
-﻿using Helpers.Enums;
-using Helpers.Models;
+﻿using Helpers.BaseModels;
+using Helpers.Enums;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
@@ -7,8 +7,8 @@ namespace Application.Contracts
 {
     public interface IFileValidator
     {
-        Result IsValidFile(byte[] file, int fileSizeInMega, FileExtensions[] allowedExtensions);
-        Result IsValidFile(MemoryStream file, int fileSizeInMega, FileExtensions[] allowedExtensions);
-        Result IsValidFile(IFormFile file, int fileSizeInMega, FileExtensions[] allowedExtensions);
+        OperationResult IsValidFile(byte[] file, int fileSizeInMega, FileExtensions[] allowedExtensions);
+        OperationResult IsValidFile(MemoryStream file, int fileSizeInMega, FileExtensions[] allowedExtensions);
+        OperationResult IsValidFile(IFormFile file, int fileSizeInMega, FileExtensions[] allowedExtensions);
     }
 }

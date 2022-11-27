@@ -1,4 +1,4 @@
-﻿using Helpers.Resources;
+﻿using Helpers.Localization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;

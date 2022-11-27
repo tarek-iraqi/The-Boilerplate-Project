@@ -1,7 +1,6 @@
 ﻿using Application.Contracts;
-using Domain.Common;
-using Domain.Contracts;
 using Domain.Entities;
+using Helpers.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;

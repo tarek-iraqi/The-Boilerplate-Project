@@ -2,7 +2,7 @@
 using Application.DTOs;
 using Domain.DomainEvents;
 using Helpers.Constants;
-using Helpers.Resources;
+using Helpers.Localization;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

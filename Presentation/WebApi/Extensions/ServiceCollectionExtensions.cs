@@ -5,9 +5,9 @@ using Application.Contracts;
 using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.MySql;
+using Helpers.BaseModels;
 using Helpers.Constants;
-using Helpers.Models;
-using Helpers.Resources;
+using Helpers.Localization;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -26,22 +26,20 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi.Extensions.Swagger;
-using WebApi.Filters;
 using WebApi.Services;
 using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace WebApi.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static partial class ServiceCollectionExtensions
     {
         public static void AddWebApiServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
-            services.AddMediatR(Assembly.GetAssembly(typeof(IApplicationLayer)));
+            services.AddMediatR(ApplicationAssemblyReference.Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PipelineValidationBehavior<,>));
             services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationRequirementHandler>();
-            services.AddScoped<ApiResultFilterAttribute>();
             services.AddScoped<IBackgroundCronJobs, BackgroundCronJobs>();
         }
 

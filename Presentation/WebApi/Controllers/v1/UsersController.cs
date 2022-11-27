@@ -1,8 +1,8 @@
 ﻿using Application.Authorization;
-using Application.Features.ExportSampleImage;
-using Application.Features.ExportSamplePDF;
-using Application.Features.UserAccount.Commands;
-using Application.Features.UserAccount.Queries;
+using Application.DTOs;
+using Application.Features.Commands;
+using Application.Features.Queries;
+using Helpers.BaseModels;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,10 +24,10 @@ namespace WebApi.Controllers.v1
         /// 
         [AllowAnonymous]
         [HttpPost(baseRoute)]
-        public async Task<IActionResult> Register(Register.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register([FromBody] Registeration_Command command) =>
+            EndpointResult(await _mediator.Send(command));
 
         /// <summary>
         /// Verify user account after registeration
@@ -37,10 +37,10 @@ namespace WebApi.Controllers.v1
         /// 
         [AllowAnonymous]
         [HttpPost(baseRoute + "/verify")]
-        public async Task<IActionResult> VerifyAccount(VerifyAccount.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> VerifyAccount(VerifyAccount_Command command) =>
+            EndpointResult(await _mediator.Send(command));
 
         /// <summary>
         /// Login request
@@ -50,10 +50,14 @@ namespace WebApi.Controllers.v1
         /// 
         [AllowAnonymous]
         [HttpPost(baseRoute + "/login")]
-        public async Task<IActionResult> Login(Login.Command command)
+        [ProducesResponseType(typeof(Result<LoginResponseDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Login([FromBody] Login_Command command)
         {
-            command.ip_address = GenerateIPAddress();
-            return new JsonResult(await Mediator.Send(command));
+            command = command with { ip_address = GenerateIPAddress() };
+
+            return EndpointResult(await _mediator.Send(command));
         }
 
         /// <summary>
@@ -64,10 +68,9 @@ namespace WebApi.Controllers.v1
         /// 
         [AllowAnonymous]
         [HttpPost(baseRoute + "/password/forget")]
-        public async Task<IActionResult> ForgetPassword(ForgetPassword.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ForgetPassword([FromBody] ForgetPassword_Command command) =>
+            EndpointResult(await _mediator.Send(command));
 
         /// <summary>
         /// Reset password request
@@ -77,10 +80,11 @@ namespace WebApi.Controllers.v1
         /// 
         [AllowAnonymous]
         [HttpPost(baseRoute + "/password/reset")]
-        public async Task<IActionResult> ResetPassword(ResetPassword.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPassword_Command command) =>
+            EndpointResult(await _mediator.Send(command));
+
 
         /// <summary>
         /// Update user profile
@@ -88,10 +92,10 @@ namespace WebApi.Controllers.v1
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut(baseRoute)]
-        public async Task<IActionResult> UpdateProfile(UpdateProfile.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfile_Command command) =>
+            EndpointResult(await _mediator.Send(command));
 
         /// <summary>
         /// Update user profile picture
@@ -99,10 +103,10 @@ namespace WebApi.Controllers.v1
         /// <param name="file"></param>
         /// <returns></returns>
         [HttpPost(baseRoute + "/profile_picture")]
-        public async Task<IActionResult> UpdateProfilePicture([FromForm] IFormFile file)
-        {
-            return new JsonResult(await Mediator.Send(new UploadProfileImage.Command(file)));
-        }
+        [ProducesResponseType(typeof(Result<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateProfilePicture([FromForm] IFormFile file) =>
+            EndpointResult(await _mediator.Send(new UploadProfileImage_Command(file)));
 
         /// <summary>
         /// Get paginated list of users 
@@ -115,14 +119,15 @@ namespace WebApi.Controllers.v1
         /// 
         [HasPermission(Permissions.ViewUsers)]
         [HttpGet(baseRoute)]
+        [ProducesResponseType(typeof(PaginatedResult<UsersListResponseDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUsersList([FromQuery] string name,
             [FromQuery] Dictionary<string, string> sort,
             [FromQuery] int page_number, [FromQuery] int page_size)
         {
-            var result = await Mediator.Send(new UsersList.Query(name, sort.GetValueOrDefault(SortKey.by),
+            var result = await _mediator.Send(new GetUsersList_Query(name, sort.GetValueOrDefault(SortKey.by),
                 sort.GetValueOrDefault(SortKey.order), page_number, page_size));
 
-            return new JsonResult(result);
+            return EndpointResult(result);
         }
 
         /// <summary>
@@ -131,9 +136,10 @@ namespace WebApi.Controllers.v1
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet(baseRoute + "/pdf")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> ExportPdfFile()
         {
-            var result = await Mediator.Send(new ExportSamplePDF.Command());
+            var result = await _mediator.Send(new ExportSamplePDF_Command());
 
             return File(result, "application/pdf", "sample.pdf");
         }
@@ -144,9 +150,10 @@ namespace WebApi.Controllers.v1
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet(baseRoute + "/image")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
         public async Task<IActionResult> ExportImageFile()
         {
-            var result = await Mediator.Send(new ExportSampleImage.Command());
+            var result = await _mediator.Send(new ExportSampleImage_Command());
 
             return File(result, "image/png", "sample.png");
         }

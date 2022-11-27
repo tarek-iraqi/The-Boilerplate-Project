@@ -1,4 +1,4 @@
-﻿using Helpers.Resources;
+﻿using Helpers.Localization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Utilities.Services

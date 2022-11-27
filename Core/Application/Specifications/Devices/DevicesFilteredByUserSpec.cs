@@ -1,6 +1,6 @@
 ﻿using Application.DTOs;
 using Domain.Entities;
-using Helpers.Classes;
+using Helpers.BaseModels;
 using System;
 using System.Linq;
 

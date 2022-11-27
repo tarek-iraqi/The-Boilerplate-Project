@@ -1,4 +1,4 @@
-﻿using Helpers.Models;
+﻿using Helpers.BaseModels;
 using System.Collections.Generic;
 
 namespace Application.Contracts

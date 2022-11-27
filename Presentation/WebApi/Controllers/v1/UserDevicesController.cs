@@ -1,5 +1,8 @@
-﻿using Application.Features.UserAccount.Commands;
-using Application.Features.UserAccount.Queries;
+﻿using Application.DTOs;
+using Application.Features.Commands;
+using Application.Features.Queries;
+using Helpers.BaseModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,10 +19,11 @@ namespace WebApi.Controllers.v1
         /// <param name="command"></param>
         /// <returns></returns>
         [HttpPut(baseRoute)]
-        public async Task<IActionResult> AddUpdateDevice(AddUpdateUserDevice.Command command)
-        {
-            return new JsonResult(await Mediator.Send(command));
-        }
+        [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Error), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> AddUpdateDevice([FromBody] AddUpdateUserDevice_Command command) =>
+            EndpointResult(await _mediator.Send(command));
+
 
         /// <summary>
         /// Get paginated list of user devices
@@ -28,9 +32,8 @@ namespace WebApi.Controllers.v1
         /// <param name="page_size"></param>
         /// <returns></returns>
         [HttpGet(baseRoute)]
-        public async Task<IActionResult> GetUserDevices([FromQuery] int page_number, [FromQuery] int page_size)
-        {
-            return new JsonResult(await Mediator.Send(new GetUserDevices.Query(page_size, page_number)));
-        }
+        [ProducesResponseType(typeof(PaginatedResult<UserDeviceResponseDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserDevices([FromQuery] int page_number, [FromQuery] int page_size) =>
+            EndpointResult(await _mediator.Send(new GetUserDevices_Query(page_size, page_number)));
     }
 }

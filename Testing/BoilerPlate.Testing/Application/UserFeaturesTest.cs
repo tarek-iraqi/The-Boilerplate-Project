@@ -1,9 +1,4 @@
-﻿using Application.Features.UserAccount.Commands;
-using Application.Contracts;
-using BoilerPlate.Testing._shared;
-using FluentValidation.TestHelper;
-using Moq;
-using Shouldly;
+﻿using BoilerPlate.Testing._shared;
 using Xunit;
 
 namespace BoilerPlate.Testing.Application
@@ -18,70 +13,70 @@ namespace BoilerPlate.Testing.Application
             _localizationFixture = localizationFixture;
         }
 
-        [Fact]
-        public void IsValidUserDataTest()
-        {
-            Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
+        //[Fact]
+        //public void IsValidUserDataTest()
+        //{
+        //    Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
 
-            Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
-                phoneValidator.Object);
+        //    Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
+        //        phoneValidator.Object);
 
-            Register.Command command = new Register.Command
-            {
-                first_name = "Tarek",
-                last_name = "Iraqi",
-                email = "tarek.iraqi@gmail.com",
-                password = "zaq12wsx",
-                password_confirmation = "zaq12wsx"
-            };
+        //    Register.Command command = new Register.Command
+        //    {
+        //        first_name = "Tarek",
+        //        last_name = "Iraqi",
+        //        email = "tarek.iraqi@gmail.com",
+        //        password = "zaq12wsx",
+        //        password_confirmation = "zaq12wsx"
+        //    };
 
-            var result = validator.TestValidate(command);
+        //    var result = validator.TestValidate(command);
 
-            result.IsValid.ShouldBe(true);
-        }
+        //    result.IsValid.ShouldBe(true);
+        //}
 
-        [Fact]
-        public void IsNotValidUserEmailTest()
-        {
-            Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
+        //[Fact]
+        //public void IsNotValidUserEmailTest()
+        //{
+        //    Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
 
-            Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
-                phoneValidator.Object);
+        //    Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
+        //        phoneValidator.Object);
 
-            Register.Command command = new Register.Command
-            {
-                first_name = "Tarek",
-                last_name = "Iraqi",
-                email = "tarek.iraqigmail.com",
-                password = "zaq12wsx",
-                password_confirmation = "zaq12wsx"
-            };
+        //    Register.Command command = new Register.Command
+        //    {
+        //        first_name = "Tarek",
+        //        last_name = "Iraqi",
+        //        email = "tarek.iraqigmail.com",
+        //        password = "zaq12wsx",
+        //        password_confirmation = "zaq12wsx"
+        //    };
 
-            var result = validator.TestValidate(command);
+        //    var result = validator.TestValidate(command);
 
-            result.ShouldHaveValidationErrorFor(p => p.email);
-        }
+        //    result.ShouldHaveValidationErrorFor(p => p.email);
+        //}
 
-        [Fact]
-        public void NotMatchPaswwordTest()
-        {
-            Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
+        //[Fact]
+        //public void NotMatchPaswwordTest()
+        //{
+        //    Mock<IPhoneValidator> phoneValidator = new Mock<IPhoneValidator>();
 
-            Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
-                phoneValidator.Object);
+        //    Register.CommandValidator validator = new Register.CommandValidator(_localizationFixture.localizer,
+        //        phoneValidator.Object);
 
-            Register.Command command = new Register.Command
-            {
-                first_name = "Tarek",
-                last_name = "Iraqi",
-                email = "tarek.iraqi@gmail.com",
-                password = "zaq12wsx",
-                password_confirmation = "zaq12wsxc"
-            };
+        //    Register.Command command = new Register.Command
+        //    {
+        //        first_name = "Tarek",
+        //        last_name = "Iraqi",
+        //        email = "tarek.iraqi@gmail.com",
+        //        password = "zaq12wsx",
+        //        password_confirmation = "zaq12wsxc"
+        //    };
 
-            var result = validator.TestValidate(command);
+        //    var result = validator.TestValidate(command);
 
-            result.ShouldHaveValidationErrorFor(p => p.password_confirmation);
-        }
+        //    result.ShouldHaveValidationErrorFor(p => p.password_confirmation);
+        //}
     }
 }

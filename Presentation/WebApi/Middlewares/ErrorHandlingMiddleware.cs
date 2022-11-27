@@ -1,6 +1,6 @@
-﻿using Helpers.Exceptions;
-using Helpers.Models;
-using Helpers.Resources;
+﻿using Helpers.BaseModels;
+using Helpers.Exceptions;
+using Helpers.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;

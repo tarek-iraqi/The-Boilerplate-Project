@@ -1,8 +1,9 @@
 ﻿using Application.Contracts;
 using FileSignatures;
+using Helpers.BaseModels;
+using Helpers.Constants;
 using Helpers.Enums;
-using Helpers.Models;
-using Helpers.Resources;
+using Helpers.Localization;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Linq;
@@ -17,27 +18,29 @@ namespace Utilities.Services
         {
             _fileFormatInspector = fileFormatInspector;
         }
-        public Result IsValidFile(byte[] file, int fileSizeInMega, FileExtensions[] allowedExtensions)
+        public OperationResult IsValidFile(byte[] file, int fileSizeInMega, FileExtensions[] allowedExtensions)
         {
             using (var stream = new MemoryStream(file))
                 return IsValidFile(stream, fileSizeInMega, allowedExtensions);
         }
 
-        public Result IsValidFile(MemoryStream file, int fileSizeInMega, FileExtensions[] allowedExtensions)
+        public OperationResult IsValidFile(MemoryStream file, int fileSizeInMega, FileExtensions[] allowedExtensions)
         {
             var isValidFileLength = file.Length <= fileSizeInMega * 1024 * 1024;
 
-            if (!isValidFileLength) return Result.Fail(LocalizationKeys.NotValidFileSize);
+            if (!isValidFileLength) return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                OperationError.Add("File Size", LocalizationKeys.NotValidFileSize));
 
             var format = _fileFormatInspector.DetermineFileFormat(file);
             var isValidFileType = format != null && allowedExtensions.Any(ext => ext.ToString() == format.Extension.ToLower());
 
-            if (!isValidFileType) return Result.Fail(LocalizationKeys.NotValidFileType);
+            if (!isValidFileType) return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+                OperationError.Add("File Type", LocalizationKeys.NotValidFileType));
 
-            return Result.Success();
+            return OperationResult.Success();
         }
 
-        public Result IsValidFile(IFormFile file, int fileSizeInMega, FileExtensions[] allowedExtensions)
+        public OperationResult IsValidFile(IFormFile file, int fileSizeInMega, FileExtensions[] allowedExtensions)
         {
             using (var stream = new MemoryStream())
             {

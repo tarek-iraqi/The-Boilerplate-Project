@@ -1,5 +1,5 @@
 ﻿using Application.Contracts;
-using Helpers.Models;
+using Helpers.BaseModels;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 

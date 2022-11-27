@@ -1,7 +1,7 @@
 ﻿using Application.Contracts;
 using Helpers.Constants;
 using Helpers.Exceptions;
-using Helpers.Resources;
+using Helpers.Localization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -27,7 +27,7 @@ namespace WebApi.Middlewares
             {
                 if (!context.Request.Headers.TryGetValue(APIKEYNAME, out var extractedApiKey))
                 {
-                    throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
+                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
                         new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, LocalizationKeys.MissingApiKey) });
                 }
 
@@ -37,7 +37,7 @@ namespace WebApi.Middlewares
 
                 if (!apiClients.Any(a => a.ApiKey.Equals(extractedApiKey)))
                 {
-                    throw new AppCustomException(ErrorStatusCodes.InvalidHeader,
+                    throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
                         new List<Tuple<string, string>> { new Tuple<string, string>(APIKEYNAME, LocalizationKeys.InvalidApiKey) });
                 }
             }

@@ -1,4 +1,4 @@
-﻿using Domain.Common;
+﻿using Helpers.Abstractions;
 
 namespace Domain.DomainEvents
 {

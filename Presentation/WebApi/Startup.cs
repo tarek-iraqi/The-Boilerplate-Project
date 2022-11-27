@@ -103,7 +103,7 @@ namespace WebApi
                 {
                     AppPath = "/swagger/index.html",
                     DashboardTitle = "App Background jobs",
-                    Authorization = new[] { new HandfireAuthorizationFilter() }
+                    Authorization = new[] { new HangfireAuthorizationFilter() }
                 });
             });
         }

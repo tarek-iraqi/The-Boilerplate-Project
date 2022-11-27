@@ -12,14 +12,14 @@
             <param name="page_size"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.RolesController.CreateRole(Application.Features.RoleManagement.Commands.CreateRole.Command)">
+        <member name="M:WebApi.Controllers.v1.RolesController.CreateRole(Application.Features.Commands.CreateRole_Command)">
             <summary>
             create new role with optional permissions
             </summary>
             <param name="command"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.UserDevicesController.AddUpdateDevice(Application.Features.UserAccount.Commands.AddUpdateUserDevice.Command)">
+        <member name="M:WebApi.Controllers.v1.UserDevicesController.AddUpdateDevice(Application.Features.Commands.AddUpdateUserDevice_Command)">
             <summary>
             Add / update user device
             </summary>
@@ -34,7 +34,7 @@
             <param name="page_size"></param>
             <returns></returns>
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.Register(Application.Features.UserAccount.Commands.Register.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.Register(Application.Features.Commands.Registeration_Command)">
             <summary>
             Register new user account
             </summary>
@@ -42,7 +42,7 @@
             <returns></returns>
             
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.VerifyAccount(Application.Features.UserAccount.Commands.VerifyAccount.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.VerifyAccount(Application.Features.Commands.VerifyAccount_Command)">
             <summary>
             Verify user account after registeration
             </summary>
@@ -50,7 +50,7 @@
             <returns></returns>
             
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.Login(Application.Features.UserAccount.Commands.Login.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.Login(Application.Features.Commands.Login_Command)">
             <summary>
             Login request
             </summary>
@@ -58,7 +58,7 @@
             <returns></returns>
             
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.ForgetPassword(Application.Features.UserAccount.Commands.ForgetPassword.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.ForgetPassword(Application.Features.Commands.ForgetPassword_Command)">
             <summary>
             Forget password request
             </summary>
@@ -66,7 +66,7 @@
             <returns></returns>
             
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.ResetPassword(Application.Features.UserAccount.Commands.ResetPassword.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.ResetPassword(Application.Features.Commands.ResetPassword_Command)">
             <summary>
             Reset password request
             </summary>
@@ -74,7 +74,7 @@
             <returns></returns>
             
         </member>
-        <member name="M:WebApi.Controllers.v1.UsersController.UpdateProfile(Application.Features.UserAccount.Commands.UpdateProfile.Command)">
+        <member name="M:WebApi.Controllers.v1.UsersController.UpdateProfile(Application.Features.Commands.UpdateProfile_Command)">
             <summary>
             Update user profile
             </summary>

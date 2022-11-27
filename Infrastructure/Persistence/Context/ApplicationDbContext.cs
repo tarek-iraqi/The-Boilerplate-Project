@@ -1,6 +1,6 @@
 ﻿using Application.Contracts;
-using Domain.Common;
 using Domain.Entities;
+using Helpers.Abstractions;
 using Helpers.Extensions;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿using Domain.Contracts;
+﻿using Helpers.Abstractions;
 using Persistence.Context;
 using System;
 using System.Collections;
