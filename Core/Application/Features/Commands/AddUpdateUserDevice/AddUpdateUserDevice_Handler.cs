@@ -5,14 +5,13 @@ using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class AddUpdateUserDevice_Handler : IRequestHandler<AddUpdateUserDevice_Command, OperationResult>
+internal class AddUpdateUserDevice_Handler : ICommandHandler<AddUpdateUserDevice_Command, OperationResult>
 {
     private readonly IUnitOfWork _uow;
     private readonly IIdentityService _identityService;

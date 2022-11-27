@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿using Helpers.Abstractions;
 
 namespace Application.Features.Commands;
 
-public record ExportSampleImage_Command : IRequest<byte[]>;
+public record ExportSampleImage_Command : ICommand<byte[]>;

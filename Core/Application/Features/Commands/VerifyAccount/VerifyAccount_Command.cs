@@ -1,13 +1,13 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
 public record VerifyAccount_Command(string email,
-    string token) : IRequest<OperationResult>;
+    string token) : ICommand<OperationResult>;
 
 public class VerifyAccount_CommandValidator : AbstractValidator<VerifyAccount_Command>
 {

@@ -1,12 +1,12 @@
 ﻿using Application.Contracts;
-using MediatR;
+using Helpers.Abstractions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class ExportSampleImage_Handler : IRequestHandler<ExportSampleImage_Command, byte[]>
+internal class ExportSampleImage_Handler : ICommandHandler<ExportSampleImage_Command, byte[]>
 {
     private readonly IImageOperations _imageOperations;
 

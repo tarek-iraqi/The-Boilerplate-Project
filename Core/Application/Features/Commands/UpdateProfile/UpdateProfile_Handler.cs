@@ -1,16 +1,16 @@
 ﻿using Application.Contracts;
 using Domain.ValueObjects;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class UpdateProfile_Handler : IRequestHandler<UpdateProfile_Command, OperationResult>
+internal class UpdateProfile_Handler : ICommandHandler<UpdateProfile_Command, OperationResult>
 {
     private readonly IIdentityService _identityService;
     private readonly IAuthenticatedUserService _authenticatedUserService;

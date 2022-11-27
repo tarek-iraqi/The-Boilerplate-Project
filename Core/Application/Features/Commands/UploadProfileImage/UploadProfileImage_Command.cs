@@ -1,13 +1,13 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Features.Commands;
 
-public record UploadProfileImage_Command(IFormFile file) : IRequest<OperationResult<string>>;
+public record UploadProfileImage_Command(IFormFile file) : ICommand<OperationResult<string>>;
 
 public class UploadProfileImage_CommandValidator : AbstractValidator<UploadProfileImage_Command>
 {

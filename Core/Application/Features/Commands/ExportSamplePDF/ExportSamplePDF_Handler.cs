@@ -1,5 +1,5 @@
 ﻿using Application.Contracts;
-using MediatR;
+using Helpers.Abstractions;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Text;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class ExportSamplePDF_Handler : IRequestHandler<ExportSamplePDF_Command, byte[]>
+internal class ExportSamplePDF_Handler : ICommandHandler<ExportSamplePDF_Command, byte[]>
 {
     private readonly IPDFOperations _pdfOperations;
     private readonly IWebHostEnvironment _env;

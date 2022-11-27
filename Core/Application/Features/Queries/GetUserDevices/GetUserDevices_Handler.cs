@@ -6,14 +6,13 @@ using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Queries;
 
-internal class GetUserDevices_Handler : IRequestHandler<GetUserDevices_Query,
+internal class GetUserDevices_Handler : IQueryHandler<GetUserDevices_Query,
     OperationResult<PaginatedResult<UserDeviceResponseDTO>>>
 {
     private readonly IUnitOfWork _uow;

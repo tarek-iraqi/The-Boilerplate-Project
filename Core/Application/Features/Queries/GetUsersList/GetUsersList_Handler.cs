@@ -3,13 +3,12 @@ using Application.Specifications.Users;
 using Domain.Entities;
 using Helpers.Abstractions;
 using Helpers.BaseModels;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Queries;
 
-internal class GetUsersList_Handler : IRequestHandler<GetUsersList_Query, OperationResult<PaginatedResult<UsersListResponseDTO>>>
+internal class GetUsersList_Handler : IQueryHandler<GetUsersList_Query, OperationResult<PaginatedResult<UsersListResponseDTO>>>
 {
     private readonly IUnitOfWork _uow;
 

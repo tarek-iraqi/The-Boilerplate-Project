@@ -1,12 +1,12 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
-public record ForgetPassword_Command(string email) : IRequest<OperationResult>;
+public record ForgetPassword_Command(string email) : ICommand<OperationResult>;
 
 public class ForgetPassword_CommandValidator : AbstractValidator<ForgetPassword_Command>
 {

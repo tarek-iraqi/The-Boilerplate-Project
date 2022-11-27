@@ -1,17 +1,17 @@
 ﻿using Application.Authorization;
 using Application.Contracts;
 using Domain.Entities;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class CreateRole_Handler : IRequestHandler<CreateRole_Command, OperationResult>
+internal class CreateRole_Handler : ICommandHandler<CreateRole_Command, OperationResult>
 {
     private readonly IIdentityService _identityService;
 

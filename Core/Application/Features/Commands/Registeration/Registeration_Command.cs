@@ -1,8 +1,8 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
@@ -12,7 +12,7 @@ public record Registeration_Command(string first_name,
     string mobile_number,
     string country_code,
     string password,
-    string password_confirmation) : IRequest<OperationResult>;
+    string password_confirmation) : ICommand<OperationResult>;
 
 public class Registeration_CommandValidator : AbstractValidator<Registeration_Command>
 {

@@ -1,15 +1,15 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
 public record ResetPassword_Command(string email,
     string token,
     string password,
-    string password_confirmation) : IRequest<OperationResult>;
+    string password_confirmation) : ICommand<OperationResult>;
 
 public class ResetPassword_CommandValidator : AbstractValidator<ResetPassword_Command>
 {

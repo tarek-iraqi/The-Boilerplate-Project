@@ -1,13 +1,13 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
 public record AddUpdateUserDevice_Command(string model,
-    string token) : IRequest<OperationResult>;
+    string token) : ICommand<OperationResult>;
 
 public class AddUpdateUserDevice_CommandValidator : AbstractValidator<AddUpdateUserDevice_Command>
 {

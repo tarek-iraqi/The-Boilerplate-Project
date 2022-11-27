@@ -1,14 +1,14 @@
 ﻿using Application.Authorization;
 using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
 public record CreateRole_Command(string name,
-    Permissions[] permissions) : IRequest<OperationResult>;
+    Permissions[] permissions) : ICommand<OperationResult>;
 
 public class CreateRole_CommandValidator : AbstractValidator<CreateRole_Command>
 {

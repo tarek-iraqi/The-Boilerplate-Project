@@ -1,8 +1,8 @@
 ﻿using Application.Contracts;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class VerifyAccount_Handler : IRequestHandler<VerifyAccount_Command, OperationResult>
+internal class VerifyAccount_Handler : ICommandHandler<VerifyAccount_Command, OperationResult>
 {
     private readonly IIdentityService _identityService;
 

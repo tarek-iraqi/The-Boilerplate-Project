@@ -4,14 +4,13 @@ using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Enums;
-using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class UploadProfileImage_Handler : IRequestHandler<UploadProfileImage_Command, OperationResult<string>>
+internal class UploadProfileImage_Handler : ICommandHandler<UploadProfileImage_Command, OperationResult<string>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IAuthenticatedUserService _authenticatedUserService;

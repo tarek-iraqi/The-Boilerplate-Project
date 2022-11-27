@@ -6,7 +6,6 @@ using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Linq;
 using System.Text;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class Registeration_Handler : IRequestHandler<Registeration_Command, OperationResult>
+internal class Registeration_Handler : ICommandHandler<Registeration_Command, OperationResult>
 {
     private readonly IIdentityService _identityService;
     private readonly IPhoneValidator _phoneValidator;

@@ -4,7 +4,6 @@ using Domain.Entities;
 using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Extensions;
-using MediatR;
 using System;
 using System.Linq;
 using System.Threading;
@@ -12,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Queries;
 
-internal class GetRolesWithPermissions_Handler : IRequestHandler<GetRolesWithPermissions_Query,
+internal class GetRolesWithPermissions_Handler : IQueryHandler<GetRolesWithPermissions_Query,
     OperationResult<PaginatedResult<RolesWithPermissionsDTO>>>
 {
     private readonly IUnitOfWork _uow;

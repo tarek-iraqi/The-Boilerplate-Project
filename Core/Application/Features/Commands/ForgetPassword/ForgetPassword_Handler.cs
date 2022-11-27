@@ -1,9 +1,9 @@
 ﻿using Application.Contracts;
 using Application.DTOs;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Threading;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class ForgetPassword_Handler : IRequestHandler<ForgetPassword_Command, OperationResult>
+internal class ForgetPassword_Handler : ICommandHandler<ForgetPassword_Command, OperationResult>
 {
     private readonly IIdentityService _identityService;
     private readonly IEmailSender _emailSender;

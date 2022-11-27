@@ -1,15 +1,15 @@
 ﻿using Application.Contracts;
 using Application.DTOs;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Constants;
 using Helpers.Localization;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Features.Commands;
 
-internal class Login_Handler : IRequestHandler<Login_Command, OperationResult<LoginResponseDTO>>
+internal class Login_Handler : ICommandHandler<Login_Command, OperationResult<LoginResponseDTO>>
 {
     private readonly IIdentityService _identityService;
     private readonly IApplicationConfiguration _configuration;

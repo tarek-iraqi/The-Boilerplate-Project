@@ -1,8 +1,8 @@
 ﻿using Application.Contracts;
 using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.BaseModels;
 using Helpers.Localization;
-using MediatR;
 
 namespace Application.Features.Commands;
 
@@ -10,7 +10,7 @@ public record UpdateProfile_Command(string first_name,
     string last_name,
     string email,
     string mobile_number,
-    string country_code) : IRequest<OperationResult>;
+    string country_code) : ICommand<OperationResult>;
 
 public class UpdateProfile_CommandValidator : AbstractValidator<UpdateProfile_Command>
 {
