@@ -3,10 +3,11 @@ using Domain.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Entities
 {
-    public class AppUser : IdentityUser<Guid>, IBaseEntity
+    public class AppUser : IdentityUser<Guid>, IBaseEntity, IDomainEventCollection
     {
         protected AppUser()
         {
@@ -57,5 +58,19 @@ namespace Domain.Entities
         public string LastModifiedBy { get; set; }
         public DateTime? LastModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
+
+        public List<IDomainEvent> DomainEvents { get; set; }
+        public void RaiseEvent(IDomainEvent domainEvent)
+        {
+            DomainEvents ??= new();
+            DomainEvents.Add(domainEvent);
+        }
+
+        public IEnumerable<IDomainEvent> DispatchEvents()
+        {
+            var domainEvents = DomainEvents?.ToList();
+            DomainEvents?.Clear();
+            return domainEvents;
+        }
     }
 }

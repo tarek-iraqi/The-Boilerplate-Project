@@ -25,6 +25,7 @@ namespace Persistence.Context
             _authenticatedUser = authenticatedUser;
         }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
         public IDbConnection Connection => Database.GetDbConnection();
 
@@ -112,6 +113,8 @@ namespace Persistence.Context
             {
                 fk.DeleteBehavior = DeleteBehavior.NoAction;
             }
+
+            builder.ApplyGlobalIgnore<IDomainEventCollection>("DomainEvents");
 
             #region Global Query Filters
 

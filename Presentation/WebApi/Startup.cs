@@ -1,4 +1,6 @@
+using Application.Contracts;
 using Domain.Entities;
+using Hangfire;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +13,7 @@ using System;
 using Utilities;
 using Utilities.Services;
 using WebApi.Extensions;
+using WebApi.Filters;
 using WebApi.Middlewares;
 
 namespace WebApi
@@ -56,10 +59,14 @@ namespace WebApi
             .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddHangfireService(_configuration);
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IBackgroundCronJobs cronJobs)
         {
+            RecurringJob.AddOrUpdate(() => cronJobs.HandleDomainEvents(), "* * * * *");
+
             app.UseRequestLocalization();
 
             app.UseHttpsRedirection();
@@ -91,6 +98,13 @@ namespace WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapHangfireDashboard("/hf_dashboard", new DashboardOptions
+                {
+                    AppPath = "/swagger/index.html",
+                    DashboardTitle = "App Background jobs",
+                    Authorization = new[] { new HandfireAuthorizationFilter() }
+                });
             });
         }
     }

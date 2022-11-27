@@ -18,6 +18,7 @@
         public const string GeneralError = "error";
         public const string FirebaseApp = "FIREBASE_APP";
         public const string DbConnection = "DbConnection";
+        public const string HangfireDbConnectionName = "HangfireDbConnection";
         public const string UsernameClaimType = "username";
         public const string LogsPath = "wwwroot/logs";
         public const string UploadFolder = "Uploads";

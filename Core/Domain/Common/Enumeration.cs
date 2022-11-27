@@ -48,7 +48,7 @@ namespace Domain.Common
                 return false;
             }
 
-            var typeMatches = GetType().Equals(obj.GetType());
+            var typeMatches = GetType() == obj.GetType();
             var valueMatches = _value.Equals(otherValue.Value);
 
             return typeMatches && valueMatches;
@@ -70,7 +70,7 @@ namespace Domain.Common
 
             if (matchingItem == null)
             {
-                var message = string.Format("'{0}' is not a valid {1} in {2}", value, description, typeof(T));
+                var message = $"'{value}' is not a valid {description} in {typeof(T)}";
                 throw new ApplicationException(message);
             }
 

@@ -14,4 +14,12 @@ namespace Persistence.EntitiesConfiguration
             builder.Property(m => m.RoleId).HasConversion<string>().HasMaxLength(85);
         }
     }
+
+    public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+    {
+        public void Configure(EntityTypeBuilder<OutboxMessage> builder)
+        {
+            builder.HasKey(x => x.Id);
+        }
+    }
 }

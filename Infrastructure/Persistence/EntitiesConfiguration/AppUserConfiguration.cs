@@ -25,6 +25,7 @@ namespace Persistence.EntitiesConfiguration
             });
 
 
+
             builder.HasMany(e => e.Claims)
                 .WithOne(e => e.User)
                 .HasForeignKey(uc => uc.UserId)

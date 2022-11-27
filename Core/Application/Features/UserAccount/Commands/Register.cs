@@ -1,5 +1,6 @@
-﻿using Application.DTOs;
-using Application.Contracts;
+﻿using Application.Contracts;
+using Domain.Contracts;
+using Domain.DomainEvents;
 using Domain.Entities;
 using Domain.ValueObjects;
 using FluentValidation;
@@ -82,14 +83,18 @@ namespace Application.Features.UserAccount.Commands
             private readonly IEmailSender _emailSender;
             private readonly IApplicationLocalization _localizer;
             private readonly IPhoneValidator _phoneValidator;
+            private readonly IUnitOfWork _unitOfWork;
 
             public Handler(IIdentityService identityService, IEmailSender emailSender,
-                IApplicationLocalization localizer, IPhoneValidator phoneValidator)
+                IApplicationLocalization localizer,
+                IPhoneValidator phoneValidator,
+                IUnitOfWork unitOfWork)
             {
                 _identityService = identityService;
                 _emailSender = emailSender;
                 _localizer = localizer;
                 _phoneValidator = phoneValidator;
+                _unitOfWork = unitOfWork;
             }
             public async Task<OperationResult> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -104,27 +109,23 @@ namespace Application.Features.UserAccount.Commands
 
                 var name = Name.Create(request.first_name, request.last_name);
 
-                var result = await _identityService.Add(new AppUser(
+                user = new AppUser(
                     name,
                     request.email,
                     request.email,
-                    phoneInternationalFormat
-                ), request.password);
+                    phoneInternationalFormat);
+
+                var result = await _identityService.Add(user, request.password);
 
                 if (!result.success)
                     return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
                         result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
 
-                var emailModel = new AccountVerificationEmailDTO
-                {
-                    name = $"{request.first_name} {request.last_name}",
-                    token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(result.verification_token))
-                };
+                user.RaiseEvent(new RegisterUserDomainEvent($"{request.first_name} {request.last_name}",
+                    request.email,
+                    WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(result.verification_token))));
 
-                await _emailSender.SendSingleEmail(request.email,
-                    _localizer.Get(LocalizationKeys.AccountConfirmation),
-                    KeyValueConstants.AccountVerificationEmailTemplate,
-                    emailModel);
+                await _unitOfWork.CompleteAsync();
 
                 return OperationResult.Success();
             }

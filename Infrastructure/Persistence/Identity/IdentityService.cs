@@ -1,5 +1,5 @@
-﻿using Application.DTOs;
-using Application.Contracts;
+﻿using Application.Contracts;
+using Application.DTOs;
 using Domain.Entities;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Identity;
@@ -52,7 +52,7 @@ namespace Persistence.Identity
                 success = identityResult.Succeeded,
                 errors = identityResult.Succeeded ? null : identityResult.Errors
                         .Select(a => new Tuple<string, string>(a.Code, a.Description)).ToList(),
-                verification_token = verificationToken
+                verification_token = verificationToken,
             };
         }
 

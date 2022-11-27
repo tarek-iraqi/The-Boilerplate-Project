@@ -3,6 +3,8 @@ using Application.Authorization;
 using Application.Common;
 using Application.Contracts;
 using FluentValidation.AspNetCore;
+using Hangfire;
+using Hangfire.MySql;
 using Helpers.Constants;
 using Helpers.Models;
 using Helpers.Resources;
@@ -26,6 +28,7 @@ using System.Threading.Tasks;
 using WebApi.Extensions.Swagger;
 using WebApi.Filters;
 using WebApi.Services;
+using IsolationLevel = System.Transactions.IsolationLevel;
 
 namespace WebApi.Extensions
 {
@@ -39,6 +42,7 @@ namespace WebApi.Extensions
             services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationRequirementHandler>();
             services.AddScoped<ApiResultFilterAttribute>();
+            services.AddScoped<IBackgroundCronJobs, BackgroundCronJobs>();
         }
 
         public static void AddSwaggerService(this IServiceCollection services, IConfiguration configuration)
@@ -152,40 +156,36 @@ namespace WebApi.Extensions
         public static void AddControllersService(this IServiceCollection services)
         {
             services.AddControllers()
-            .AddDataAnnotationsLocalization(o => o.DataAnnotationLocalizerProvider = (type, factory) =>
-            {
-                return factory.Create(typeof(SharedResource));
-            })
-            .ConfigureApiBehaviorOptions(options =>
-            {
-                options.InvalidModelStateResponseFactory = context =>
+                .AddDataAnnotationsLocalization(o =>
+                    o.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource)))
+                .ConfigureApiBehaviorOptions(options =>
                 {
-                    var errors = new List<ErrorResult>();
-
-                    foreach (var key in context.ModelState.Keys)
+                    options.InvalidModelStateResponseFactory = context =>
                     {
-                        var value = context.ModelState[key];
-                        foreach (var error in value.Errors)
+                        var errors = new List<ErrorResult>();
+
+                        foreach (var key in context.ModelState.Keys)
                         {
-                            errors.Add(new ErrorResult { Type = key, Error = error.ErrorMessage });
+                            var value = context.ModelState[key];
+                            foreach (var error in value.Errors)
+                            {
+                                errors.Add(new ErrorResult { Type = key, Error = error.ErrorMessage });
+                            }
                         }
-                    }
 
-                    var problemDetails = new Error
-                    {
-                        Errors = errors
-                    };
+                        var problemDetails = new Error
+                        {
+                            Errors = errors
+                        };
 
-                    return new UnprocessableEntityObjectResult(problemDetails)
-                    {
-                        ContentTypes = { "application/problem+json" }
+                        return new UnprocessableEntityObjectResult(problemDetails)
+                        {
+                            ContentTypes = { "application/problem+json" }
+                        };
                     };
-                };
-            })
-            .AddFluentValidation(fv =>
-            {
-                fv.RegisterValidatorsFromAssemblyContaining<IApplicationLayer>();
-            });
+                });
+
+            services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
         }
 
         public static void AddCorsOriginService(this IServiceCollection services, IConfiguration configuration)
@@ -239,6 +239,28 @@ namespace WebApi.Extensions
                     }
                 };
             });
+        }
+
+        public static void AddHangfireService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(options => options
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseStorage(new MySqlStorage(configuration[KeyValueConstants.HangfireDbConnectionName],
+                    new MySqlStorageOptions
+                    {
+                        TransactionIsolationLevel = IsolationLevel.ReadCommitted,
+                        QueuePollInterval = TimeSpan.FromSeconds(15),
+                        JobExpirationCheckInterval = TimeSpan.FromHours(1),
+                        CountersAggregateInterval = TimeSpan.FromMinutes(5),
+                        PrepareSchemaIfNecessary = true,
+                        DashboardJobListLimit = 50000,
+                        TransactionTimeout = TimeSpan.FromMinutes(1),
+                        TablesPrefix = "hangfire_"
+                    })));
+
+            services.AddHangfireServer();
         }
     }
 }

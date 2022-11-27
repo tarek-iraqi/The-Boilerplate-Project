@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Domain.Common
 {
-    public abstract class Entity<T> : IBaseEntity
+    public abstract class Entity<T> : IBaseEntity, IDomainEventCollection
     {
         public T Id { get; set; }
         public string CreatedBy { get; set; }
@@ -60,5 +63,20 @@ namespace Domain.Common
 
             return type;
         }
+
+        public List<IDomainEvent> DomainEvents { get; set; }
+        public void RaiseEvent(IDomainEvent domainEvent)
+        {
+            DomainEvents ??= new();
+            DomainEvents.Add(domainEvent);
+        }
+
+        public IEnumerable<IDomainEvent> DispatchEvents()
+        {
+            var domainEvents = DomainEvents.ToList();
+            DomainEvents.Clear();
+            return domainEvents;
+        }
     }
+
 }

@@ -13,32 +13,33 @@ namespace Helpers.Models
         public object Data { get; private set; }
         public OperationError[] Errors { get; private set; }
         public HttpStatusCode HttpStatusCode { get; private set; }
-        public OperationResult(bool isSuccess, string message = LocalizationKeys.OperationDoneSuccessfully)
+
+        private OperationResult(bool isSuccess, string message = LocalizationKeys.OperationDoneSuccessfully)
         {
             IsSuccess = isSuccess;
             Message = message;
             HttpStatusCode = HttpStatusCode.OK;
         }
 
-        public OperationResult(bool isSuccess, object data)
+        private OperationResult(bool isSuccess, object data)
         {
             IsSuccess = isSuccess;
             Data = data;
             HttpStatusCode = HttpStatusCode.OK;
         }
 
-        public OperationResult(bool isSuccess, HttpStatusCode httpStatusCode, params OperationError[] errors)
+        private OperationResult(bool isSuccess, HttpStatusCode httpStatusCode, params OperationError[] errors)
         {
             IsSuccess = isSuccess;
             Errors = errors;
             HttpStatusCode = httpStatusCode;
         }
 
-        public static OperationResult Success(string message) => new OperationResult(true, message);
-        public static OperationResult Success() => new OperationResult(true);
-        public static OperationResult Success<T>(T data) => new OperationResult(true, data);
-        public static OperationResult Fail(HttpStatusCode httpStatusCode,
-            params OperationError[] errors) => new OperationResult(false, httpStatusCode, errors);
+        public static OperationResult Success(string message) => new(true, message);
+        public static OperationResult Success() => new(true);
+        public static OperationResult Success<T>(T data) => new(true, data);
+        public static OperationResult Fail(HttpStatusCode httpStatusCode, params OperationError[] errors) =>
+            new(false, httpStatusCode, errors);
     }
 
     public class OperationError
@@ -54,7 +55,7 @@ namespace Helpers.Models
             ErrorPlaceholders = errorPlaceholders;
         }
         public static OperationError Add(string type, string error, string[] errorPlaceholders = null) =>
-            new OperationError(type, error, errorPlaceholders);
+            new(type, error, errorPlaceholders);
     }
 
 
@@ -66,15 +67,15 @@ namespace Helpers.Models
         [JsonPropertyName("message")]
         public string Message { get; private set; }
 
-        public Result(bool isSuccess, string message = null)
+        private Result(bool isSuccess, string message = null)
         {
             IsSuccess = isSuccess;
             Message = message;
         }
 
-        public static Result Success(string message) => new Result(true, message);
-        public static Result Success() => new Result(true);
-        public static Result Fail(string message) => new Result(false, message);
+        public static Result Success(string message) => new(true, message);
+        public static Result Success() => new(true);
+        public static Result Fail(string message) => new(false, message);
     }
 
     public class ResultWithData
@@ -82,11 +83,11 @@ namespace Helpers.Models
         [JsonPropertyName("data")]
         public object Data { get; private set; }
 
-        public ResultWithData(object data)
+        private ResultWithData(object data)
         {
             Data = data;
         }
-        public static ResultWithData Success(object data) => new ResultWithData(data);
+        public static ResultWithData Success(object data) => new(data);
     }
 
     public class Result<T>
@@ -94,12 +95,12 @@ namespace Helpers.Models
         [JsonPropertyName("data")]
         public T Data { get; }
 
-        public Result(T data)
+        private Result(T data)
         {
             Data = data;
         }
 
-        public static Result<T> ValueOf(T data) => new Result<T>(data);
+        public static Result<T> ValueOf(T data) => new(data);
     }
 
     public class PaginatedResult<T>

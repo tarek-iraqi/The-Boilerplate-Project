@@ -40,5 +40,17 @@ namespace Persistence.Context
                 }
             }
         }
+
+        public static void ApplyGlobalIgnore<TInterface>(this ModelBuilder modelBuilder,
+            string property)
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (entityType.ClrType.GetInterface(typeof(TInterface).Name) != null)
+                {
+                    modelBuilder.Entity(entityType.ClrType).Ignore(property);
+                }
+            }
+        }
     }
 }
