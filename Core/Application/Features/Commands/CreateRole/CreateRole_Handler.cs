@@ -24,7 +24,7 @@ internal class CreateRole_Handler : ICommandHandler<CreateRole_Command, Operatio
         var isRoleExist = await _identityService.GetRole(request.name);
 
         if (isRoleExist != null)
-            return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 OperationError.Add(nameof(request.name), LocalizationKeys.DuplicateRole));
 
         var newRole = AppRole.Create(request.name);
@@ -33,7 +33,7 @@ internal class CreateRole_Handler : ICommandHandler<CreateRole_Command, Operatio
         var result = await _identityService.AddNewRole(newRole);
 
         return !result.success
-            ? OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            ? OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray())
             : OperationResult.Success();
     }

@@ -34,7 +34,7 @@ internal class UploadProfileImage_Handler : ICommandHandler<UploadProfileImage_C
             new[] { FileExtensions.jpeg, FileExtensions.png, FileExtensions.jpg });
 
         if (!validationResult.IsSuccess)
-            return OperationResult.Fail<string>(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail<string>(ErrorStatusCodes.BadRequest,
                 errors: OperationError.Add(nameof(request.file), validationResult.Message));
 
         var fileName = await _upload.UploadFile(request.file, _authenticatedUserService.UserId);

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface IImageOperations
 {
-    public interface IImageOperations
-    {
-        byte[] ConvertHTMLToImage(string htmlTemplate, string format);
-    }
+    byte[] ConvertHTMLToImage(string htmlTemplate, string format);
 }

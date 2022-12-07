@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Domain.Common;
 
-public abstract class Entity<T> : IBaseEntity, IDomainEventCollection
+public abstract class Entity<T> : IBaseEntity
 {
     public T Id { get; set; }
     public string CreatedBy { get; set; }

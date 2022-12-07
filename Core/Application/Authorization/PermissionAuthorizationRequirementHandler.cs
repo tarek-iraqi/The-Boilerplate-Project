@@ -3,70 +3,60 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.Authorization
+namespace Application.Authorization;
+
+public class PermissionAuthorizationRequirementHandler : AuthorizationHandler<PermissionAuthorizationRequirement>
 {
-    public class PermissionAuthorizationRequirementHandler : AuthorizationHandler<PermissionAuthorizationRequirement>
+    protected override Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        PermissionAuthorizationRequirement requirement)
     {
-        protected override Task HandleRequirementAsync(
-            AuthorizationHandlerContext context,
-            PermissionAuthorizationRequirement requirement)
+        var isAuthorized = context.User.IsInRole(DefaultRoles.SUPER_ADMIN.ToString());
+
+        if (isAuthorized)
         {
-            string[] claims = null;
-            string compareOperator = null;
-
-            if (requirement.Permissions.Contains(PermissionConstants.PermissionCompareOperatorSeparator))
-            {
-                var tempArray = requirement.Permissions.Split(PermissionConstants.PermissionCompareOperatorSeparator);
-                claims = tempArray[0].Split(PermissionConstants.PermissionSeparator);
-                compareOperator = tempArray[1];
-            }
-            else
-            {
-                claims = requirement.Permissions.Split(PermissionConstants.PermissionSeparator);
-            }
-
-            bool isAuthorized = context.User.IsInRole(DefaultRoles.SUPER_ADMIN.ToString());
-
-            if (!isAuthorized)
-            {
-                if (!string.IsNullOrEmpty(compareOperator) &&
-                    (PermissionCompareOperator)Enum.Parse(typeof(PermissionCompareOperator), compareOperator) == PermissionCompareOperator.Or)
-                {
-                    foreach (var claim in claims)
-                    {
-                        int claimValue = (int)((Permissions)Enum.Parse(typeof(Permissions), claim));
-
-                        isAuthorized = context.User.Claims.Any(a =>
-                            a.Type == PermissionConstants.ActionPermission && int.Parse(a.Value) == claimValue);
-
-                        if (isAuthorized) break;
-                    }
-                }
-                else
-                {
-                    foreach (var claim in claims)
-                    {
-                        Enum.TryParse(typeof(Permissions), claim, out object permisssion);
-
-                        if (permisssion is not null)
-                        {
-                            int claimValue = (int)((Permissions)permisssion);
-
-                            isAuthorized = context.User.Claims.Any(a =>
-                                a.Type == PermissionConstants.ActionPermission && int.Parse(a.Value) == claimValue);
-                        }
-
-                        if (!isAuthorized) break;
-                    }
-                }
-            }
-
-            if (isAuthorized)
-            {
-                context.Succeed(requirement);
-            }
+            context.Succeed(requirement);
 
             return Task.CompletedTask;
         }
+
+        if (requirement.Permissions.Contains(PermissionConstants.PermissionGroupSeparator))
+        {
+            var permissionGroupsString = requirement.Permissions.Split(PermissionConstants.PermissionSeparator);
+
+            var permissionGroups = permissionGroupsString
+                .Select(x => x.Split(PermissionConstants.PermissionGroupSeparator).Select(int.Parse));
+
+            foreach (var group in permissionGroups)
+            {
+                isAuthorized = !group.Except(
+                    context.User.Claims.Where(x => x.Type == PermissionConstants.ActionPermission)
+                        .Select(x => int.Parse(x.Value))).Any();
+
+                if (isAuthorized) break;
+            }
+        }
+        else if (requirement.Permissions.Contains(PermissionConstants.PermissionSeparator))
+        {
+            var permissions = requirement.Permissions
+                .Split(PermissionConstants.PermissionSeparator)
+                .Select(int.Parse);
+
+            isAuthorized = context.User.Claims
+                .Where(x => x.Type == PermissionConstants.ActionPermission)
+                .Any(x => permissions.Contains(int.Parse(x.Value)));
+        }
+        else
+        {
+            var permission = int.Parse(requirement.Permissions);
+
+            isAuthorized = context.User.Claims
+                .Any(x => x.Type == PermissionConstants.ActionPermission && int.Parse(x.Value) == permission);
+        }
+
+        if (isAuthorized)
+            context.Succeed(requirement);
+
+        return Task.CompletedTask;
     }
 }

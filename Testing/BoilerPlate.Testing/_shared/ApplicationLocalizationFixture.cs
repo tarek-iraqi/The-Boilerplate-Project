@@ -5,28 +5,27 @@ using Microsoft.Extensions.Options;
 using System;
 using Utilities;
 
-namespace BoilerPlate.Testing._shared
+namespace BoilerPlate.Testing._shared;
+
+public class ApplicationLocalizationFixture : IDisposable
 {
-    public class ApplicationLocalizationFixture : IDisposable
+    public ApplicationLocalization localizer { get; private set; }
+    public ApplicationLocalizationFixture()
     {
-        public ApplicationLocalization localizer { get; private set; }
-        public ApplicationLocalizationFixture()
-        {
-            var options = Options.Create(new LocalizationOptions { ResourcesPath = "Resources" });
-            var factory = new ResourceManagerStringLocalizerFactory(options, NullLoggerFactory.Instance);
-            var stringLocalizer = new StringLocalizer<SharedResource>(factory);
+        var options = Options.Create(new LocalizationOptions { ResourcesPath = "Resources" });
+        var factory = new ResourceManagerStringLocalizerFactory(options, NullLoggerFactory.Instance);
+        var stringLocalizer = new StringLocalizer<SharedResource>(factory);
 
-            localizer = new ApplicationLocalization(stringLocalizer);
-        }
+        localizer = new ApplicationLocalization(stringLocalizer);
+    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-        }
+    protected virtual void Dispose(bool disposing)
+    {
+    }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

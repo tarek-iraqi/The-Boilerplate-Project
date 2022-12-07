@@ -33,7 +33,7 @@ internal class Registeration_Handler : ICommandHandler<Registeration_Command, Op
         var user = await _identityService.FindByName(request.email);
 
         if (user != null)
-            return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 OperationError.Add(nameof(request.email), LocalizationKeys.DuplicateEmail));
 
         var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
@@ -50,7 +50,7 @@ internal class Registeration_Handler : ICommandHandler<Registeration_Command, Op
         var result = await _identityService.Add(user, request.password);
 
         if (!result.success)
-            return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
 
         user.RaiseEvent(new RegisterUserDomainEvent($"{request.first_name} {request.last_name}",

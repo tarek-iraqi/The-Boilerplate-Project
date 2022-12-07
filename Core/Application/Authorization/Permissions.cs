@@ -1,7 +1,14 @@
-﻿namespace Application.Authorization
+﻿namespace Application.Authorization;
+
+public enum Permissions
 {
-    public enum Permissions
+    ViewUsers = 1
+}
+
+public static class PermissionsExtensions
+{
+    public static string ToStringNumber(this Permissions permission)
     {
-        ViewUsers = 1
+        return ((int)permission).ToString();
     }
 }

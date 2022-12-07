@@ -4,37 +4,35 @@ using Microsoft.Extensions.Options;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
-namespace Application.Authorization
+namespace Application.Authorization;
+
+public class AuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
 {
-    public class AuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
+    private readonly ConcurrentDictionary<string, AuthorizationPolicy> _policies;
+    public AuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
+        : base(options)
     {
-        private readonly ConcurrentDictionary<string, AuthorizationPolicy> _policies;
-        public AuthorizationPolicyProvider(IOptions<AuthorizationOptions> options)
-            : base(options)
-        {
-            _policies = new ConcurrentDictionary<string, AuthorizationPolicy>();
-        }
+        _policies = new ConcurrentDictionary<string, AuthorizationPolicy>();
+    }
 
-        public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
-        {
-            var policy = await base.GetPolicyAsync(policyName);
+    public override async Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+    {
+        var policy = await base.GetPolicyAsync(policyName);
 
-            if (policy != null) return policy;
+        if (policy != null) return policy;
 
-            _policies.TryGetValue(policyName, out policy);
+        _policies.TryGetValue(policyName, out policy);
 
-            if (policy == null)
-            {
-                policy = new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(new PermissionAuthorizationRequirement(policyName))
-                    .Build();
+        if (policy != null) return policy;
+            
+        policy = new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+            .RequireAuthenticatedUser()
+            .AddRequirements(new PermissionAuthorizationRequirement(policyName))
+            .Build();
 
-                _policies.TryAdd(policyName, policy);
-            }
+        _policies.TryAdd(policyName, policy);
 
-            return policy;
-        }
+        return policy;
     }
 }

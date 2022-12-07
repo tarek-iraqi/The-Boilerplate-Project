@@ -14,78 +14,77 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace WebApi
+namespace WebApi;
+
+public class Program
 {
-    public class Program
+    protected Program() { }
+
+    public async static Task Main(string[] args)
     {
-        protected Program() { }
+        var host = CreateHostBuilder(args).Build();
 
-        public async static Task Main(string[] args)
+        using (var scope = host.Services.CreateScope())
         {
-            var host = CreateHostBuilder(args).Build();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
 
-            using (var scope = host.Services.CreateScope())
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();              
+
+            if (!env.IsEnvironment("Prelive") || !env.IsProduction())
             {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();              
-
-                if (!env.IsEnvironment("Prelive") || !env.IsProduction())
+                try
                 {
-                    try
-                    {
-                        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                        await dbContext.Database.MigrateAsync();
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    await dbContext.Database.MigrateAsync();
 
-                        await mediator.Send(new AddSuperAdminUser.Command());
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError($"Migration Error: {ex.Message}");
-                    }
+                    await mediator.Send(new AddSuperAdminUser.Command());
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"Migration Error: {ex.Message}");
                 }
             }
-
-            host.Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .UseSerilog((hostBuilder, config) => ConfigureSerilog(hostBuilder, config))
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        host.Run();
+    }
 
-        private static void ConfigureSerilog(HostBuilderContext hostBuilder, LoggerConfiguration config)
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .UseSerilog((hostBuilder, config) => ConfigureSerilog(hostBuilder, config))
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
+
+    private static void ConfigureSerilog(HostBuilderContext hostBuilder, LoggerConfiguration config)
+    {
+        if (hostBuilder.HostingEnvironment.IsDevelopment())
         {
-            if (hostBuilder.HostingEnvironment.IsDevelopment())
-            {
-                config.MinimumLevel.Debug();
-                config.MinimumLevel.Override("Microsoft", LogEventLevel.Information);
-                config.Enrich.FromLogContext();
-                config.Enrich.WithExceptionDetails();
-                config.WriteTo.Console();
-            }
-            else
-            {
-                var logsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
-                    KeyValueConstants.LogsPath,
-                    hostBuilder.HostingEnvironment.EnvironmentName.ToLower());
+            config.MinimumLevel.Debug();
+            config.MinimumLevel.Override("Microsoft", LogEventLevel.Information);
+            config.Enrich.FromLogContext();
+            config.Enrich.WithExceptionDetails();
+            config.WriteTo.Console();
+        }
+        else
+        {
+            var logsFolder = Path.Combine(hostBuilder.HostingEnvironment.ContentRootPath,
+                KeyValueConstants.LogsPath,
+                hostBuilder.HostingEnvironment.EnvironmentName.ToLower());
 
-                if (!Directory.Exists(logsFolder))
-                {
-                    Directory.CreateDirectory(logsFolder);
-                }
-
-                config.MinimumLevel.Error();
-                config.MinimumLevel.Override("Microsoft", LogEventLevel.Error);
-                config.Enrich.FromLogContext();
-                config.Enrich.WithExceptionDetails();
-                config.WriteTo.File(Path.Combine(logsFolder,
-                 $"{DateTime.Now.ToString("dd-MM-yyyy")}_logs.txt"));
+            if (!Directory.Exists(logsFolder))
+            {
+                Directory.CreateDirectory(logsFolder);
             }
+
+            config.MinimumLevel.Error();
+            config.MinimumLevel.Override("Microsoft", LogEventLevel.Error);
+            config.Enrich.FromLogContext();
+            config.Enrich.WithExceptionDetails();
+            config.WriteTo.File(Path.Combine(logsFolder,
+                $"{DateTime.Now.ToString("dd-MM-yyyy")}_logs.txt"));
         }
     }
 }

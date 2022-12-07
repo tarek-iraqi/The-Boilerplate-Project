@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+
+public class AppUserLogin : IdentityUserLogin<Guid>
 {
-    public class AppUserLogin : IdentityUserLogin<Guid>
-    {
-        public virtual AppUser User { get; set; }
-    }
+    public virtual AppUser User { get; set; }
 }

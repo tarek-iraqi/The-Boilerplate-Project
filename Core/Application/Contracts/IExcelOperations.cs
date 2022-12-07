@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface IExcelOperations
 {
-    public interface IExcelOperations
-    {
-        Task Export<T>(IEnumerable<T> data, string filePath, string sheetName);
-        Task<IEnumerable<T>> Read<T>(string filePath);
-    }
+    Task Export<T>(IEnumerable<T> data, string filePath, string sheetName);
+    Task<IEnumerable<T>> Read<T>(string filePath);
 }

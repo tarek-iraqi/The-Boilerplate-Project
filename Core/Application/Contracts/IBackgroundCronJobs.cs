@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface IBackgroundCronJobs
 {
-    public interface IBackgroundCronJobs
-    {
-        Task HandleDomainEvents();
-    }
+    Task HandleDomainEvents();
 }

@@ -28,7 +28,7 @@ internal class UpdateProfile_Handler : ICommandHandler<UpdateProfile_Command, Op
         var user = await _identityService.FindById(_authenticatedUserService.UserId);
 
         if (user == null)
-            return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 OperationError.Add(KeyValueConstants.GeneralError, LocalizationKeys.UserNotFound));
 
         var phoneInternationalFormat = string.IsNullOrWhiteSpace(request.mobile_number) ? null
@@ -42,7 +42,7 @@ internal class UpdateProfile_Handler : ICommandHandler<UpdateProfile_Command, Op
 
         return result.success
            ? OperationResult.Success()
-           : OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+           : OperationResult.Fail(ErrorStatusCodes.BadRequest,
                result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
     }
 }

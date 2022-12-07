@@ -1,37 +1,36 @@
 ﻿using System.Collections.Generic;
 
-namespace Helpers.BaseModels
+namespace Helpers.BaseModels;
+
+public class IncludeAggregator
 {
-    public class IncludeAggregator
+    private readonly List<string> navigationPropertyNames = new List<string>();
+
+    public IncludeAggregator(string navigationPropertyName)
     {
-        private readonly List<string> navigationPropertyNames = new List<string>();
+        AddNavigationPropertyName(navigationPropertyName);
+    }
 
-        public IncludeAggregator(string navigationPropertyName)
+    public void AddNavigationPropertyName(string navigationPropertyName)
+    {
+        if (!string.IsNullOrEmpty(navigationPropertyName))
         {
-            AddNavigationPropertyName(navigationPropertyName);
+            navigationPropertyNames.Add(navigationPropertyName!);
         }
+    }
 
-        public void AddNavigationPropertyName(string navigationPropertyName)
+    public string IncludeString
+    {
+        get
         {
-            if (!string.IsNullOrEmpty(navigationPropertyName))
+            string output = string.Empty;
+
+            for (int i = 0; i < navigationPropertyNames.Count; i++)
             {
-                navigationPropertyNames.Add(navigationPropertyName!);
+                output = i == 0 ? navigationPropertyNames[i] : $"{output}.{navigationPropertyNames[i]}";
             }
-        }
 
-        public string IncludeString
-        {
-            get
-            {
-                string output = string.Empty;
-
-                for (int i = 0; i < navigationPropertyNames.Count; i++)
-                {
-                    output = i == 0 ? navigationPropertyNames[i] : $"{output}.{navigationPropertyNames[i]}";
-                }
-
-                return output;
-            }
+            return output;
         }
     }
 }

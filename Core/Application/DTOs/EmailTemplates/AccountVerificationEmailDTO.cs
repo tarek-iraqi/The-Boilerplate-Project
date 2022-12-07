@@ -1,8 +1,7 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs;
+
+public class AccountVerificationEmailDTO
 {
-    public class AccountVerificationEmailDTO
-    {
-        public string name { get; set; }
-        public string token { get; set; }
-    }
+    public string name { get; set; }
+    public string token { get; set; }
 }

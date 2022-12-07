@@ -1,8 +1,7 @@
-﻿namespace Application.Contracts
+﻿namespace Application.Contracts;
+
+public interface IAuthenticatedUserService
 {
-    public interface IAuthenticatedUserService
-    {
-        string UserId { get; }
-        public string Username { get; }
-    }
+    string UserId { get; }
+    public string Username { get; }
 }

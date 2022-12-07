@@ -24,17 +24,17 @@ internal class Login_Handler : ICommandHandler<Login_Command, OperationResult<Lo
         var user = await _identityService.FindByName(request.username);
 
         if (user == null)
-            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.BadRequest,
                     errors: OperationError.Add(nameof(request.username), LocalizationKeys.InvalidCredentials));
 
         if (!user.EmailConfirmed)
-            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.BadRequest,
                     errors: OperationError.Add(nameof(request.username), LocalizationKeys.EmailNotConfirmed));
 
         var result = await _identityService.CheckPassword(user, request.password);
 
         if (!result)
-            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail<LoginResponseDTO>(ErrorStatusCodes.BadRequest,
                     errors: OperationError.Add(nameof(request.username), LocalizationKeys.InvalidCredentials));
 
         var accessToken = await _identityService.GenerateAccessToken(user, request.ip_address);

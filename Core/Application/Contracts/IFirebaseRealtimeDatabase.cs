@@ -1,6 +1,5 @@
-﻿namespace Application.Contracts
+﻿namespace Application.Contracts;
+
+public interface IFirebaseRealtimeDatabase
 {
-    public interface IFirebaseRealtimeDatabase
-    {
-    }
 }

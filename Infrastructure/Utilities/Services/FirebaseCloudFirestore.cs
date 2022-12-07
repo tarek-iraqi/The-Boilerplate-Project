@@ -6,65 +6,64 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Utilities.Services
+namespace Utilities.Services;
+
+public class FirebaseCloudFirestore : IFirebaseCloudFirestore
 {
-    public class FirebaseCloudFirestore : IFirebaseCloudFirestore
+    private readonly FirestoreDb _db;
+    public FirebaseCloudFirestore(IApplicationConfiguration config)
     {
-        private readonly FirestoreDb _db;
-        public FirebaseCloudFirestore(IApplicationConfiguration config)
+        var firebaseConfiguration = config.GetFirebaseSettings();
+        var privateKeyValue = firebaseConfiguration.private_key.Replace("\\n", "\n");
+        firebaseConfiguration.private_key = privateKeyValue;
+
+        var jsonFormat = JsonSerializer.Serialize(firebaseConfiguration);
+
+        var firestoreClient = new FirestoreClientBuilder()
         {
-                var firebaseConfiguration = config.GetFirebaseSettings();
-                var privateKeyValue = firebaseConfiguration.private_key.Replace("\\n", "\n");
-                firebaseConfiguration.private_key = privateKeyValue;
+            JsonCredentials = jsonFormat
+        }.Build();
 
-                var jsonFormat = JsonSerializer.Serialize(firebaseConfiguration);
+        _db = FirestoreDb.Create(firebaseConfiguration.project_id, firestoreClient);
+    }
 
-            var firestoreClient = new FirestoreClientBuilder()
-            {
-                JsonCredentials = jsonFormat
-            }.Build();
+    public async Task<T> Get<T>(string collection, string id)
+    {
+        DocumentReference document = _db.Collection(collection).Document(id);
 
-            _db = FirestoreDb.Create(firebaseConfiguration.project_id, firestoreClient);
-        }
+        DocumentSnapshot snapshot = await document.GetSnapshotAsync();
 
-        public async Task<T> Get<T>(string collection, string id)
-        {
-            DocumentReference document = _db.Collection(collection).Document(id);
+        return snapshot.ConvertTo<T>();
+    }
 
-            DocumentSnapshot snapshot = await document.GetSnapshotAsync();
+    public async Task<IEnumerable<T>> GetAll<T>(string collection)
+    {
+        var query = _db.Collection(collection);
 
-            return snapshot.ConvertTo<T>();
-        }
+        QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
 
-        public async Task<IEnumerable<T>> GetAll<T>(string collection)
-        {
-            var query = _db.Collection(collection);
+        return querySnapshot.Documents.Select(doc => doc.ConvertTo<T>());
+    }
 
-            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+    public async Task Add(string collection, object data, string id = null)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            await _db.Collection(collection).AddAsync(data);
+        else
+            await _db.Collection(collection).Document(id).SetAsync(data);
+    }
 
-            return querySnapshot.Documents.Select(doc => doc.ConvertTo<T>());
-        }
+    public async Task Update(string collection, string id, object data)
+    {
+        DocumentReference document = _db.Collection(collection).Document(id);
 
-        public async Task Add(string collection, object data, string id = null)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                await _db.Collection(collection).AddAsync(data);
-            else
-                await _db.Collection(collection).Document(id).SetAsync(data);
-        }
+        await document.SetAsync(data);
+    }
 
-        public async Task Update(string collection, string id, object data)
-        {
-            DocumentReference document = _db.Collection(collection).Document(id);
+    public async Task Delete(string collection, string id)
+    {
+        DocumentReference document = _db.Collection(collection).Document(id);
 
-            await document.SetAsync(data);
-        }
-
-        public async Task Delete(string collection, string id)
-        {
-            DocumentReference document = _db.Collection(collection).Document(id);
-
-            await document.DeleteAsync();
-        }
+        await document.DeleteAsync();
     }
 }

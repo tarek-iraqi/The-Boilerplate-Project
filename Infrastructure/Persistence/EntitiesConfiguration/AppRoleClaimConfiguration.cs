@@ -2,24 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Persistence.EntitiesConfiguration
+namespace Persistence.EntitiesConfiguration;
+
+public class AppRoleClaimConfiguration : IEntityTypeConfiguration<AppRoleClaim>
 {
-    public class AppRoleClaimConfiguration : IEntityTypeConfiguration<AppRoleClaim>
+    public void Configure(EntityTypeBuilder<AppRoleClaim> builder)
     {
-        public void Configure(EntityTypeBuilder<AppRoleClaim> builder)
-        {
-            builder.ToTable("RoleClaims");
+        builder.ToTable("RoleClaims");
 
-            builder.Property(m => m.Id).HasMaxLength(85);
-            builder.Property(m => m.RoleId).HasConversion<string>().HasMaxLength(85);
-        }
+        builder.Property(m => m.Id).HasMaxLength(85);
+        builder.Property(m => m.RoleId).HasConversion<string>().HasMaxLength(85);
     }
+}
 
-    public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+public class OutboxMessageConfiguration : IEntityTypeConfiguration<OutboxMessage>
+{
+    public void Configure(EntityTypeBuilder<OutboxMessage> builder)
     {
-        public void Configure(EntityTypeBuilder<OutboxMessage> builder)
-        {
-            builder.HasKey(x => x.Id);
-        }
+        builder.HasKey(x => x.Id);
     }
 }

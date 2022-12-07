@@ -4,20 +4,19 @@ using Helpers.BaseModels;
 using System;
 using System.Linq;
 
-namespace Application.Specifications.Devices
+namespace Application.Specifications.Devices;
+
+public class DevicesFilteredByUserSpec : Specification<Device, UserDeviceResponseDTO>
 {
-    public class DevicesFilteredByUserSpec : Specification<Device, UserDeviceResponseDTO>
+    public DevicesFilteredByUserSpec(Guid userId)
     {
-        public DevicesFilteredByUserSpec(Guid userId)
+        Query.Where(device => device.UserId == userId)
+            .OrderByDescending(device => device.CreatedOn);
+        Query.Select(device => new UserDeviceResponseDTO
         {
-            Query.Where(device => device.UserId == userId)
-                 .OrderByDescending(device => device.CreatedOn);
-            Query.Select(device => new UserDeviceResponseDTO
-            {
-                id = device.Id,
-                model = device.Model,
-                token = device.Token
-            });
-        }
+            id = device.Id,
+            model = device.Model,
+            token = device.Token
+        });
     }
 }

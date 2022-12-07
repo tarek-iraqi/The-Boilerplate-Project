@@ -24,7 +24,7 @@ internal class ResetPassword_Handler : ICommandHandler<ResetPassword_Command, Op
         var user = await _identityService.FindByEmail(request.email);
 
         if (user == null)
-            return OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+            return OperationResult.Fail(ErrorStatusCodes.BadRequest,
                 OperationError.Add(nameof(request.email), LocalizationKeys.UserNotFound));
 
         var code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.token));
@@ -33,7 +33,7 @@ internal class ResetPassword_Handler : ICommandHandler<ResetPassword_Command, Op
 
         return result.success
            ? OperationResult.Success()
-           : OperationResult.Fail(ErrorStatusCodes.InvalidAttribute,
+           : OperationResult.Fail(ErrorStatusCodes.BadRequest,
                result.errors.Select(err => OperationError.Add(err.Item1, err.Item2)).ToArray());
     }
 }

@@ -6,22 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Utilities.Services
+namespace Utilities.Services;
+
+public class ExcelOperations : IExcelOperations
 {
-    public class ExcelOperations : IExcelOperations
+    public async Task Export<T>(IEnumerable<T> data, string filePath, string sheetName)
     {
-        public async Task Export<T>(IEnumerable<T> data, string filePath, string sheetName)
-        {
-            var excel = new ExcelMapper();
+        var excel = new ExcelMapper();
 
-            await excel.SaveAsync(filePath, data, sheetName);
-        }
+        await excel.SaveAsync(filePath, data, sheetName);
+    }
 
-        public async Task<IEnumerable<T>> Read<T>(string filePath)
-        {
-            var excel = new ExcelMapper();
+    public async Task<IEnumerable<T>> Read<T>(string filePath)
+    {
+        var excel = new ExcelMapper();
 
-            return await excel.FetchAsync<T>(filePath);
-        }
+        return await excel.FetchAsync<T>(filePath);
     }
 }

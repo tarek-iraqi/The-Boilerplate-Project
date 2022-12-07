@@ -6,43 +6,42 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Features.SetupInitialData
+namespace Application.Features.SetupInitialData;
+
+public class AddSuperAdminUser
 {
-    public class AddSuperAdminUser
+    public class Command : IRequest
     {
-        public class Command : IRequest
-        {
 
+    }
+
+    private class Handler : IRequestHandler<Command>
+    {
+        private readonly IIdentityService _identityService;
+
+        public Handler(IIdentityService identityService)
+        {
+            _identityService = identityService;
         }
-
-        private class Handler : IRequestHandler<Command>
+        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
         {
-            private readonly IIdentityService _identityService;
+            var user = await _identityService.FindByEmail("super@admin.com");
 
-            public Handler(IIdentityService identityService)
+            if (user == null)
             {
-                _identityService = identityService;
+                var name = Name.Create("super", "admin");
+                user = new AppUser(name, "super@admin.com", "super@admin.com", isEmailConfirmed: true);
+
+                await _identityService.Add(user, "super@dm1n");
+
+                var role = AppRole.Create("Super Admin", DefaultRoles.SUPER_ADMIN.ToString());
+
+                await _identityService.AddNewRole(role);
+
+                await _identityService.AddUserToRole(user, role.Alias);
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
-            {
-                var user = await _identityService.FindByEmail("super@admin.com");
 
-                if (user == null)
-                {
-                    var name = Name.Create("super", "admin");
-                    user = new AppUser(name, "super@admin.com", "super@admin.com", isEmailConfirmed: true);
-
-                    await _identityService.Add(user, "super@dm1n");
-
-                    var role = AppRole.Create("Super Admin", DefaultRoles.SUPER_ADMIN.ToString());
-
-                    await _identityService.AddNewRole(role);
-
-                    await _identityService.AddUserToRole(user, role.Alias);
-                }
-
-                return Unit.Value;
-            }
+            return Unit.Value;
         }
     }
 }

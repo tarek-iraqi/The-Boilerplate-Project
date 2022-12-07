@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface IPDFOperations
 {
-    public interface IPDFOperations
-    {
-        byte[] ConvertHTMLToPDF(string htmlTemplate, string styleSheetPath = null);
-    }
+    byte[] ConvertHTMLToPDF(string htmlTemplate, string styleSheetPath = null);
 }

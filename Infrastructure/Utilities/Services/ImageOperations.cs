@@ -6,17 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Utilities.Services
+namespace Utilities.Services;
+
+public class ImageOperations : IImageOperations
 {
-    public class ImageOperations : IImageOperations
+    public byte[] ConvertHTMLToImage(string htmlTemplate, string format)
     {
-        public byte[] ConvertHTMLToImage(string htmlTemplate, string format)
-        {
-            var converter = new HtmlConverter();
+        var converter = new HtmlConverter();
 
-            var imageFormat = format == "png" ? ImageFormat.Png : ImageFormat.Jpg;
+        var imageFormat = format == "png" ? ImageFormat.Png : ImageFormat.Jpg;
 
-            return converter.FromHtmlString(htmlTemplate, format: imageFormat);
-        }
+        return converter.FromHtmlString(htmlTemplate, format: imageFormat);
     }
 }

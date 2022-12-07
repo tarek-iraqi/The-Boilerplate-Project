@@ -1,9 +1,8 @@
 ﻿using Xunit;
 
-namespace BoilerPlate.Testing._shared
+namespace BoilerPlate.Testing._shared;
+
+[CollectionDefinition("AppCollection")]
+public class AppCollection : ICollectionFixture<ApplicationLocalizationFixture>
 {
-    [CollectionDefinition("AppCollection")]
-    public class AppCollection : ICollectionFixture<ApplicationLocalizationFixture>
-    {
-    }
 }

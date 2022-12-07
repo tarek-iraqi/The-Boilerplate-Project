@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Helpers.Abstractions;
 using Helpers.Constants;
 using Helpers.Exceptions;
 using MediatR;
@@ -8,35 +9,35 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Common
+namespace Application.Common;
+
+public class PipelineValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : ICommand<TResponse>
 {
-    public class PipelineValidationBehavior<TRequest, TResponse>
-        : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
+
+    public PipelineValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
-        private readonly IEnumerable<IValidator> _validators;
+        _validators = validators;
+    }
 
-        public PipelineValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-        {
-            _validators = validators;
-        }
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
+    {
+        if (!_validators.Any()) return await next();
 
-        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-        {
-            var context = new ValidationContext<TRequest>(request);
+        var context = new ValidationContext<TRequest>(request);
 
-            var validationFailures = _validators
-                .Select(validator => validator.Validate(context))
-                .SelectMany(validationResult => validationResult.Errors)
-                .Where(validationFailure => validationFailure != null)
-                .ToList();
+        var validationFailures = _validators
+            .Select(validator => validator.Validate(context))
+            .SelectMany(validationResult => validationResult.Errors)
+            .Where(validationFailure => validationFailure != null)
+            .Select(f => new Tuple<string, string>(f.PropertyName, f.ErrorMessage))
+            .ToList();
 
-            if (validationFailures.Any())
-            {
-                throw new AppCustomException(ErrorStatusCodes.InvalidAttribute,
-                    validationFailures.Select(f => new Tuple<string, string>(f.PropertyName, f.ErrorMessage)).ToList());
-            }
+        if (validationFailures.Any())
+            throw new AppCustomException(ErrorStatusCodes.BadRequest, validationFailures);
 
-            return next();
-        }
+        return await next();
     }
 }

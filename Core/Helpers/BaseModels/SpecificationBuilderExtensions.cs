@@ -2,106 +2,105 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Helpers.BaseModels
+namespace Helpers.BaseModels;
+
+public static class SpecificationBuilderExtensions
 {
-    public static class SpecificationBuilderExtensions
+    public static Specification<T> Where<T>(
+        this Specification<T> specification,
+        Expression<Func<T, bool>> criteria)
     {
-        public static Specification<T> Where<T>(
-            this Specification<T> specification,
-            Expression<Func<T, bool>> criteria)
-        {
-            ((List<Expression<Func<T, bool>>>)specification.WhereExpressions).Add(criteria);
+        ((List<Expression<Func<T, bool>>>)specification.WhereExpressions).Add(criteria);
 
-            return specification;
-        }
+        return specification;
+    }
 
-        public static Specification<T> OrderBy<T>(
-            this Specification<T> specification,
-            Expression<Func<T, object>> orderExpression)
-        {
-            ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
-                .Add((orderExpression, OrderType.OrderBy));
+    public static Specification<T> OrderBy<T>(
+        this Specification<T> specification,
+        Expression<Func<T, object>> orderExpression)
+    {
+        ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
+            .Add((orderExpression, OrderType.OrderBy));
 
-            return specification;
-        }
+        return specification;
+    }
 
-        public static Specification<T> ThenBy<T>(
-            this Specification<T> specification,
-            Expression<Func<T, object>> orderExpression)
-        {
-            ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
-                .Add((orderExpression, OrderType.ThenBy));
+    public static Specification<T> ThenBy<T>(
+        this Specification<T> specification,
+        Expression<Func<T, object>> orderExpression)
+    {
+        ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
+            .Add((orderExpression, OrderType.ThenBy));
 
-            return specification;
-        }
+        return specification;
+    }
 
-        public static Specification<T> OrderByDescending<T>(
-            this Specification<T> specification,
-            Expression<Func<T, object>> orderExpression)
-        {
-            ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
-                .Add((orderExpression, OrderType.OrderByDescending));
+    public static Specification<T> OrderByDescending<T>(
+        this Specification<T> specification,
+        Expression<Func<T, object>> orderExpression)
+    {
+        ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
+            .Add((orderExpression, OrderType.OrderByDescending));
 
-            return specification;
-        }
+        return specification;
+    }
 
-        public static Specification<T> ThenByDescending<T>(
-            this Specification<T> specification,
-            Expression<Func<T, object>> orderExpression)
-        {
-            ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
-                .Add((orderExpression, OrderType.ThenByDescending));
+    public static Specification<T> ThenByDescending<T>(
+        this Specification<T> specification,
+        Expression<Func<T, object>> orderExpression)
+    {
+        ((List<(Expression<Func<T, object>> OrderExpression, OrderType OrderType)>)specification.OrderExpressions)
+            .Add((orderExpression, OrderType.ThenByDescending));
 
-            return specification;
-        }
+        return specification;
+    }
 
-        public static Specification<T> Include<T, TProperty>(
-            this Specification<T> specification,
-            Expression<Func<T, TProperty>> includeExpression)
-        {
-            var aggregator = new IncludeAggregator((includeExpression.Body as MemberExpression)?.Member?.Name);
+    public static Specification<T> Include<T, TProperty>(
+        this Specification<T> specification,
+        Expression<Func<T, TProperty>> includeExpression)
+    {
+        var aggregator = new IncludeAggregator((includeExpression.Body as MemberExpression)?.Member?.Name);
 
-            ((List<IncludeAggregator>)specification.IncludeAggregators).Add(aggregator);
-            return specification;
-        }
+        ((List<IncludeAggregator>)specification.IncludeAggregators).Add(aggregator);
+        return specification;
+    }
 
-        public static Specification<T> Include<T>(
-            this Specification<T> specification,
-            string includeString)
-        {
-            ((List<string>)specification.IncludeStrings).Add(includeString);
-            return specification;
-        }
+    public static Specification<T> Include<T>(
+        this Specification<T> specification,
+        string includeString)
+    {
+        ((List<string>)specification.IncludeStrings).Add(includeString);
+        return specification;
+    }
 
-        public static Specification<T> Take<T>(
-            this Specification<T> specification,
-            int take)
-        {
-            if (specification.Take != null)
-                throw new DuplicateWaitObjectException($"Duplicate Take Exception, {specification.Take}");
+    public static Specification<T> Take<T>(
+        this Specification<T> specification,
+        int take)
+    {
+        if (specification.Take != null)
+            throw new DuplicateWaitObjectException($"Duplicate Take Exception, {specification.Take}");
 
-            specification.Take = take;
-            return specification;
-        }
+        specification.Take = take;
+        return specification;
+    }
 
-        public static Specification<T> Skip<T>(
-            this Specification<T> specification,
-            int skip)
-        {
-            if (specification.Skip != null)
-                throw new DuplicateWaitObjectException($"Duplicate Skip Exception, {specification.Skip}");
+    public static Specification<T> Skip<T>(
+        this Specification<T> specification,
+        int skip)
+    {
+        if (specification.Skip != null)
+            throw new DuplicateWaitObjectException($"Duplicate Skip Exception, {specification.Skip}");
 
-            specification.Skip = skip;
-            return specification;
-        }
+        specification.Skip = skip;
+        return specification;
+    }
 
-        public static Specification<T, TResult> Select<T, TResult>(
-            this Specification<T, TResult> specification,
-            Expression<Func<T, TResult>> selector)
-        {
-            specification.Selector = selector;
+    public static Specification<T, TResult> Select<T, TResult>(
+        this Specification<T, TResult> specification,
+        Expression<Func<T, TResult>> selector)
+    {
+        specification.Selector = selector;
 
-            return specification;
-        }
+        return specification;
     }
 }

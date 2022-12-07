@@ -38,7 +38,7 @@ public class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChangesInterce
     private static void SaveDomainEvents(DbContext context)
     {
         var outboxMessages = context.ChangeTracker
-            .Entries<IDomainEventCollection>()
+            .Entries<IBaseEntity>()
             .Select(x => x.Entity)
             .Where(x => x.DomainEvents is not null)
             .SelectMany(x => x.DispatchEvents())

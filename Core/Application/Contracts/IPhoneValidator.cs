@@ -1,9 +1,8 @@
-﻿namespace Application.Contracts
+﻿namespace Application.Contracts;
+
+public interface IPhoneValidator
 {
-    public interface IPhoneValidator
-    {
-        bool IsValidPhoneNumber(string phone, string countryCode);
-        string GetNationalPhoneNumberFormat(string phone, string countryCode);
-        string GetInternationalPhoneNumberFormat(string phone, string countryCode);
-    }
+    bool IsValidPhoneNumber(string phone, string countryCode);
+    string GetNationalPhoneNumberFormat(string phone, string countryCode);
+    string GetInternationalPhoneNumberFormat(string phone, string countryCode);
 }

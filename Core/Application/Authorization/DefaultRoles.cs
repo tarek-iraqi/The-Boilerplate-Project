@@ -1,7 +1,6 @@
-﻿namespace Application.Authorization
+﻿namespace Application.Authorization;
+
+public enum DefaultRoles
 {
-    public enum DefaultRoles
-    {
-        SUPER_ADMIN = 1
-    }
+    SUPER_ADMIN = 1
 }

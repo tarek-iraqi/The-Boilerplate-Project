@@ -16,35 +16,35 @@ using WebApi.Extensions;
 using WebApi.Filters;
 using WebApi.Middlewares;
 
-namespace WebApi
+namespace WebApi;
+
+public class Startup
 {
-    public class Startup
+    private readonly IWebHostEnvironment _env;
+
+    public IConfiguration _configuration { get; }
+
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
-        private readonly IWebHostEnvironment _env;
+        _configuration = configuration;
+        _env = env;
+    }
 
-        public IConfiguration _configuration { get; }
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddLocalizationService();
+        services.AddControllersService();
+        services.AddSwaggerService(_configuration);
+        services.AddVersioningService();
+        services.AddLocalizationService();
+        services.AddWebApiServices(_configuration);
+        services.AddPersistenceServices(_configuration);
+        services.AddUtilitiesServices(_configuration, _env);
+        services.AddHttpContextAccessor();
+        services.AddCorsOriginService(_configuration);
+        services.AddAuthenticationService(_configuration);
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
-        {
-            _configuration = configuration;
-            _env = env;
-        }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddLocalizationService();
-            services.AddControllersService();
-            services.AddSwaggerService(_configuration);
-            services.AddVersioningService();
-            services.AddLocalizationService();
-            services.AddWebApiServices(_configuration);
-            services.AddPersistenceServices(_configuration);
-            services.AddUtilitiesServices(_configuration, _env);
-            services.AddHttpContextAccessor();
-            services.AddCorsOriginService(_configuration);
-            services.AddAuthenticationService(_configuration);
-
-            services.AddIdentity<AppUser, AppRole>(options =>
+        services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.Password.RequiredLength = 8;
                 options.Password.RequireNonAlphanumeric = false;
@@ -60,52 +60,51 @@ namespace WebApi
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddHangfireService(_configuration);
-        }
+        services.AddHangfireService(_configuration);
+    }
 
-        public void Configure(IApplicationBuilder app, IBackgroundCronJobs cronJobs)
+    public void Configure(IApplicationBuilder app, IBackgroundCronJobs cronJobs)
+    {
+        RecurringJob.AddOrUpdate(() => cronJobs.HandleDomainEvents(), "* * * * *");
+
+        app.UseRequestLocalization();
+
+        app.UseHttpsRedirection();
+
+        app.UseMiddleware<ErrorHandlingMiddleware>();
+
+        app.UseCors(KeyValueConstants.AllowedCrosOrigins);
+
+        app.UseStaticFiles();
+
+        app.UseSwagger();
+        app.UseSwaggerUI(c =>
         {
-            RecurringJob.AddOrUpdate(() => cronJobs.HandleDomainEvents(), "* * * * *");
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi");
+            c.DefaultModelsExpandDepth(-1);
+        });
 
-            app.UseRequestLocalization();
+        app.UseRouting();
 
-            app.UseHttpsRedirection();
+        app.UseAuthentication();
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseAuthorization();
 
-            app.UseCors(KeyValueConstants.AllowedCrosOrigins);
+        app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+        {
+            appBuilder.UseMiddleware<ApiKeyMiddleware>();
+        });
 
-            app.UseStaticFiles();
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            endpoints.MapHangfireDashboard("/hf_dashboard", new DashboardOptions
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi");
-                c.DefaultModelsExpandDepth(-1);
+                AppPath = "/swagger/index.html",
+                DashboardTitle = "App Background jobs",
+                Authorization = new[] { new HangfireAuthorizationFilter() }
             });
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            app.UseWhen(context => context.Request.Path.StartsWithSegments("/api"), appBuilder =>
-            {
-                appBuilder.UseMiddleware<ApiKeyMiddleware>();
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-
-                endpoints.MapHangfireDashboard("/hf_dashboard", new DashboardOptions
-                {
-                    AppPath = "/swagger/index.html",
-                    DashboardTitle = "App Background jobs",
-                    Authorization = new[] { new HangfireAuthorizationFilter() }
-                });
-            });
-        }
+        });
     }
 }

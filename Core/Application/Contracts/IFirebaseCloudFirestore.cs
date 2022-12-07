@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Application.Contracts
+namespace Application.Contracts;
+
+public interface IFirebaseCloudFirestore
 {
-    public interface IFirebaseCloudFirestore
-    {
-        Task<T> Get<T>(string collection, string id);
+    Task<T> Get<T>(string collection, string id);
 
-        Task<IEnumerable<T>> GetAll<T>(string collection);
+    Task<IEnumerable<T>> GetAll<T>(string collection);
 
-        Task Add(string collection, object data, string id = null);
+    Task Add(string collection, object data, string id = null);
 
-        Task Update(string collection, string id, object data);
+    Task Update(string collection, string id, object data);
 
-        Task Delete(string collection, string id);
-    }
+    Task Delete(string collection, string id);
 }

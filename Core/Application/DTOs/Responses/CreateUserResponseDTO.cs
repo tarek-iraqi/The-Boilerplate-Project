@@ -1,7 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs;
+
+public class CreateUserResponseDTO : IdentityResponseDTO
 {
-    public class CreateUserResponseDTO : IdentityResponseDTO
-    {
-        public string verification_token { get; set; }
-    }
+    public string verification_token { get; set; }
 }
