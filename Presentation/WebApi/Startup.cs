@@ -1,17 +1,11 @@
 using Application.Contracts;
-using Domain.Entities;
 using Hangfire;
 using Helpers.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Persistence;
-using Persistence.Context;
-using System;
-using Utilities;
-using Utilities.Services;
+using WebApi.Configurations;
 using WebApi.Extensions;
 using WebApi.Filters;
 using WebApi.Middlewares;
@@ -32,35 +26,8 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddLocalizationService();
-        services.AddControllersService();
-        services.AddSwaggerService(_configuration);
-        services.AddVersioningService();
-        services.AddLocalizationService();
-        services.AddWebApiServices(_configuration);
-        services.AddPersistenceServices(_configuration);
-        services.AddUtilitiesServices(_configuration, _env);
+        services.InstallServices(_configuration, typeof(IServiceInstaller).Assembly);
         services.AddHttpContextAccessor();
-        services.AddCorsOriginService(_configuration);
-        services.AddAuthenticationService(_configuration);
-
-        services.AddIdentity<AppUser, AppRole>(options =>
-            {
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-
-                options.User.RequireUniqueEmail = true;
-
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-                options.Lockout.MaxFailedAccessAttempts = 3;
-            })
-            .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
-        services.AddHangfireService(_configuration);
     }
 
     public void Configure(IApplicationBuilder app, IBackgroundCronJobs cronJobs)

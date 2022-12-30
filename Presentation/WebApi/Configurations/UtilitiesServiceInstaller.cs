@@ -7,7 +7,6 @@ using DinkToPdf;
 using DinkToPdf.Contracts;
 using FileSignatures;
 using Helpers.BaseModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,12 +17,11 @@ using Utilities;
 using Utilities.Extenstions;
 using Utilities.Services;
 
-namespace WebApi.Extensions;
+namespace WebApi.Configurations;
 
-public static partial class ServiceCollectionExtensions
+public class UtilitiesServiceInstaller : IServiceInstaller
 {
-    public static void AddUtilitiesServices(this IServiceCollection services, IConfiguration configuration,
-            IWebHostEnvironment env)
+    public void Install(IServiceCollection services, IConfiguration configuration)
     {
         var emailSettings = configuration.GetSection("System:EmailSettings").Get<EmailSettings>();
         var amazonSettings = configuration.GetSection("AmazonSettings").Get<AmazonSettings>();

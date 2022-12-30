@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Core" Version="3.7.100.22" />
+    <PackageReference Include="AWSSDK.Core" Version="3.7.103.7" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.101.22" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.101.45" />
     <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
     <PackageReference Include="DinkToPdf" Version="1.0.8" />
-    <PackageReference Include="ExcelMapper" Version="5.2.467" />
+    <PackageReference Include="ExcelMapper" Version="5.2.472" />
     <PackageReference Include="FileSignatures" Version="4.4.0" />
     <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
     <PackageReference Include="FirebaseDatabase.net" Version="4.1.0" />
@@ -18,8 +18,8 @@
     <PackageReference Include="FluentEmail.Razor" Version="3.0.2" />
     <PackageReference Include="FluentEmail.Smtp" Version="3.0.2" />
     <PackageReference Include="Google.Cloud.Firestore" Version="3.0.0" />
-    <PackageReference Include="libphonenumber-csharp" Version="8.13.0" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.49.0.57237">
+    <PackageReference Include="libphonenumber-csharp" Version="8.13.3" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.51.0.59060">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

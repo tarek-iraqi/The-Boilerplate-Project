@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Application.Specifications.Devices;
 
-public class DevicesFilteredByUserSpec : Specification<Device, UserDeviceResponseDTO>
+public sealed class DevicesFilteredByUserSpec : Specification<Device, UserDeviceResponseDTO>
 {
     public DevicesFilteredByUserSpec(Guid userId)
     {

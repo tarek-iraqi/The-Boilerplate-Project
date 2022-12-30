@@ -6,11 +6,11 @@ namespace Helpers.BaseModels;
 
 public class OperationResult
 {
-    public bool IsSuccess { get; private set; }
+    public bool IsSuccess { get; private init; }
     public bool IsFailed => !IsSuccess;
-    public string Message { get; private set; }
-    public OperationError[] Errors { get; init; } = Array.Empty<OperationError>();
-    public HttpStatusCode HttpStatusCode { get; private set; }
+    public string Message { get; private init; }
+    public OperationError[] Errors { get; private init; } = Array.Empty<OperationError>();
+    public HttpStatusCode HttpStatusCode { get; private init; }
 
     public static OperationResult Success(string message = LocalizationKeys.OperationDoneSuccessfully) =>
         new()
@@ -48,7 +48,7 @@ public class OperationResult
 
 public class OperationResult<T> : OperationResult
 {
-    public T Data { get; set; }
+    public T Data { get; init; }
     public string RedirectUrl { get; set; }
 
     public static implicit operator OperationResult<T>(T data) => Success(data);

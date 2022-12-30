@@ -11,11 +11,11 @@ using Persistence.Identity;
 using Persistence.Interceptors;
 using System.Reflection;
 
-namespace WebApi.Extensions;
+namespace WebApi.Configurations;
 
-public static partial class ServiceCollectionExtensions
+public class PersistenceServiceInstaller : IServiceInstaller
 {
-    public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public void Install(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
