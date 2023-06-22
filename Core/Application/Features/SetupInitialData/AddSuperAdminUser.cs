@@ -23,7 +23,8 @@ public class AddSuperAdminUser
         {
             _identityService = identityService;
         }
-        public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+
+        public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var user = await _identityService.FindByEmail("super@admin.com");
 
@@ -40,8 +41,6 @@ public class AddSuperAdminUser
 
                 await _identityService.AddUserToRole(user, role.Alias);
             }
-
-            return Unit.Value;
         }
     }
 }

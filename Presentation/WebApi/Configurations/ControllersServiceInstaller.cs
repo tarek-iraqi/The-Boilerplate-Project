@@ -50,7 +50,7 @@ public class ControllersServiceInstaller : IServiceInstaller
             .AddValidatorsFromAssembly(ApplicationAssemblyReference.Assembly)
             .AddFluentValidationClientsideAdapters();
 
-        services.AddMediatR(ApplicationAssemblyReference.Assembly);
+        services.AddMediatR(config => config.RegisterServicesFromAssemblies(ApplicationAssemblyReference.Assembly));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PipelineValidationBehavior<,>));
     }
 }
